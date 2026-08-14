@@ -236,7 +236,7 @@ LinearProgressWithLabel.propTypes = {
 }
 
 
-const CveCategorisationLabel = ({
+const RiskProfileLabel = ({
   ocmNode,
   ocmRepo,
 }) => {
@@ -249,7 +249,7 @@ const CveCategorisationLabel = ({
 
   if (state.isLoading) return <CircularProgress/>
   if (state.error) return <Alert severity='error'>
-    Unable to fetch CVE Categorisation Label
+    Unable to fetch Risk Profile Label
   </Alert>
 
   const artefact = [
@@ -267,7 +267,7 @@ const CveCategorisationLabel = ({
   // there might be no respective artefact if component-descriptor and ocm-node are not in sync yet
   if (!artefact) return <CircularProgress/>
 
-  const cveCategorisationLabel = new OcmNode(
+  const riskProfileLabel = new OcmNode(
     [componentDescriptor.component],
     artefact,
     ocmNode.artefactKind,
@@ -275,13 +275,13 @@ const CveCategorisationLabel = ({
 
   return <MultilineTextViewer
     text={
-      cveCategorisationLabel
-        ? toYamlString(cveCategorisationLabel)
+      riskProfileLabel
+        ? toYamlString(riskProfileLabel)
         : 'no label found for this artefact'}
   />
 }
-CveCategorisationLabel.displayName = 'CveCategorisationLabel'
-CveCategorisationLabel.propTypes = {
+RiskProfileLabel.displayName = 'RiskProfileLabel'
+RiskProfileLabel.propTypes = {
   ocmNode: PropTypes.object.isRequired,
   ocmRepo: PropTypes.string,
 }
@@ -294,7 +294,7 @@ const VulnerabilityRescoringInputs = ({
   const [selectedNode, setSelectedNode] = React.useState(ocmNodes[0])
 
   return <Stack spacing={2} paddingBottom='1em'>
-    <Typography>CVSS Categorisation (from Component-Descriptor label)</Typography>
+    <Typography>Risk Profile (from Component-Descriptor label)</Typography>
     <FormControl>
       <InputLabel>Artefact</InputLabel>
       <Select
@@ -315,7 +315,7 @@ const VulnerabilityRescoringInputs = ({
       </Select>
     </FormControl>
     <Box border={1} borderColor='primary.main'>
-      <CveCategorisationLabel
+      <RiskProfileLabel
         ocmNode={selectedNode}
         ocmRepo={ocmRepo}
       />
