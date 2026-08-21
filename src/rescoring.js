@@ -2005,7 +2005,7 @@ const Finding = ({
             }
           </Link>
         </Tooltip>
-        <VulnerabilityExtraInfo vector={finding.cvss} filesystemPaths={finding.filesystem_paths}/>
+        {finding.cvss && <VulnerabilityExtraInfo vector={finding.cvss} filesystemPaths={finding.filesystem_paths}/>}
       </div>
       <div style={{ display: 'flex' }}>
         <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
@@ -2019,7 +2019,7 @@ const Finding = ({
         <Typography variant='inherit' marginRight='0.4rem'>CVSS v3:</Typography>
         <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
           {
-            finding.cvss_v3_score
+            finding.cvss_score ?? finding.cvss_v3_score
           }
         </Typography>
       </div>
