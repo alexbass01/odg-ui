@@ -7,7 +7,7 @@ on:
   # in forks it only produces validate + dry-run runs (see conditions below).
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
     inputs:
       repoCache:
@@ -30,7 +30,7 @@ on:
         default: true
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - .github/renovate.json5
       - .github/workflows/renovate.yml
