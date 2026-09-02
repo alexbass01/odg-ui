@@ -8,7 +8,7 @@ name: Renovate
 # secrets.ODG_BOT_PRIVATE_KEY) to be configured for this repository; without
 # them all runs are read-only dry-runs.
 # TESTING SETUP (fork end-to-end test): references the fork
-# alexbass01/open-component-model-github@feat/central-renovate.
+# alexbass01/open-component-model-github, pinned to its floating major tag @v1.
 on:
   # Run after every merge to the default branch so renovate rebases /
   # automerges its PRs before they go stale.
@@ -47,14 +47,14 @@ permissions:
 
 jobs:
   renovate:
-    uses: alexbass01/open-component-model-github/.github/workflows/renovate.yml@feat/central-renovate
+    uses: alexbass01/open-component-model-github/.github/workflows/renovate.yml@v1
     secrets: inherit
     with:
       repository: ${{ github.repository }}
       # TODO(prod): after rollout, remove centralRepo/centralRef (defaults
       # point to open-component-model/.github@main).
       centralRepo: alexbass01/open-component-model-github
-      centralRef: feat/central-renovate
+      centralRef: v1
       repoCache: ${{ inputs.repoCache || 'enabled' }}
       ignoreSchedule: ${{ github.event_name == 'workflow_dispatch' && inputs.ignoreSchedule }}
       logLevel: ${{ inputs.logLevel || 'info' }}
