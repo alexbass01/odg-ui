@@ -33,6 +33,13 @@
   },
   packageRules: [
     {
+      // Majors wait as checkboxes in the dependency dashboard ("Pending
+      // Approval") instead of occupying prConcurrentLimit slots — tick one
+      // there to have its PR created when you're ready to work on it.
+      matchUpdateTypes: ['major'],
+      dependencyDashboardApproval: true,
+    },
+    {
       matchUpdateTypes: ['patch'],
       automerge: true,
     },

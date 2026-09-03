@@ -51,10 +51,9 @@ jobs:
     secrets: inherit
     with:
       repository: ${{ github.repository }}
-      # TODO(prod): after rollout, remove centralRepo/centralRef (defaults
-      # point to open-component-model/.github@main).
-      centralRepo: alexbass01/open-component-model-github
-      centralRef: v1
+      # TODO(prod): after rollout, drop centralConfig (default points to
+      # open-component-model/.github@v1).
+      centralConfig: alexbass01/open-component-model-github@v1
       repoCache: ${{ inputs.repoCache || 'enabled' }}
       ignoreSchedule: ${{ github.event_name == 'workflow_dispatch' && inputs.ignoreSchedule }}
       logLevel: ${{ inputs.logLevel || 'info' }}
