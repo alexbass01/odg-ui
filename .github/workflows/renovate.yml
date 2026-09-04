@@ -7,7 +7,7 @@ name: Renovate
 # Full runs require the GitHub App credentials (vars.ODG_BOT_APP_ID /
 # secrets.ODG_BOT_PRIVATE_KEY) to be configured for this repository; without
 # them all runs are read-only dry-runs.
-# TESTING SETUP (fork end-to-end test): references the fork
+# TESTING SETUP (fork end-to-end test): references the fork e.g.
 # alexbass01/open-component-model-github, pinned to its floating major tag @v1.
 on:
   # Run after every merge to the default branch so renovate rebases /
@@ -47,7 +47,7 @@ permissions:
 
 jobs:
   renovate:
-    uses: alexbass01/open-component-model-github/.github/workflows/renovate.yml@v1
+    uses: open-component-model/.github/.github/workflows/renovate.yml@v1
     secrets: inherit
     with:
       repository: ${{ github.repository }}
