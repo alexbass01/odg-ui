@@ -44,7 +44,9 @@ import SyncAltIcon from '@mui/icons-material/SyncAlt'
 
 import PropTypes from 'prop-types'
 import { useTheme } from '@emotion/react'
-import yaml from 'js-yaml'
+// namespace import on purpose: js-yaml v5 dropped its default export,
+// this form works with both v4 (CJS) and v5 (named exports)
+import * as yaml from 'js-yaml'
 
 import { SearchParamContext } from '../App'
 import { downloadObject, shortenComponentName, trimComponentName } from '../util'

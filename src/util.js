@@ -10,7 +10,9 @@ import {
 } from '@mui/material'
 
 import PropTypes from 'prop-types'
-import yaml from 'js-yaml'
+// namespace import on purpose: js-yaml v5 dropped its default export,
+// this form works with both v4 (CJS) and v5 (named exports)
+import * as yaml from 'js-yaml'
 import styled from '@emotion/styled'
 
 import {
