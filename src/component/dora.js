@@ -523,37 +523,54 @@ const SelectComponentAccordion = ({
     )
   }
 
-  return <Accordion>
-    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-      <Typography variant='inherit'>Select Components</Typography>
-    </AccordionSummary>
-    <AccordionDetails>
-      <Grid container>
-        <Grid item xs={12} display='flex' alignItems='center'>
-          <Checkbox
-            checked={allComponentNames.length <= selectedComponentNames.length}
-            onChange={onSelectAll}
-          />
-          <Typography variant='inherit'>Select All</Typography>
-        </Grid>
-        {
-          allComponentNames.sort((a, b) => {
-            return shortenComponentName(a).localeCompare(shortenComponentName(b))
-          }).map((componentName) => <Grid item key={componentName} xs={12} lg={6} xl={4} display='flex' alignItems='center'>
+  return (
+    <Accordion>
+      <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+        <Typography variant='inherit'>Select Components</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Grid container>
+          <Grid
+            size={12}
+            sx={{
+              display: 'flex',
+              alignItems: 'center'
+            }}>
             <Checkbox
-              checked={selectedComponentNames.includes(componentName)}
-              onChange={(e) => onSelectSingle(e, componentName)}
+              checked={allComponentNames.length <= selectedComponentNames.length}
+              onChange={onSelectAll}
             />
-            <Typography variant='inherit'>
-              {
-                shortenComponentName(componentName)
-              }
-            </Typography>
-          </Grid>)
-        }
-      </Grid>
-    </AccordionDetails>
-  </Accordion>
+            <Typography variant='inherit'>Select All</Typography>
+          </Grid>
+          {
+            allComponentNames.sort((a, b) => {
+              return shortenComponentName(a).localeCompare(shortenComponentName(b))
+            }).map((componentName) => <Grid
+              key={componentName}
+              size={{
+                xs: 12,
+                lg: 6,
+                xl: 4
+              }}
+              sx={{
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+              <Checkbox
+                checked={selectedComponentNames.includes(componentName)}
+                onChange={(e) => onSelectSingle(e, componentName)}
+              />
+              <Typography variant='inherit'>
+                {
+                  shortenComponentName(componentName)
+                }
+              </Typography>
+            </Grid>)
+          }
+        </Grid>
+      </AccordionDetails>
+    </Accordion>
+  );
 }
 SelectComponentAccordion.displayName = 'SelectComponentAccordion'
 SelectComponentAccordion.propTypes = {
@@ -575,25 +592,43 @@ const DoraDependenciesViewChangeLeadTime = ({
     return [...changeLeadTimes, changeLeadTime]
   }, []))
 
-  return <Grid item xs={12} xl={6} display='flex' alignItems='center' flexDirection='column'>
-    <Typography variant='h4'>Change Lead Time</Typography>
-    <Typography variant='overline' fontSize='1rem' marginY='1rem'>
-      {
-        `Median Change Lead Time: ${changeLeadTimesMedian} Days`
-      }
-    </Typography>
-    <Typography variant='h6'>Median Change Lead Time per Component</Typography>
-    <MedianChangeLeadTimePerDependencyChart
-      doraMetrics={doraMetrics}
-      selectedComponentNames={selectedComponentNames}
-    />
-    <Typography variant='h6' marginTop='4rem'>Median Change Lead Time per Month</Typography>
-    <MedianChangeLeadTimeDependenciesPerMonth
-      doraMetrics={doraMetrics}
-      timeSpanDays={timeSpanDays}
-      selectedComponentNames={selectedComponentNames}
-    />
-  </Grid>
+  return (
+    <Grid
+      size={{
+        xs: 12,
+        xl: 6
+      }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column'
+      }}>
+      <Typography variant='h4'>Change Lead Time</Typography>
+      <Typography
+        variant='overline'
+        sx={{
+          fontSize: '1rem',
+          marginY: '1rem'
+        }}>
+        {
+          `Median Change Lead Time: ${changeLeadTimesMedian} Days`
+        }
+      </Typography>
+      <Typography variant='h6'>Median Change Lead Time per Component</Typography>
+      <MedianChangeLeadTimePerDependencyChart
+        doraMetrics={doraMetrics}
+        selectedComponentNames={selectedComponentNames}
+      />
+      <Typography variant='h6' sx={{
+        marginTop: '4rem'
+      }}>Median Change Lead Time per Month</Typography>
+      <MedianChangeLeadTimeDependenciesPerMonth
+        doraMetrics={doraMetrics}
+        timeSpanDays={timeSpanDays}
+        selectedComponentNames={selectedComponentNames}
+      />
+    </Grid>
+  );
 }
 DoraDependenciesViewChangeLeadTime.displayName = 'DoraDependenciesViewChangeLeadTime'
 DoraDependenciesViewChangeLeadTime.propTypes = {
@@ -620,31 +655,51 @@ const DoraDependenciesViewDeploymentFrequency = ({
     ]
   }, []))
 
-  return <Grid item xs={12} xl={6} display='flex' alignItems='center' flexDirection='column'>
-    <Typography variant='h4'>Deployment Frequency</Typography>
-    <Typography variant='overline' fontSize='1rem' marginY='1rem'>
-      {
-        `Median Deployment Frequency: every ${medianDeploymentFrequency} Days`
-      }
-    </Typography>
-    <Typography variant='h6'>Deployment Frequency per Component</Typography>
-    <DeploymentFrequencyPerDependencyChart
-      doraMetrics={doraMetrics}
-      timeSpanDays={timeSpanDays}
-      selectedComponentNames={selectedComponentNames}
-    />
-    <Typography variant='h6' marginTop='4rem'>Total Deployments per Component</Typography>
-    <TotalDeploymentsPerDependencyChart
-      doraMetrics={doraMetrics}
-      selectedComponentNames={selectedComponentNames}
-    />
-    <Typography variant='h6' marginTop='4rem'>Median Deployment Frequency per Month</Typography>
-    <MedianDeploymentFrequencyPerMonth
-      doraMetrics={doraMetrics}
-      timeSpanDays={timeSpanDays}
-      selectedComponentNames={selectedComponentNames}
-    />
-  </Grid>
+  return (
+    <Grid
+      size={{
+        xs: 12,
+        xl: 6
+      }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column'
+      }}>
+      <Typography variant='h4'>Deployment Frequency</Typography>
+      <Typography
+        variant='overline'
+        sx={{
+          fontSize: '1rem',
+          marginY: '1rem'
+        }}>
+        {
+          `Median Deployment Frequency: every ${medianDeploymentFrequency} Days`
+        }
+      </Typography>
+      <Typography variant='h6'>Deployment Frequency per Component</Typography>
+      <DeploymentFrequencyPerDependencyChart
+        doraMetrics={doraMetrics}
+        timeSpanDays={timeSpanDays}
+        selectedComponentNames={selectedComponentNames}
+      />
+      <Typography variant='h6' sx={{
+        marginTop: '4rem'
+      }}>Total Deployments per Component</Typography>
+      <TotalDeploymentsPerDependencyChart
+        doraMetrics={doraMetrics}
+        selectedComponentNames={selectedComponentNames}
+      />
+      <Typography variant='h6' sx={{
+        marginTop: '4rem'
+      }}>Median Deployment Frequency per Month</Typography>
+      <MedianDeploymentFrequencyPerMonth
+        doraMetrics={doraMetrics}
+        timeSpanDays={timeSpanDays}
+        selectedComponentNames={selectedComponentNames}
+      />
+    </Grid>
+  );
 }
 DoraDependenciesViewDeploymentFrequency.displayName = 'DoraDependenciesViewDeploymentFrequency'
 DoraDependenciesViewDeploymentFrequency.propTypes = {
@@ -660,25 +715,29 @@ const DoraDependenciesView = ({
 }) => {
   const [selectedComponentNames, setSelectedComponentNames] = React.useState(Object.keys(doraMetrics.dependencies))
 
-  return <div style={{ marginTop: '2rem'}}>
-    <SelectComponentAccordion
-      allComponentNames={Object.keys(doraMetrics.dependencies)}
-      selectedComponentNames={selectedComponentNames}
-      setSelectedComponentNames={setSelectedComponentNames}
-    />
-    <Grid container marginTop='3rem'>
-      <DoraDependenciesViewChangeLeadTime
-        doraMetrics={doraMetrics}
-        timeSpanDays={timeSpanDays}
+  return (
+    <div style={{ marginTop: '2rem'}}>
+      <SelectComponentAccordion
+        allComponentNames={Object.keys(doraMetrics.dependencies)}
         selectedComponentNames={selectedComponentNames}
+        setSelectedComponentNames={setSelectedComponentNames}
       />
-      <DoraDependenciesViewDeploymentFrequency
-        doraMetrics={doraMetrics}
-        timeSpanDays={timeSpanDays}
-        selectedComponentNames={selectedComponentNames}
-      />
-    </Grid>
-  </div>
+      <Grid container sx={{
+        marginTop: '3rem'
+      }}>
+        <DoraDependenciesViewChangeLeadTime
+          doraMetrics={doraMetrics}
+          timeSpanDays={timeSpanDays}
+          selectedComponentNames={selectedComponentNames}
+        />
+        <DoraDependenciesViewDeploymentFrequency
+          doraMetrics={doraMetrics}
+          timeSpanDays={timeSpanDays}
+          selectedComponentNames={selectedComponentNames}
+        />
+      </Grid>
+    </div>
+  );
 }
 DoraDependenciesView.displayName = 'DoraDependenciesView'
 DoraDependenciesView.propTypes = {
@@ -695,33 +754,56 @@ const DoraComponentViewChangeLeadTime = ({
   monthlyChanges,
   deployments,
 }) => {
-  return <Grid item xs={12} xl={6} display='flex' alignItems='center' flexDirection='column'>
-    <Typography variant='h4'>Change Lead Time</Typography>
-    {
-      allChanges.length > 0 ? <>
-        <Typography variant='overline' fontSize='1rem' marginY='1rem'>
+  return (
+    <Grid
+      size={{
+        xs: 12,
+        xl: 6
+      }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column'
+      }}>
+      <Typography variant='h4'>Change Lead Time</Typography>
+      {
+        allChanges.length > 0 ? <>
+          <Typography
+            variant='overline'
+            sx={{
+              fontSize: '1rem',
+              marginY: '1rem'
+            }}>
+            {
+              `Median Change Lead Time: ${changeLeadTimeMedian} Days`
+            }
+          </Typography>
+          <Typography variant='h6'>Median Change Lead Time per Month</Typography>
+          <MedianChangeLeadTimePerMonth
+            monthlyChanges={monthlyChanges}
+          />
+          <Typography variant='h6' sx={{
+            marginTop: '4rem'
+          }}>Change Lead Time per Commit</Typography>
+          <CommitsDeploymentsChart
+            allChanges={allChanges}
+            deployments={deployments}
+            timeSpanDays={timeSpanDays}
+            targetComponentName={targetComponentName}
+          />
+        </> : <Typography
+          variant='overline'
+          sx={{
+            fontSize: '1rem',
+            marginTop: '1rem'
+          }}>
           {
-            `Median Change Lead Time: ${changeLeadTimeMedian} Days`
+            `No change within the last ${timeSpanDays} days`
           }
         </Typography>
-        <Typography variant='h6'>Median Change Lead Time per Month</Typography>
-        <MedianChangeLeadTimePerMonth
-          monthlyChanges={monthlyChanges}
-        />
-        <Typography variant='h6' marginTop='4rem'>Change Lead Time per Commit</Typography>
-        <CommitsDeploymentsChart
-          allChanges={allChanges}
-          deployments={deployments}
-          timeSpanDays={timeSpanDays}
-          targetComponentName={targetComponentName}
-        />
-      </> : <Typography variant='overline' fontSize='1rem' marginTop='1rem'>
-        {
-          `No change within the last ${timeSpanDays} days`
-        }
-      </Typography>
-    }
-  </Grid>
+      }
+    </Grid>
+  );
 }
 DoraComponentViewChangeLeadTime.displayName = 'DoraComponentViewChangeLeadTime'
 DoraComponentViewChangeLeadTime.propTypes = {
@@ -739,27 +821,48 @@ const DoraComponentViewDeploymentFrequency = ({
   deploymentFrequency,
   deployments,
 }) => {
-  return <Grid item xs={12} xl={6} display='flex' alignItems='center' flexDirection='column'>
-    <Typography variant='h4'>Deployment Frequency</Typography>
-    {
-      deployments.length > 0 ? <>
-        <Typography variant='overline' fontSize='1rem' marginY='1rem'>
+  return (
+    <Grid
+      size={{
+        xs: 12,
+        xl: 6
+      }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column'
+      }}>
+      <Typography variant='h4'>Deployment Frequency</Typography>
+      {
+        deployments.length > 0 ? <>
+          <Typography
+            variant='overline'
+            sx={{
+              fontSize: '1rem',
+              marginY: '1rem'
+            }}>
+            {
+              `A new Deployment every ${deploymentFrequency} Days`
+            }
+          </Typography>
+          <Typography variant='h6'>Deployment Frequency per Month</Typography>
+          <DeploymentFrequencyPerMonth
+            timeSpanDays={timeSpanDays}
+            deployments={deployments}
+          />
+        </> : <Typography
+          variant='overline'
+          sx={{
+            fontSize: '1rem',
+            marginY: '1rem'
+          }}>
           {
-            `A new Deployment every ${deploymentFrequency} Days`
+            `No new deployment within the last ${timeSpanDays} Days`
           }
         </Typography>
-        <Typography variant='h6'>Deployment Frequency per Month</Typography>
-        <DeploymentFrequencyPerMonth
-          timeSpanDays={timeSpanDays}
-          deployments={deployments}
-        />
-      </> : <Typography variant='overline' fontSize='1rem' marginY='1rem'>
-        {
-          `No new deployment within the last ${timeSpanDays} Days`
-        }
-      </Typography>
-    }
-  </Grid>
+      }
+    </Grid>
+  );
 }
 DoraComponentViewDeploymentFrequency.displayName = 'DoraComponentViewDeploymentFrequency'
 DoraComponentViewDeploymentFrequency.propTypes = {
@@ -781,21 +884,25 @@ const DoraComponentView = ({
   const monthlyChanges = doraMetrics.dependencies[componentName]?.changes_monthly ?? []
   const deployments = doraMetrics.dependencies[componentName]?.deployments ?? []
 
-  return <Grid container marginTop='2rem'>
-    <DoraComponentViewChangeLeadTime
-      timeSpanDays={timeSpanDays}
-      targetComponentName={targetComponentName}
-      changeLeadTimeMedian={changeLeadTimeMedian}
-      allChanges={allChanges}
-      monthlyChanges={monthlyChanges}
-      deployments={deployments}
-    />
-    <DoraComponentViewDeploymentFrequency
-      timeSpanDays={timeSpanDays}
-      deploymentFrequency={deploymentFrequency}
-      deployments={deployments}
-    />
-  </Grid>
+  return (
+    <Grid container sx={{
+      marginTop: '2rem'
+    }}>
+      <DoraComponentViewChangeLeadTime
+        timeSpanDays={timeSpanDays}
+        targetComponentName={targetComponentName}
+        changeLeadTimeMedian={changeLeadTimeMedian}
+        allChanges={allChanges}
+        monthlyChanges={monthlyChanges}
+        deployments={deployments}
+      />
+      <DoraComponentViewDeploymentFrequency
+        timeSpanDays={timeSpanDays}
+        deploymentFrequency={deploymentFrequency}
+        deployments={deployments}
+      />
+    </Grid>
+  );
 }
 DoraComponentView.displayName = 'DoraComponentView'
 DoraComponentView.propTypes = {
@@ -828,16 +935,20 @@ const DoraTab = ({
   }
 
   if (state.isLoading) {
-    return <Stack spacing={5} alignItems='center'>
-      <TimeSpanSlider
-        timeSpanDays={timeSpanDays}
-        setTimeSpanDays={setTimeSpanDays}
-      />
-      <CenteredSpinner/>
-      <Alert severity='info' variant={context.prefersDarkMode ? 'outlined' : 'standard'}>
-        Fetching dora metrics may take a while...
-      </Alert>
-    </Stack>
+    return (
+      <Stack spacing={5} sx={{
+        alignItems: 'center'
+      }}>
+        <TimeSpanSlider
+          timeSpanDays={timeSpanDays}
+          setTimeSpanDays={setTimeSpanDays}
+        />
+        <CenteredSpinner/>
+        <Alert severity='info' variant={context.prefersDarkMode ? 'outlined' : 'standard'}>
+          Fetching dora metrics may take a while...
+        </Alert>
+      </Stack>
+    );
   }
 
   if (isSpecialComponent) {

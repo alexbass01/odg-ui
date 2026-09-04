@@ -30,7 +30,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import LandscapeIcon from '@mui/icons-material/Landscape'
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat'
@@ -114,31 +114,33 @@ const SpecialComponent = ({
     setIsEditMode(!isEditMode)
   }
 
-  return <Grid item sx={{ width: 500 }}>
-    <Paper
-      sx={{
-        padding: 1,
-        textAlign: 'center',
-      }}
-    >
-      <ComponentBody
-        component={component}
-        componentDependenciesFetchDetails={{
-          componentDependencies: componentDependencies,
-          isComponentDependenciesLoading: state.isLoading,
-          isComponentDependenciesError: state.error,
+  return (
+    <Grid sx={{ width: 500 }}>
+      <Paper
+        sx={{
+          padding: 1,
+          textAlign: 'center',
         }}
-        specialComponentsFeature={specialComponentsFeature}
-        isEditMode={isEditMode}
-        toggleEditMode={toggleEditMode}
-      />
-      <div style={{ padding: '0.3em' }} />
-      <DefaultFooter
-        component={component}
-        findingCfgs={findingCfgs}
-      />
-    </Paper>
-  </Grid>
+      >
+        <ComponentBody
+          component={component}
+          componentDependenciesFetchDetails={{
+            componentDependencies: componentDependencies,
+            isComponentDependenciesLoading: state.isLoading,
+            isComponentDependenciesError: state.error,
+          }}
+          specialComponentsFeature={specialComponentsFeature}
+          isEditMode={isEditMode}
+          toggleEditMode={toggleEditMode}
+        />
+        <div style={{ padding: '0.3em' }} />
+        <DefaultFooter
+          component={component}
+          findingCfgs={findingCfgs}
+        />
+      </Paper>
+    </Grid>
+  );
 }
 SpecialComponent.displayName = 'SpecialComponent'
 SpecialComponent.propTypes = {
@@ -398,7 +400,7 @@ const SpecialComponentDialog = ({
       type: type,
       version: 'greatest',
       ocmRepo: ocmRepo,
-      ...icon !== '' && {icon: icon},
+      ...(icon !== '' && {icon: icon}),
       browserLocalOnly: true,
     }
 
@@ -414,107 +416,119 @@ const SpecialComponentDialog = ({
     handleClose()
   }
 
-  return <Dialog open={true} onClose={handleClose}>
-    <DialogTitle>Add Component to Overview</DialogTitle>
-    <DialogContent>
-      <DialogContentText>
-        To add a component, please enter its component name and the preferred
-        displayed name. Also, specify the type which is used to group multiple
-        components as well as the OCM repository.
-      </DialogContentText>
-      <Stack spacing={1} sx={{ mt: 2 }}>
-        {dialogError && <Alert severity='error'>{dialogError}</Alert>}
-        <TextField
-          autoFocus
-          placeholder='e.g. github.com/gardener/gardener'
-          margin='dense'
-          label='Name'
-          fullWidth
-          variant='standard'
-          onChange={(e) => {
-            setComponentName(e.target.value)
-          }}
-        />
-        <TextField
-          margin='dense'
-          label='Display Name'
-          fullWidth
-          variant='standard'
-          inputProps={{ maxLength: 30 }}
-          onChange={(e) => {
-            setDisplayName(e.target.value)
-          }}
-        />
-        <Autocomplete
-          value={type}
-          freeSolo
-          disableClearable
-          options={specialComponentTypes}
-          onInputChange={(e, newValue) => {
-            setType(newValue)
-          }}
-          renderInput={(params) => {
-            return (
-              <TextField
-                {...params}
-                variant='standard'
-                label='Type'
-                inputProps={{
-                  ...params.inputProps,
-                  maxLength: 20,
-                }}
-                InputProps={{
-                  ...params.InputProps,
-                }}
-              />
-            )
-          }}
-        />
-        <Autocomplete
-          value={ocmRepo}
-          freeSolo
-          disableClearable
-          options={urlsFromOcmRepositoryCfgsFeature(ocmRepositoryCfgsFeature)}
-          onInputChange={(e, newValue) => {
-            setOcmRepo(newValue)
-          }}
-          renderInput={(params) => {
-            return (
-              <TextField
-                {...params}
-                variant='standard'
-                label='OCM Repository'
-                InputProps={{
-                  ...params.InputProps,
-                }}
-              />
-            )
-          }}
-        />
-        <FormControl style={{marginTop: '1rem'}}>
-          <InputLabel id='new-special-component-icon-label'>Icon</InputLabel>
-          <Select
-            labelId='new-special-component-icon-label'
-            value={icon}
-            label='Icon'
-            onChange={(e) => setIcon(e.target.value)}
-          >
-            <MenuItem value={''}>None</MenuItem>
-            <MenuItem value={'home'}><HomeIcon style={{color: theme.bomButton.color}}/></MenuItem>
-            <MenuItem value={'landscape'}><LandscapeIcon style={{color: theme.bomButton.color}}/></MenuItem>
-          </Select>
-        </FormControl>
-      </Stack>
-    </DialogContent>
-    <DialogActions>
-      <Button color='inherit' onClick={handleClose}>
-        Cancel
-      </Button>
-      <Button color='inherit' onClick={add}>
-        Ok
-      </Button>
-    </DialogActions>
-  </Dialog>
+  return (
+    <Dialog open={true} onClose={handleClose}>
+      <DialogTitle>Add Component to Overview</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          To add a component, please enter its component name and the preferred
+          displayed name. Also, specify the type which is used to group multiple
+          components as well as the OCM repository.
+        </DialogContentText>
+        <Stack spacing={1} sx={{ mt: 2 }}>
+          {dialogError && <Alert severity='error'>{dialogError}</Alert>}
+          <TextField
+            autoFocus
+            placeholder='e.g. github.com/gardener/gardener'
+            margin='dense'
+            label='Name'
+            fullWidth
+            variant='standard'
+            onChange={(e) => {
+              setComponentName(e.target.value)
+            }}
+          />
+          <TextField
+            margin='dense'
+            label='Display Name'
+            fullWidth
+            variant='standard'
+            onChange={(e) => {
+              setDisplayName(e.target.value)
+            }}
+            slotProps={{
+              htmlInput: { maxLength: 30 }
+            }}
+          />
+          <Autocomplete
+            value={type}
+            freeSolo
+            disableClearable
+            options={specialComponentTypes}
+            onInputChange={(e, newValue) => {
+              setType(newValue)
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  {...params}
+                  variant='standard'
+                  label='Type'
+                  slotProps={{
+                    ...params.slotProps,
+
+                    input: {
+                      ...params.slotProps.input,
+                    },
+
+                    htmlInput: {
+                      ...params.slotProps.htmlInput,
+                      maxLength: 20,
+                    }
+                  }} />
+              );
+            }}
+          />
+          <Autocomplete
+            value={ocmRepo}
+            freeSolo
+            disableClearable
+            options={urlsFromOcmRepositoryCfgsFeature(ocmRepositoryCfgsFeature)}
+            onInputChange={(e, newValue) => {
+              setOcmRepo(newValue)
+            }}
+            renderInput={(params) => {
+              return (
+                <TextField
+                  {...params}
+                  variant='standard'
+                  label='OCM Repository'
+                  slotProps={{
+                    ...params.slotProps,
+
+                    input: {
+                      ...params.slotProps.input,
+                    }
+                  }}
+                />
+              );
+            }}
+          />
+          <FormControl style={{marginTop: '1rem'}}>
+            <InputLabel id='new-special-component-icon-label'>Icon</InputLabel>
+            <Select
+              labelId='new-special-component-icon-label'
+              value={icon}
+              label='Icon'
+              onChange={(e) => setIcon(e.target.value)}
+            >
+              <MenuItem value={''}>None</MenuItem>
+              <MenuItem value={'home'}><HomeIcon style={{color: theme.bomButton.color}}/></MenuItem>
+              <MenuItem value={'landscape'}><LandscapeIcon style={{color: theme.bomButton.color}}/></MenuItem>
+            </Select>
+          </FormControl>
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Button color='inherit' onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button color='inherit' onClick={add}>
+          Ok
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 SpecialComponentDialog.displayName = 'SpecialComponentDialog'
 SpecialComponentDialog.propTypes = {
@@ -634,72 +648,74 @@ const ComponentBody = ({
     .map((dep) => dep.name)
     .sort((a, b) => a.localeCompare(b))
 
-  return <>
-    <ComponentHeader
-      component={component}
-      releaseSucceeded={versionsMatch}
-      specialComponentsFeature={specialComponentsFeature}
-      isEditMode={isEditMode}
-      toggleEditMode={toggleEditMode}
-      componentUrl={componentUrl}
-    />
-    <a
-      style={{ textDecoration: 'none', color: 'inherit' }}
-      href={componentUrl}
-    >
-      {
-        (isEditMode || dependencies.some((dep) => !dep.disabled)) && <DependentComponentBox sx={{
-          borderRadius: '0.5rem',
-          padding: '0.5rem',
-          marginTop: '0.5rem',
-          marginBottom: '0.5rem',
-        }}>
-          <Droppable droppableId={`${component.id}|${component.browserLocalOnly}`} type={`${component.id}-${component.browserLocalOnly}`}>
-            {(provided) => (
-              <Stack ref={provided.innerRef} {...provided.droppableProps} direction='column'>
-                <VersionOverview
-                  component={component}
-                  dependencies={dependencies.filter((dep) => !dep.disabled)}
-                  removeDepFromComp={(depName, component) => editDepOfComp(depName, component, { action: editDepOfCompActions.REMOVE })}
-                  specialComponentsFeature={specialComponentsFeature}
-                  isEditMode={isEditMode}
-                  provided={provided}
-                />
-                {
-                  isEditMode && disabledDependencyNames.length > 0 && <Grid container columns={11} spacing={1} sx={{py: 0}}>
-                    <Grid item xs={5}/>
-                    <Grid item xs={1}>
-                      <IconButton onClick={handleAddDep}>
-                        <AddIcon style={{color: theme.bomButton.color}}/>
-                      </IconButton>
-                    </Grid>
-                    <Grid item xs={5}/>
-                  </Grid>
-                }
-              </Stack>
-            )}
-          </Droppable>
-        </DependentComponentBox>
-      }
-    </a>
-    {
-      addDepDialogOpen && <AddDependencyDialog
-        handleClose={handleAddDepDialogClose}
+  return (
+    <>
+      <ComponentHeader
         component={component}
-        dependencies={dependencies.filter((dep) => dep.disabled).sort((a, b) => {
-          // Show dep for component itself always as first elem
-          if (a.name === component.name) return -1
-          if (b.name === component.name) return 1
-          // Show deps with remote versions always before deps without remote versions
-          if (a.remoteVersion && !b.remoteVersion) return -1
-          if (b.remoteVersion && !a.remoteVersion) return 1
-          // Otherwise order by dep name
-          return a.displayName.localeCompare(b.displayName)
-        }).map((dep) => dep.name)}
+        releaseSucceeded={versionsMatch}
         specialComponentsFeature={specialComponentsFeature}
+        isEditMode={isEditMode}
+        toggleEditMode={toggleEditMode}
+        componentUrl={componentUrl}
       />
-    }
-  </>
+      <a
+        style={{ textDecoration: 'none', color: 'inherit' }}
+        href={componentUrl}
+      >
+        {
+          (isEditMode || dependencies.some((dep) => !dep.disabled)) && <DependentComponentBox sx={{
+            borderRadius: '0.5rem',
+            padding: '0.5rem',
+            marginTop: '0.5rem',
+            marginBottom: '0.5rem',
+          }}>
+            <Droppable droppableId={`${component.id}|${component.browserLocalOnly}`} type={`${component.id}-${component.browserLocalOnly}`}>
+              {(provided) => (
+                <Stack ref={provided.innerRef} {...provided.droppableProps} direction='column'>
+                  <VersionOverview
+                    component={component}
+                    dependencies={dependencies.filter((dep) => !dep.disabled)}
+                    removeDepFromComp={(depName, component) => editDepOfComp(depName, component, { action: editDepOfCompActions.REMOVE })}
+                    specialComponentsFeature={specialComponentsFeature}
+                    isEditMode={isEditMode}
+                    provided={provided}
+                  />
+                  {
+                    isEditMode && disabledDependencyNames.length > 0 && <Grid container columns={11} spacing={1} sx={{py: 0}}>
+                      <Grid size={5} />
+                      <Grid size={1}>
+                        <IconButton onClick={handleAddDep}>
+                          <AddIcon style={{color: theme.bomButton.color}}/>
+                        </IconButton>
+                      </Grid>
+                      <Grid size={5} />
+                    </Grid>
+                  }
+                </Stack>
+              )}
+            </Droppable>
+          </DependentComponentBox>
+        }
+      </a>
+      {
+        addDepDialogOpen && <AddDependencyDialog
+          handleClose={handleAddDepDialogClose}
+          component={component}
+          dependencies={dependencies.filter((dep) => dep.disabled).sort((a, b) => {
+            // Show dep for component itself always as first elem
+            if (a.name === component.name) return -1
+            if (b.name === component.name) return 1
+            // Show deps with remote versions always before deps without remote versions
+            if (a.remoteVersion && !b.remoteVersion) return -1
+            if (b.remoteVersion && !a.remoteVersion) return 1
+            // Otherwise order by dep name
+            return a.displayName.localeCompare(b.displayName)
+          }).map((dep) => dep.name)}
+          specialComponentsFeature={specialComponentsFeature}
+        />
+      }
+    </>
+  );
 }
 ComponentBody.displayName = 'ComponentBody'
 ComponentBody.propTypes = {
@@ -856,111 +872,128 @@ const ComponentHeader = ({
 
   const specialComponentFeature = getSpecialComponentFeature()
 
-  return <>
-    <Grid container alignItems='center' marginTop='0.5rem' marginBottom='0.5rem'>
-      <Grid item xs={2} marginLeft='0.5rem' marginRight='-0.5rem'>
-        {
-          isLoading ? <Skeleton /> : <Stack spacing={1} direction='row'>
-            <Box
-              display='flex'
-              justifyContent='center'
-              alignItems='center'
-            >
-              <ReleaseSucceededIcon releaseSucceeded={releaseSucceeded} />
-            </Box>
-            {
-              specialComponentFeature?.releasePipelineUrl && <Box
-                display='flex'
-                justifyContent='center'
-                alignItems='center'
-              >
-                <Tooltip
-                  title={'Jump to Release Pipeline'}
-                >
-                  <IconButton
-                    component='a'
-                    href={specialComponentFeature.releasePipelineUrl}
-                    target='_blank'
-                  >
-                    <LaunchIcon/>
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            }
-          </Stack>
-        }
-      </Grid>
-      <Grid item xs={8}>
-        <a
-          style={{ textDecoration: 'none', color: 'inherit' }}
-          href={componentUrl}
-        >
-          <Stack direction='row' spacing={1} justifyContent='center'>
-            {
-              component.icon === 'landscape' ? <LandscapeIcon/> : (
-                component.icon === 'home' ? <HomeIcon/> : null
-              )
-            }
-            {
-              isError ? <Typography variant='caption'>Error fetching Component</Typography> : (isEditMode ? <form>
-                <input type='text' onClick={(e) => e.preventDefault()} onChange={handleChangeDisplayName} defaultValue={component.displayName} maxLength={30}/>
-              </form> : <Typography style={{ fontSize: 'medium', fontWeight: 'bold' }}>
-                {component.displayName}
-              </Typography>)
-            }
-          </Stack>
-        </a>
-      </Grid>
-      <Grid item xs={2}>
-        {
-          isEditMode ? <IconButton onClick={handleCancelEdit} size='small'>
-            <EditOffIcon style={{color: theme.bomButton.color}}/>
-          </IconButton> : <IconButton onClick={handleOpenOptions} size='small'>
-            <MoreVertIcon style={{color: theme.bomButton.color}}/>
-          </IconButton>
-        }
-      </Grid>
-    </Grid>
-    <Popover
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={!!optionsAnchorElement}
-      anchorEl={optionsAnchorElement}
-      onClose={handleCloseOptions}
-    >
-      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        <List>
-          <ListItemButton onClick={handleClickEditMode}>
-            <EditIcon/>
-            <div style={{ padding: '0.3em' }} />
-            <ListItemText primary={'Edit Component'} />
-          </ListItemButton>
+  return (
+    <>
+      <Grid
+        container
+        sx={{
+          alignItems: 'center',
+          marginTop: '0.5rem',
+          marginBottom: '0.5rem'
+        }}>
+        <Grid
+          size={2}
+          sx={{
+            marginLeft: '0.5rem',
+            marginRight: '-0.5rem'
+          }}>
           {
-            component.browserLocalOnly && <ListItem disablePadding>
-              <ListItemButton onClick={handleDeleteDialogOpen}>
-                <DeleteIcon/>
-                <div style={{ padding: '0.3em' }} />
-                <ListItemText primary={'Remove Component'} />
-              </ListItemButton>
-            </ListItem>
+            isLoading ? <Skeleton /> : <Stack spacing={1} direction='row'>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                <ReleaseSucceededIcon releaseSucceeded={releaseSucceeded} />
+              </Box>
+              {
+                specialComponentFeature?.releasePipelineUrl && <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}>
+                  <Tooltip
+                    title={'Jump to Release Pipeline'}
+                  >
+                    <IconButton
+                      component='a'
+                      href={specialComponentFeature.releasePipelineUrl}
+                      target='_blank'
+                    >
+                      <LaunchIcon/>
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              }
+            </Stack>
           }
-        </List>
-      </Box>
-    </Popover>
-    {
-      deleteDialogOpen && <DeleteUserComponentDialog
-        handleClose={handleDeleteDialogClose}
-        component={component}
-        specialComponentsFeature={specialComponentsFeature}
-      />
-    }
-  </>
+        </Grid>
+        <Grid size={8}>
+          <a
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            href={componentUrl}
+          >
+            <Stack direction='row' spacing={1} sx={{
+              justifyContent: 'center'
+            }}>
+              {
+                component.icon === 'landscape' ? <LandscapeIcon/> : (
+                  component.icon === 'home' ? <HomeIcon/> : null
+                )
+              }
+              {
+                isError ? <Typography variant='caption'>Error fetching Component</Typography> : (isEditMode ? <form>
+                  <input type='text' onClick={(e) => e.preventDefault()} onChange={handleChangeDisplayName} defaultValue={component.displayName} maxLength={30}/>
+                </form> : <Typography style={{ fontSize: 'medium', fontWeight: 'bold' }}>
+                  {component.displayName}
+                </Typography>)
+              }
+            </Stack>
+          </a>
+        </Grid>
+        <Grid size={2}>
+          {
+            isEditMode ? <IconButton onClick={handleCancelEdit} size='small'>
+              <EditOffIcon style={{color: theme.bomButton.color}}/>
+            </IconButton> : <IconButton onClick={handleOpenOptions} size='small'>
+              <MoreVertIcon style={{color: theme.bomButton.color}}/>
+            </IconButton>
+          }
+        </Grid>
+      </Grid>
+      <Popover
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={!!optionsAnchorElement}
+        anchorEl={optionsAnchorElement}
+        onClose={handleCloseOptions}
+      >
+        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+          <List>
+            <ListItemButton onClick={handleClickEditMode}>
+              <EditIcon/>
+              <div style={{ padding: '0.3em' }} />
+              <ListItemText primary={'Edit Component'} />
+            </ListItemButton>
+            {
+              component.browserLocalOnly && <ListItem disablePadding>
+                <ListItemButton onClick={handleDeleteDialogOpen}>
+                  <DeleteIcon/>
+                  <div style={{ padding: '0.3em' }} />
+                  <ListItemText primary={'Remove Component'} />
+                </ListItemButton>
+              </ListItem>
+            }
+          </List>
+        </Box>
+      </Popover>
+      {
+        deleteDialogOpen && <DeleteUserComponentDialog
+          handleClose={handleDeleteDialogClose}
+          component={component}
+          specialComponentsFeature={specialComponentsFeature}
+        />
+      }
+    </>
+  );
 }
 ComponentHeader.displayName = 'ComponentHeader'
 ComponentHeader.propTypes = {
@@ -1038,40 +1071,43 @@ const DefaultFooter = ({
 
   const now = new Date()
 
-  return <Grid
-    container
-    display='flex'
-    alignItems='center'
-    spacing={2}
-  >
-    <Grid item xs={5}>
-      <FeatureDependent requiredFeatures={[features.SPRINTS]}>
-        <ErrorBoundary>
-          <SprintInfo
-            sprintRules={specialComponentsFeature?.specialComponents.find(c => c.id === component.id)?.sprintRules}
-            date={now}
-          />
-        </ErrorBoundary>
-      </FeatureDependent>
-    </Grid>
-    <Grid item xs={2}>
-      <FeatureDependent requiredFeatures={[features.DELIVERY_DB]}>
-        {
-          findingCfgs.length > 0 && <ComponentCompliance
+  return (
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+      <Grid size={5}>
+        <FeatureDependent requiredFeatures={[features.SPRINTS]}>
+          <ErrorBoundary>
+            <SprintInfo
+              sprintRules={specialComponentsFeature?.specialComponents.find(c => c.id === component.id)?.sprintRules}
+              date={now}
+            />
+          </ErrorBoundary>
+        </FeatureDependent>
+      </Grid>
+      <Grid size={2}>
+        <FeatureDependent requiredFeatures={[features.DELIVERY_DB]}>
+          {
+            findingCfgs.length > 0 && <ComponentCompliance
+              component={component}
+              findingCfgs={findingCfgs}
+            />
+          }
+        </FeatureDependent>
+      </Grid>
+      <Grid size={5}>
+        <FeatureDependent requiredFeatures={[features.UPGRADE_PRS]}>
+          <PullRequestsOverview
             component={component}
-            findingCfgs={findingCfgs}
           />
-        }
-      </FeatureDependent>
+        </FeatureDependent>
+      </Grid>
     </Grid>
-    <Grid item xs={5}>
-      <FeatureDependent requiredFeatures={[features.UPGRADE_PRS]}>
-        <PullRequestsOverview
-          component={component}
-        />
-      </FeatureDependent>
-    </Grid>
-  </Grid>
+  );
 }
 DefaultFooter.displayName = 'DefaultFooter'
 DefaultFooter.propTypes = {
@@ -1105,36 +1141,43 @@ const PullRequestsOverview = ({
     </Button>
   }
 
-  return <Tooltip
-    title={
-      <List>
-        {prs.map((pr) => {
-          return <PullRequestReference
-            key={pr.pr.title}
-            pr={pr}
-          />
-        })}
-      </List>
-    }
-  >
-    <Box display='flex' alignItems='right' justifyContent='center'>
-      <Button
-        style={{ textDecoration: 'none', textTransform: 'none' }}
-        variant='outlined'
-        fullWidth
-        color='success'
-        href={`#${componentPathQuery({
-          name: component.name,
-          version: component.version,
-          view: tabConfig.COMPONENT_DIFF.id,
-          ocmRepo: component.ocmRepo,
-          specialComponentId: component.id,
-          specialComponentBrowserLocalOnly: component.browserLocalOnly,
-        })}`}>
-        {`PRs(${prs.length})`}
-      </Button>
-    </Box>
-  </Tooltip>
+  return (
+    <Tooltip
+      title={
+        <List>
+          {prs.map((pr) => {
+            return <PullRequestReference
+              key={pr.pr.title}
+              pr={pr}
+            />
+          })}
+        </List>
+      }
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'right',
+          justifyContent: 'center'
+        }}>
+        <Button
+          style={{ textDecoration: 'none', textTransform: 'none' }}
+          variant='outlined'
+          fullWidth
+          color='success'
+          href={`#${componentPathQuery({
+            name: component.name,
+            version: component.version,
+            view: tabConfig.COMPONENT_DIFF.id,
+            ocmRepo: component.ocmRepo,
+            specialComponentId: component.id,
+            specialComponentBrowserLocalOnly: component.browserLocalOnly,
+          })}`}>
+          {`PRs(${prs.length})`}
+        </Button>
+      </Box>
+    </Tooltip>
+  );
 }
 PullRequestsOverview.displayName = 'PullRequestsOverview'
 PullRequestsOverview.propTypes = {
@@ -1142,21 +1185,23 @@ PullRequestsOverview.propTypes = {
 }
 
 const PullRequestReference = ({ pr }) => {
-  return <ListItem disablePadding>
-    <ListItemButton href={pr.pr.html_url}>
-      <Grid container columns={10} rowSpacing={{ md: 0 }} columnSpacing={{ md: 1 }} style={{ alignItems: 'center' }}>
-        <Grid item xs={4}>
-          {pr.from.version}
+  return (
+    <ListItem disablePadding>
+      <ListItemButton href={pr.pr.html_url}>
+        <Grid container columns={10} rowSpacing={{ md: 0 }} columnSpacing={{ md: 1 }} style={{ alignItems: 'center' }}>
+          <Grid size={4}>
+            {pr.from.version}
+          </Grid>
+          <Grid size={2}>
+            <TrendingFlatIcon fontSize='small' style={{ float: 'center', verticalAlign: 'middle' }} />
+          </Grid>
+          <Grid style={{ float: 'right' }} size={4}>
+            {pr.to.version}
+          </Grid>
         </Grid>
-        <Grid item xs={2}>
-          <TrendingFlatIcon fontSize='small' style={{ float: 'center', verticalAlign: 'middle' }} />
-        </Grid>
-        <Grid item xs={4} style={{ float: 'right' }}>
-          {pr.to.version}
-        </Grid>
-      </Grid>
-    </ListItemButton>
-  </ListItem>
+      </ListItemButton>
+    </ListItem>
+  );
 }
 PullRequestReference.displayName = 'PullRequestReference'
 PullRequestReference.propTypes = {

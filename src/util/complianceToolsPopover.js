@@ -150,20 +150,24 @@ const FreeTextFilter = ({
     )
   }
 
-  return <TextField
-    onChange={(e) => delayFilterUpdate(e.target.value)}
-    label='Search Artefacts or Components'
-    defaultValue={freeText}
-    variant='standard'
-    InputProps={{
-      endAdornment: (
-        <InputAdornment position='start'>
-          <SearchIcon/>
-        </InputAdornment>
-      ),
-    }}
-    fullWidth
-  />
+  return (
+    <TextField
+      onChange={(e) => delayFilterUpdate(e.target.value)}
+      label='Search Artefacts or Components'
+      defaultValue={freeText}
+      variant='standard'
+      fullWidth
+      slotProps={{
+        input: {
+          endAdornment: (
+            <InputAdornment position='start'>
+              <SearchIcon/>
+            </InputAdornment>
+          ),
+        }
+      }}
+    />
+  );
 }
 FreeTextFilter.displayName = 'FreeTextFilter'
 FreeTextFilter.propTypes = {
@@ -178,56 +182,60 @@ const ArtefactRow = ({
 }) => {
   const theme = useTheme()
 
-  return <TableRow
-    onClick={() => {
-      if (selectedOcmNodes.find((selectedOcmNode) => selectedOcmNode.identity() === ocmNode.identity())) {
-        setSelectedOcmNodes((prev) => {
-          return prev.filter((selectedOcmNode) => selectedOcmNode.identity() !== ocmNode.identity())
-        })
-      } else {
-        setSelectedOcmNodes((prev) => {
-          return [...prev, ocmNode]
-        })
-      }
-    }}
-    sx={{
-      '&:hover': {
-        backgroundColor: alpha(theme.palette.common.black, 0.15),
-        cursor: 'pointer',
-      },
-    }}
-  >
-    <TableCell>
-      <Checkbox checked={Boolean(selectedOcmNodes.find((selectedOcmNode) => selectedOcmNode.identity() === ocmNode.identity()))}/>
-    </TableCell>
-    <TableCell>
-      <Stack direction='row' spacing={1}>
-        <Box
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-        >
-          <Typography variant='inherit'>{ocmNode.artefact.name}</Typography>
-        </Box>
-        <Box
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-        >
-          <OcmNodeDetails ocmNode={ocmNode}/>
-        </Box>
-      </Stack>
-    </TableCell>
-    <TableCell>
-      <CopyOnClickChip
-        value={ocmNode.artefact.version}
-        label={trimLongString(ocmNode.artefact.version, 12)}
-        chipProps={{
-          variant: 'outlined',
-        }}
-      />
-    </TableCell>
-  </TableRow>
+  return (
+    <TableRow
+      onClick={() => {
+        if (selectedOcmNodes.find((selectedOcmNode) => selectedOcmNode.identity() === ocmNode.identity())) {
+          setSelectedOcmNodes((prev) => {
+            return prev.filter((selectedOcmNode) => selectedOcmNode.identity() !== ocmNode.identity())
+          })
+        } else {
+          setSelectedOcmNodes((prev) => {
+            return [...prev, ocmNode]
+          })
+        }
+      }}
+      sx={{
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.common.black, 0.15),
+          cursor: 'pointer',
+        },
+      }}
+    >
+      <TableCell>
+        <Checkbox checked={Boolean(selectedOcmNodes.find((selectedOcmNode) => selectedOcmNode.identity() === ocmNode.identity()))}/>
+      </TableCell>
+      <TableCell>
+        <Stack direction='row' spacing={1}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <Typography variant='inherit'>{ocmNode.artefact.name}</Typography>
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <OcmNodeDetails ocmNode={ocmNode}/>
+          </Box>
+        </Stack>
+      </TableCell>
+      <TableCell>
+        <CopyOnClickChip
+          value={ocmNode.artefact.version}
+          label={trimLongString(ocmNode.artefact.version, 12)}
+          chipProps={{
+            variant: 'outlined',
+          }}
+        />
+      </TableCell>
+    </TableRow>
+  );
 }
 ArtefactRow.displayName = 'ArtefactRow'
 ArtefactRow.propTypes = {
@@ -558,98 +566,113 @@ const ComplianceToolPopover = ({
     return
   }
 
-  return <Dialog
-    onClose={handleClose}
-    maxWidth={false}
-    PaperProps={{
-      sx: {
-        width: '75%',
-        height: '95%'
-      }
-    }}
-    fullWidth
-    open
-  >
-    <DialogTitle
-      sx={{
-        bgcolor: 'background.paper',
-        border: 1,
-        borderColor: 'primary.main',
+  return (
+    <Dialog
+      onClose={handleClose}
+      maxWidth={false}
+      fullWidth
+      open
+      slotProps={{
+        paper: {
+          sx: {
+            width: '75%',
+            height: '95%'
+          }
+        }
       }}
     >
-      <Stack
-        direction='column'
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
+      <DialogTitle
+        sx={{
+          bgcolor: 'background.paper',
+          border: 1,
+          borderColor: 'primary.main',
+        }}
       >
-        <Typography variant='h6'>Compliance Tool Instrumentation</Typography>
-        <Typography variant='h6' color='secondary'>{`${component.name}:${component.version}`}</Typography>
-      </Stack>
-    </DialogTitle>
-    <DialogContent
-      sx={{
-        bgcolor: 'background.paper',
-        border: '1px solid #000',
-        boxShadow: 24,
-      }}
-    >
-      <Stack sx={{marginTop: '2rem'}}>
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-          <ServiceConfiguration
-            serviceConfigsAgg={{
-              service,
-              setService,
-              services: services.filter((s) => Object.values(COMPLIANCE_TOOLS).includes(s)),
-            }}
-          />
-          <PriorityConfiguration
-            priority={priority}
-            setPriority={setPriority}
-          />
-        </div>
-        <Divider sx={{marginY: '1rem'}}/>
-        <ArtefactList
-          service={service}
-          addOrUpdateFilter={addOrUpdateFilter}
-          removeFilter={removeFilter}
-          ocmNodes={filterOcmNodes(ocmNodes)}
-          selectedOcmNodes={selectedOcmNodes}
-          setSelectedOcmNodes={setSelectedOcmNodes}
-        />
-      </Stack>
-    </DialogContent>
-    <DialogActions
-      sx={{
-        bgcolor: 'background.paper',
-        border: 1,
-        borderColor: 'primary.main',
-        padding: 2,
-      }}
-    >
-      <Grid container alignItems='center' spacing={2}>
-        <Grid item xs={3.5}/>
-        <Grid item xs={5}>
-          <Box display='flex' justifyContent='center'>
-            <TriggerComplianceTool
-              service={service}
-              priority={priority.name}
-              selectedOcmNodes={selectedOcmNodes}
-              setSelectedOcmNodes={setSelectedOcmNodes}
+        <Stack
+          direction='column'
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          <Typography variant='h6'>Compliance Tool Instrumentation</Typography>
+          <Typography variant='h6' color='secondary'>{`${component.name}:${component.version}`}</Typography>
+        </Stack>
+      </DialogTitle>
+      <DialogContent
+        sx={{
+          bgcolor: 'background.paper',
+          border: '1px solid #000',
+          boxShadow: 24,
+        }}
+      >
+        <Stack sx={{marginTop: '2rem'}}>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <ServiceConfiguration
+              serviceConfigsAgg={{
+                service,
+                setService,
+                services: services.filter((s) => Object.values(COMPLIANCE_TOOLS).includes(s)),
+              }}
             />
-          </Box>
+            <PriorityConfiguration
+              priority={priority}
+              setPriority={setPriority}
+            />
+          </div>
+          <Divider sx={{marginY: '1rem'}}/>
+          <ArtefactList
+            service={service}
+            addOrUpdateFilter={addOrUpdateFilter}
+            removeFilter={removeFilter}
+            ocmNodes={filterOcmNodes(ocmNodes)}
+            selectedOcmNodes={selectedOcmNodes}
+            setSelectedOcmNodes={setSelectedOcmNodes}
+          />
+        </Stack>
+      </DialogContent>
+      <DialogActions
+        sx={{
+          bgcolor: 'background.paper',
+          border: 1,
+          borderColor: 'primary.main',
+          padding: 2,
+        }}
+      >
+        <Grid container spacing={2} sx={{
+          alignItems: 'center'
+        }}>
+          <Grid size={3.5} />
+          <Grid size={5}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+              <TriggerComplianceTool
+                service={service}
+                priority={priority.name}
+                selectedOcmNodes={selectedOcmNodes}
+                setSelectedOcmNodes={setSelectedOcmNodes}
+              />
+            </Box>
+          </Grid>
+          <Grid size={2.5} />
+          <Grid size={1}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'right'
+              }}>
+              <Button sx={{height: '100%', width: '100%'}} onClick={handleClose} color='secondary'>
+                  Close
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={2.5}/>
-        <Grid item xs={1}>
-          <Box display='flex' justifyContent='right'>
-            <Button sx={{height: '100%', width: '100%'}} onClick={handleClose} color='secondary'>
-                Close
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </DialogActions>
-  </Dialog>
+      </DialogActions>
+    </Dialog>
+  );
 }
 ComplianceToolPopover.displayName = 'ScanPopover'
 ComplianceToolPopover.propTypes = {

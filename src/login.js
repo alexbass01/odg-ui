@@ -120,24 +120,28 @@ LoginPanel.displayName = 'LoginPanel'
 const LoginPanelTop = () => {
   const theme = useTheme()
 
-  return <div style={{
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }}>
-    <img
-      height='62%'
-      src={ODGLogo}
-      alt='odg-logo'
-    />
-    <Typography marginTop='1rem' variant='h5' color={theme.odg.light}>
-      {
-        DASHBOARD_TITLE
-      }
-    </Typography>
-  </div>
+  return (
+    <div style={{
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <img
+        height='62%'
+        src={ODGLogo}
+        alt='odg-logo'
+      />
+      <Typography variant='h5' color={theme.odg.light} sx={{
+        marginTop: '1rem'
+      }}>
+        {
+          DASHBOARD_TITLE
+        }
+      </Typography>
+    </div>
+  );
 }
 LoginPanelTop.displayName = 'LoginPanelTop'
 
@@ -276,43 +280,46 @@ const OAuthTab = ({
     window.location.replace(githubAuthUrl.href)
   }
 
-  return <>
-    <Typography
-      width='80%'
-      whiteSpace='wrap'
-      color={theme.palette.text.grey}
-      textAlign='center'
-    >
-      Press Login to be redirected to the selected OAuth Connect Provider.
-    </Typography>
-    <AuthConfigSelector
-      selectedAuthConfig={selectedAuthConfig}
-      setSelectedAuthConfig={setSelectedAuthConfig}
-      authConfigs={authConfigs}
-      label='OAuth Provider Configuration'
-      authConfigKey='name'
-      isLoginPending={isLoginPending}
-    />
-    {
-      (profilesState.isLoading || profiles.length > 0) && <ProfileSelector
-        selectedProfile={selectedProfile}
-        setSelectedProfile={setSelectedProfile}
-        profiles={profiles}
-        profilesState={profilesState}
-        props={{
-          sx: {
-            width: '80%',
-            marginTop: '1rem',
-          },
-        }}
+  return (
+    <>
+      <Typography
+        color={theme.palette.text.grey}
+        sx={{
+          width: '80%',
+          whiteSpace: 'wrap',
+          textAlign: 'center'
+        }}>
+        Press Login to be redirected to the selected OAuth Connect Provider.
+      </Typography>
+      <AuthConfigSelector
+        selectedAuthConfig={selectedAuthConfig}
+        setSelectedAuthConfig={setSelectedAuthConfig}
+        authConfigs={authConfigs}
+        label='OAuth Provider Configuration'
+        authConfigKey='name'
         isLoginPending={isLoginPending}
       />
-    }
-    <LoginButton
-      login={() => login(selectedAuthConfig)}
-      isLoginPending={isLoginPending}
-    />
-  </>
+      {
+        (profilesState.isLoading || profiles.length > 0) && <ProfileSelector
+          selectedProfile={selectedProfile}
+          setSelectedProfile={setSelectedProfile}
+          profiles={profiles}
+          profilesState={profilesState}
+          props={{
+            sx: {
+              width: '80%',
+              marginTop: '1rem',
+            },
+          }}
+          isLoginPending={isLoginPending}
+        />
+      }
+      <LoginButton
+        login={() => login(selectedAuthConfig)}
+        isLoginPending={isLoginPending}
+      />
+    </>
+  );
 }
 OAuthTab.displayName = 'OAuthTab'
 OAuthTab.propTypes = {
@@ -360,73 +367,78 @@ const TokenTab = ({
     configContext.setIsLoginPending(false)
   }
 
-  return <>
-    <Typography
-      width='80%'
-      whiteSpace='pre-wrap'
-      color={theme.palette.text.grey}
-      textAlign='center'
-    >
-      Enter a valid bearer token for the selected system and press Login.
-    </Typography>
-    <AuthConfigSelector
-      selectedAuthConfig={selectedAuthConfig}
-      setSelectedAuthConfig={setSelectedAuthConfig}
-      authConfigs={authConfigs}
-      label='System Configuration'
-      authConfigKey='github_host'
-      isLoginPending={isLoginPending}
-    />
-    <TextField
-      onChange={(e) => setToken(e.target.value)}
-      value={token}
-      size='small'
-      sx={{
-        margin: '1rem 2rem 0 2rem',
-        width: '80%',
-      }}
-      label='Token'
-      type={showToken ? 'text' : 'password'}
-      InputProps={{
-        endAdornment: <InputAdornment position='end'>
-          <IconButton
-            onClick={() => setShowToken(!showToken)}
-            edge='end'
-            sx={{
-              color: theme.palette.text.grey,
-            }}
-            disableRipple
-          >
-            {
-              showToken ? <VisibilityOff/> : <Visibility/>
-            }
-          </IconButton>
-        </InputAdornment>
-      }}
-      helperText={error && 'Wrong credentials'}
-      error={error}
-      disabled={isLoginPending}
-    />
-    {
-      (profilesState.isLoading || profiles.length > 0) && <ProfileSelector
-        selectedProfile={selectedProfile}
-        setSelectedProfile={setSelectedProfile}
-        profiles={profiles}
-        profilesState={profilesState}
-        props={{
-          sx: {
-            width: '80%',
-            marginTop: '1rem',
-          },
-        }}
+  return (
+    <>
+      <Typography
+        color={theme.palette.text.grey}
+        sx={{
+          width: '80%',
+          whiteSpace: 'pre-wrap',
+          textAlign: 'center'
+        }}>
+        Enter a valid bearer token for the selected system and press Login.
+      </Typography>
+      <AuthConfigSelector
+        selectedAuthConfig={selectedAuthConfig}
+        setSelectedAuthConfig={setSelectedAuthConfig}
+        authConfigs={authConfigs}
+        label='System Configuration'
+        authConfigKey='github_host'
         isLoginPending={isLoginPending}
       />
-    }
-    <LoginButton
-      login={() => login(selectedAuthConfig)}
-      isLoginPending={isLoginPending}
-    />
-  </>
+      <TextField
+        onChange={(e) => setToken(e.target.value)}
+        value={token}
+        size='small'
+        sx={{
+          margin: '1rem 2rem 0 2rem',
+          width: '80%',
+        }}
+        label='Token'
+        type={showToken ? 'text' : 'password'}
+        helperText={error && 'Wrong credentials'}
+        error={error}
+        disabled={isLoginPending}
+        slotProps={{
+          input: {
+            endAdornment: <InputAdornment position='end'>
+              <IconButton
+                onClick={() => setShowToken(!showToken)}
+                edge='end'
+                sx={{
+                  color: theme.palette.text.grey,
+                }}
+                disableRipple
+              >
+                {
+                  showToken ? <VisibilityOff/> : <Visibility/>
+                }
+              </IconButton>
+            </InputAdornment>
+          }
+        }}
+      />
+      {
+        (profilesState.isLoading || profiles.length > 0) && <ProfileSelector
+          selectedProfile={selectedProfile}
+          setSelectedProfile={setSelectedProfile}
+          profiles={profiles}
+          profilesState={profilesState}
+          props={{
+            sx: {
+              width: '80%',
+              marginTop: '1rem',
+            },
+          }}
+          isLoginPending={isLoginPending}
+        />
+      }
+      <LoginButton
+        login={() => login(selectedAuthConfig)}
+        isLoginPending={isLoginPending}
+      />
+    </>
+  );
 }
 TokenTab.displayName = 'TokenTab'
 TokenTab.propTypes = {

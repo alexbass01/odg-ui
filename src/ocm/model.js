@@ -246,40 +246,46 @@ const MetadataViewer = ({
   categorisation,
   timestamp,
 }) => {
-  return <Accordion
-    TransitionProps={{ unmountOnExit: true }}
-  >
-    <AccordionSummary
-      expandIcon={<ExpandMoreIcon />}
+  return (
+    <Accordion
+      slotProps={{
+        transition: { unmountOnExit: true }
+      }}
     >
-      <Grid container alignItems='center'>
-        <Grid item xs={3}>
-          <Typography>
-            {
-              displayNameForData({type, data})
-            }
-          </Typography>
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+      >
+        <Grid container sx={{
+          alignItems: 'center'
+        }}>
+          <Grid size={3}>
+            <Typography>
+              {
+                displayNameForData({type, data})
+              }
+            </Typography>
+          </Grid>
+          <Grid size={2} />
+          <Grid size={3}>
+            <CategorisationIndicator categorisation={categorisation}/>
+          </Grid>
+          <Grid size={1} />
+          <Grid size={2}>
+            <Chip
+              variant='outlined'
+              label={new Date(timestamp).toLocaleString(navigator.language)}
+            />
+          </Grid>
+          <Grid size={1} />
         </Grid>
-        <Grid item xs={2}/>
-        <Grid item xs={3}>
-          <CategorisationIndicator categorisation={categorisation}/>
-        </Grid>
-        <Grid item xs={1}/>
-        <Grid item xs={2}>
-          <Chip
-            variant='outlined'
-            label={new Date(timestamp).toLocaleString(navigator.language)}
-          />
-        </Grid>
-        <Grid item xs={1}/>
-      </Grid>
-    </AccordionSummary>
-    <AccordionDetails>
-      <MultilineTextViewer
-        text={toYamlString(data)}
-      />
-    </AccordionDetails>
-  </Accordion>
+      </AccordionSummary>
+      <AccordionDetails>
+        <MultilineTextViewer
+          text={toYamlString(data)}
+        />
+      </AccordionDetails>
+    </Accordion>
+  );
 }
 MetadataViewer.displayName = 'MetadataViewer'
 MetadataViewer.propTypes = {
@@ -356,31 +362,34 @@ const MetadataFilter = ({
   metadataTypes,
 }) => {
 
-  return <Stack
-    direction='row'
-    spacing={5}
-    display='flex'
-    alignItems='center'
-  >
-    <MetadataTypeSelector
-      metadataType={metadataType}
-      setMetadataType={setMetadataType}
-      metadataTypes={metadataTypes}
-    />
-    {
-      categorisations && <>
-        <Divider
-          orientation='vertical'
-          flexItem
-        />
-        <CategorisationSelector
-          selectedCategorisations={selectedCategorisations}
-          setSelectedCategorisations={setSelectedCategorisations}
-          categorisations={categorisations}
-        />
-      </>
-    }
-  </Stack>
+  return (
+    <Stack
+      direction='row'
+      spacing={5}
+      sx={{
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+      <MetadataTypeSelector
+        metadataType={metadataType}
+        setMetadataType={setMetadataType}
+        metadataTypes={metadataTypes}
+      />
+      {
+        categorisations && <>
+          <Divider
+            orientation='vertical'
+            flexItem
+          />
+          <CategorisationSelector
+            selectedCategorisations={selectedCategorisations}
+            setSelectedCategorisations={setSelectedCategorisations}
+            categorisations={categorisations}
+          />
+        </>
+      }
+    </Stack>
+  );
 }
 MetadataFilter.displayName = 'MetadataFilter'
 MetadataFilter.propTypes = {
@@ -451,62 +460,68 @@ const AccordionHeader = ({
     handleSortClick: PropTypes.string.isRequired,
   }
 
-  return <Paper
-    elevation={0}
-  >
-    <Grid container alignItems='center'>
-      <Grid item xs={2}>
-        <Button
-          color='secondary'
-          onClick={() => sortByAttribute({attribute: 'name'})}
-          endIcon={
-            attributeToSortBy === 'name' && <SortDirectionIcon
-              sortDirection={sortDirection}
-            />
-          }
-        >
-            Sort by Artefact
-        </Button>
-      </Grid>
-      <Grid item xs={4}/>
-      <Grid item xs={3}>
-        {
-          categorisations && <Box
-            display='flex'
-            justifyContent='center'
-          >
-            <Button
-              color='secondary'
-              onClick={() => sortByAttribute({attribute: 'categorisation'})}
-              endIcon={
-                attributeToSortBy === 'categorisation' && <SortDirectionIcon
-                  sortDirection={sortDirection}
-                />
-              }
-            >
-                Sort by Categorisation
-            </Button>
-          </Box>
-        }
-      </Grid>
-      <Grid item xs={2}/>
-      <Grid item xs={1}>
-        <Box
-          display='flex'
-          justifyContent='right'
-        >
+  return (
+    <Paper
+      elevation={0}
+    >
+      <Grid container sx={{
+        alignItems: 'center'
+      }}>
+        <Grid size={2}>
           <Button
             color='secondary'
-            onClick={() => setExpandAll(!expandAll)}
-          >
-            {
-              expandAll ? 'Fold All' : 'Expand All'
+            onClick={() => sortByAttribute({attribute: 'name'})}
+            endIcon={
+              attributeToSortBy === 'name' && <SortDirectionIcon
+                sortDirection={sortDirection}
+              />
             }
+          >
+              Sort by Artefact
           </Button>
-        </Box>
+        </Grid>
+        <Grid size={4} />
+        <Grid size={3}>
+          {
+            categorisations && <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+              <Button
+                color='secondary'
+                onClick={() => sortByAttribute({attribute: 'categorisation'})}
+                endIcon={
+                  attributeToSortBy === 'categorisation' && <SortDirectionIcon
+                    sortDirection={sortDirection}
+                  />
+                }
+              >
+                  Sort by Categorisation
+              </Button>
+            </Box>
+          }
+        </Grid>
+        <Grid size={2} />
+        <Grid size={1}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'right'
+            }}>
+            <Button
+              color='secondary'
+              onClick={() => setExpandAll(!expandAll)}
+            >
+              {
+                expandAll ? 'Fold All' : 'Expand All'
+              }
+            </Button>
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
-  </Paper>
+    </Paper>
+  );
 }
 AccordionHeader.displayName = 'AccordionHeader'
 AccordionHeader.propTypes = {
@@ -534,70 +549,78 @@ const MetadataViewerAccordion = ({
     setAllExpanded(expandAll)
   }
 
-  return <Accordion
-    expanded={expanded}
-    onChange={() => setExpanded(!expanded)}
-    key={generateArtefactID(artefact)}
-    TransitionProps={{ unmountOnExit: true }}
-  >
-    <AccordionSummary
-      expandIcon={<ExpandMoreIcon />}
+  return (
+    <Accordion
+      expanded={expanded}
+      onChange={() => setExpanded(!expanded)}
+      key={generateArtefactID(artefact)}
+      slotProps={{
+        transition: { unmountOnExit: true }
+      }}
     >
-      <Grid container alignItems='center'>
-        <Grid item xs={5}>
-          <ExtraIdentityHover
-            displayName={artefact.name}
-            extraIdentity={artefact.extraIdentity}
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <CopyOnClickChip
-            value={artefact.version}
-            label={trimLongString(artefact.version, 30)}
-            chipProps={{
-              variant: 'outlined'
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <CategorisationIndicator categorisation={worstCategorisation({
-            findings: artefactMetadata,
-            findingCfg: findingCfg,
-          })}/>
-        </Grid>
-        <Grid item xs={2}/>
-      </Grid>
-    </AccordionSummary>
-    <AccordionDetails>
-      {
-        artefactMetadata.map((data) => {
-          const key = asKey({
-            props: [
-              data.meta.type,
-              dataKey({
-                type: data.meta.type,
-                data: data.data,
-              }),
-            ],
-          })
-
-          return <MetadataViewer
-            key={key}
-            type={data.meta.type}
-            data={{
-              ...data.data,
-              ...data.rescorings && { rescorings: data.rescorings },
-            }}
-            categorisation={categoriseFinding({
-              finding: data,
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+      >
+        <Grid container sx={{
+          alignItems: 'center'
+        }}>
+          <Grid size={5}>
+            <ExtraIdentityHover
+              displayName={artefact.name}
+              extraIdentity={artefact.extraIdentity}
+            />
+          </Grid>
+          <Grid size={3}>
+            <CopyOnClickChip
+              value={artefact.version}
+              label={trimLongString(artefact.version, 30)}
+              chipProps={{
+                variant: 'outlined'
+              }}
+            />
+          </Grid>
+          <Grid size={2}>
+            <CategorisationIndicator categorisation={worstCategorisation({
+              findings: artefactMetadata,
               findingCfg: findingCfg,
-            })}
-            timestamp={data.meta.last_update ?? data.meta.creation_date}
-          />
-        })
-      }
-    </AccordionDetails>
-  </Accordion>
+            })}/>
+          </Grid>
+          <Grid size={2} />
+        </Grid>
+      </AccordionSummary>
+      <AccordionDetails>
+        {
+          artefactMetadata.map((data) => {
+            const key = asKey({
+              props: [
+                data.meta.type,
+                dataKey({
+                  type: data.meta.type,
+                  data: data.data,
+                }),
+              ],
+            })
+
+            return (
+              <MetadataViewer
+                key={key}
+                type={data.meta.type}
+                data={{
+                  ...data.data,
+                  ...(data.rescorings && { rescorings: data.rescorings }),
+                }}
+                categorisation={categoriseFinding({
+                  finding: data,
+                  findingCfg: findingCfg,
+                })}
+                timestamp={data.meta.last_update ?? data.meta.creation_date}
+              />
+            );
+          })
+        }
+      </AccordionDetails>
+    </Accordion>
+  );
 }
 MetadataViewerAccordion.displayName = 'MetadataViewerAccordion'
 MetadataViewerAccordion.propTypes = {
@@ -782,138 +805,149 @@ const MetadataViewerPopover = ({
     artefactMetadata: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
-  return <Dialog
-    open={open}
-    onClose={handleClose}
-    maxWidth={false}
-    fullWidth
-    PaperProps={{
-      sx: {
-        width: '75%',
-        height: '95%'
-      }
-    }}
-  >
-    <DialogTitle
-      sx={{
-        bgcolor: 'background.paper',
-        border: '1px solid #000',
-      }}
-    >
-      <Stack direction='column' spacing={4}>
-        <Grid container alignItems='center'>
-          <Grid item xs={1}/>
-          <Grid item xs={10}>
-            <Typography
-              variant='h6'
-              component='h2'
-              align='center'
-              color='secondary'
-            >
-              {`${component.name}:${component.version}`}
-            </Typography>
-          </Grid>
-          <Grid item xs={1}/>
-        </Grid>
-        <Box
-          display='flex'
-          justifyContent='center'
-        >
-          <MetadataFilter
-            selectedCategorisations={selectedCategorisations}
-            setSelectedCategorisations={setSelectedCategorisations}
-            categorisations={findingCfg?.categorisations}
-            metadataType={metadataType}
-            setMetadataType={setMetadataType}
-            metadataTypes={metadataTypes}
-          />
-        </Box>
-        <AccordionHeader
-          expandAll={expandAll}
-          setExpandAll={setExpandAll}
-          attributeToSortBy={attributeToSortBy}
-          sortDirection={sortDirection}
-          setAttributeToSortBy={setAttributeToSortBy}
-          setSortDirection={setSortDirection}
-          categorisations={findingCfg?.categorisations}
-        />
-      </Stack>
-    </DialogTitle>
-    <DialogContent
-      sx={{
-        bgcolor: 'background.paper',
-        border: '1px solid #000',
-        boxShadow: 24,
-      }}
-    >
-      <div style={{height: '1em'}}/>
-      <Stack direction='column' spacing={1}>
-        {
-          sortArtefacts(artefacts).map((artefact) => {
-            const artefactMetadata = compliance.filter(artefactMetadataFilter({
-              artefactName: artefact.name,
-              artefactVersion: artefact.version,
-              artefactType: artefact.type,
-              artefactExtraId: artefact.extraIdentity,
-              metadataType: metadataType,
-            }))
-
-            const filteredArtefactMetadata = artefactMetadata.filter(artefactMetadataCategorisationFilter({
-              positiveList: selectedCategorisations,
-              findingCfg: findingCfg,
-            }))
-
-            filteredArtefactMetadataCount += filteredArtefactMetadata.length
-
-            if (filteredArtefactMetadata.length === 0) return null
-
-            return <MetadataViewerAccordion
-              key={generateArtefactID(artefact)}
-              artefact={artefact}
-              artefactMetadata={sortArtefactMetadata({
-                artefactMetadata: filteredArtefactMetadata,
-              })}
-              findingCfg={findingCfg}
-              expandAll={expandAll}
-            />
-          })
+  return (
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth={false}
+      fullWidth
+      slotProps={{
+        paper: {
+          sx: {
+            width: '75%',
+            height: '95%'
+          }
         }
-      </Stack>
-    </DialogContent>
-    <DialogActions
-      sx={{
-        bgcolor: 'background.paper',
-        border: '1px solid #000',
       }}
     >
-      <Grid container alignItems='center'>
-        <Grid item xs={3}>
+      <DialogTitle
+        sx={{
+          bgcolor: 'background.paper',
+          border: '1px solid #000',
+        }}
+      >
+        <Stack direction='column' spacing={4}>
+          <Grid container sx={{
+            alignItems: 'center'
+          }}>
+            <Grid size={1} />
+            <Grid size={10}>
+              <Typography
+                variant='h6'
+                component='h2'
+                align='center'
+                color='secondary'
+              >
+                {`${component.name}:${component.version}`}
+              </Typography>
+            </Grid>
+            <Grid size={1} />
+          </Grid>
           <Box
-            display='flex'
-            justifyContent='left'
-          >
-            <Typography
-              variant='body1'
-              color='secondary'
-            >
-              {`${filteredArtefactMetadataCount}/${artefactMetadataCount} records are shown.`}
-            </Typography>
+            sx={{
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+            <MetadataFilter
+              selectedCategorisations={selectedCategorisations}
+              setSelectedCategorisations={setSelectedCategorisations}
+              categorisations={findingCfg?.categorisations}
+              metadataType={metadataType}
+              setMetadataType={setMetadataType}
+              metadataTypes={metadataTypes}
+            />
           </Box>
+          <AccordionHeader
+            expandAll={expandAll}
+            setExpandAll={setExpandAll}
+            attributeToSortBy={attributeToSortBy}
+            sortDirection={sortDirection}
+            setAttributeToSortBy={setAttributeToSortBy}
+            setSortDirection={setSortDirection}
+            categorisations={findingCfg?.categorisations}
+          />
+        </Stack>
+      </DialogTitle>
+      <DialogContent
+        sx={{
+          bgcolor: 'background.paper',
+          border: '1px solid #000',
+          boxShadow: 24,
+        }}
+      >
+        <div style={{height: '1em'}}/>
+        <Stack direction='column' spacing={1}>
+          {
+            sortArtefacts(artefacts).map((artefact) => {
+              const artefactMetadata = compliance.filter(artefactMetadataFilter({
+                artefactName: artefact.name,
+                artefactVersion: artefact.version,
+                artefactType: artefact.type,
+                artefactExtraId: artefact.extraIdentity,
+                metadataType: metadataType,
+              }))
+
+              const filteredArtefactMetadata = artefactMetadata.filter(artefactMetadataCategorisationFilter({
+                positiveList: selectedCategorisations,
+                findingCfg: findingCfg,
+              }))
+
+              filteredArtefactMetadataCount += filteredArtefactMetadata.length
+
+              if (filteredArtefactMetadata.length === 0) return null
+
+              return <MetadataViewerAccordion
+                key={generateArtefactID(artefact)}
+                artefact={artefact}
+                artefactMetadata={sortArtefactMetadata({
+                  artefactMetadata: filteredArtefactMetadata,
+                })}
+                findingCfg={findingCfg}
+                expandAll={expandAll}
+              />
+            })
+          }
+        </Stack>
+      </DialogContent>
+      <DialogActions
+        sx={{
+          bgcolor: 'background.paper',
+          border: '1px solid #000',
+        }}
+      >
+        <Grid container sx={{
+          alignItems: 'center'
+        }}>
+          <Grid size={3}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'left'
+              }}>
+              <Typography
+                variant='body1'
+                color='secondary'
+              >
+                {`${filteredArtefactMetadataCount}/${artefactMetadataCount} records are shown.`}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid size={8} />
+          <Grid size={1}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'right'
+              }}>
+              <Button sx={{height: '100%', width: '100%'}} onClick={handleClose} color='secondary'>
+                  Close
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={8}/>
-        <Grid item xs={1}>
-          <Box
-            display='flex'
-            justifyContent='right'
-          >
-            <Button sx={{height: '100%', width: '100%'}} onClick={handleClose} color='secondary'>
-                Close
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </DialogActions>
-  </Dialog>
+      </DialogActions>
+    </Dialog>
+  );
 }
 MetadataViewerPopover.displayName = 'MetadataViewerPopover'
 MetadataViewerPopover.propTypes = {

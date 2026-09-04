@@ -204,22 +204,26 @@ const FreeTextFilter = ({
     )
   }
 
-  return <TextField
-    onChange={(e) => delayFilterUpdate(e.target.value)}
-    // filtering is expensive for large component-descriptors
-    // short delay so it still feels responsive
-    label='Search Artefacts, Components, or Responsibles'
-    defaultValue={freeText}
-    variant='standard'
-    InputProps={{
-      endAdornment: (
-        <InputAdornment position='start'>
-          <SearchIcon/>
-        </InputAdornment>
-      ),
-    }}
-    fullWidth
-  />
+  return (
+    <TextField
+      onChange={(e) => delayFilterUpdate(e.target.value)}
+      // filtering is expensive for large component-descriptors
+      // short delay so it still feels responsive
+      label='Search Artefacts, Components, or Responsibles'
+      defaultValue={freeText}
+      variant='standard'
+      fullWidth
+      slotProps={{
+        input: {
+          endAdornment: (
+            <InputAdornment position='start'>
+              <SearchIcon/>
+            </InputAdornment>
+          ),
+        }
+      }}
+    />
+  );
 }
 FreeTextFilter.displayName = 'FreeTextFilter'
 FreeTextFilter.propTypes = {
@@ -258,25 +262,27 @@ const Filters = ({
     })
   }, [addOrUpdateFilter, removeFilter, CATEGORISATION_FILTER_ID, categorisationFilter, FREE_TEXT_FILTER_ID, freeTextFilter])
 
-  return <>
-    <Grid item xs={4}>
-      <FreeTextFilter setFreeTextFilter={setFreeTextFilter}/>
-    </Grid>
-    <Grid item xs={1.5}>
-      <TypeFilter
-        findingType={findingType}
-        setFindingType={setFindingType}
-        findingCfgs={findingCfgs}
-      />
-    </Grid>
-    <Grid item xs={1.5}>
-      <CategorisationFilter
-        findingType={findingType}
-        setCategorisationFilter={setCategorisationFilter}
-        findingCfg={findingCfg}
-      />
-    </Grid>
-  </>
+  return (
+    <>
+      <Grid size={4}>
+        <FreeTextFilter setFreeTextFilter={setFreeTextFilter}/>
+      </Grid>
+      <Grid size={1.5}>
+        <TypeFilter
+          findingType={findingType}
+          setFindingType={setFindingType}
+          findingCfgs={findingCfgs}
+        />
+      </Grid>
+      <Grid size={1.5}>
+        <CategorisationFilter
+          findingType={findingType}
+          setCategorisationFilter={setCategorisationFilter}
+          findingCfg={findingCfg}
+        />
+      </Grid>
+    </>
+  );
 }
 Filters.displayName = 'Filters'
 Filters.propTypes = {
@@ -293,29 +299,30 @@ const ComponentOrArtefactItem = ({
   extraId,
   iconProps,
 }) => {
-  return <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'row',
-    }}
-    alignItems='center'
-  >
-    <Typography>{name}</Typography>
-    <div style={{width: '1rem'}}/>
-    {
-      (extraId && Object.keys(extraId).length > 0) && <NoMaxWidthTooltip
-        title={
-          <MultilineTextViewer
-            text={toYamlString(extraId)}
-          />
-        }
-      >
-        <div style={{ display: 'flex', margin: '0.4rem' }}>
-          <InfoOutlinedIcon fontSize='small' {...iconProps}/>
-        </div>
-      </NoMaxWidthTooltip>
-    }
-  </Box>
+  return (
+    <Box
+      sx={{
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'row'
+      }}>
+      <Typography>{name}</Typography>
+      <div style={{width: '1rem'}}/>
+      {
+        (extraId && Object.keys(extraId).length > 0) && <NoMaxWidthTooltip
+          title={
+            <MultilineTextViewer
+              text={toYamlString(extraId)}
+            />
+          }
+        >
+          <div style={{ display: 'flex', margin: '0.4rem' }}>
+            <InfoOutlinedIcon fontSize='small' {...iconProps}/>
+          </div>
+        </NoMaxWidthTooltip>
+      }
+    </Box>
+  );
 }
 ComponentOrArtefactItem.displayName = 'ComponentOrArtefactItem'
 ComponentOrArtefactItem.propTypes = {
@@ -665,104 +672,116 @@ const Header = ({
   const username = githubUserIdentifier?.username ?? 'no username found'
   const email_address = githubUserIdentifier?.email_address ?? 'no email found'
 
-  return <Box>
-    <Grid container spacing={2}>
-      <Filters
-        addOrUpdateFilter={addOrUpdateFilter}
-        removeFilter={removeFilter}
-        findingType={findingType}
-        setFindingType={setFindingType}
-        findingCfgs={findingCfgs}
-      />
-      <Grid item xs={2}>
-        <Box
-          display='flex'
-          justifyContent='center'
-          padding={1}
-        >
-          <FormGroup>
-            <Tooltip
-              title={`Filter artefacts for your responsibility (${username}, ${email_address}).`}
-            >
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={filterMode === filterModes.PERSONAL}
-                    onChange={() => toggleFilterMode()}
-                  />
-                }
-                label='My Action Items'
-              />
-            </Tooltip>
-          </FormGroup>
-        </Box>
-      </Grid>
-      <Grid item xs={3} justifyContent='center' alignItems='center' display='flex'>
-        <NoMaxWidthTooltip
-          title={selectedAggregatedOcmNodes.length === 0 ? 'Select at least one artefact' : <Box
-            maxHeight='50vh'
-            overflow='auto'
-          >
-            <List>
-              {
-                selectedAggregatedOcmNodes.sort((left, right) => {
-                  return left.ocmNode.name().localeCompare(right.ocmNode.name())
-                }).map((aggregatedOcmNode) => <ListItem
-                  key={aggregatedOcmNode.ocmNode.identity()}
-                >
-                  <Stack
-                    direction='row'
-                    spacing={1}
+  return (
+    <Box>
+      <Grid container spacing={2}>
+        <Filters
+          addOrUpdateFilter={addOrUpdateFilter}
+          removeFilter={removeFilter}
+          findingType={findingType}
+          setFindingType={setFindingType}
+          findingCfgs={findingCfgs}
+        />
+        <Grid size={2}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: 1
+            }}>
+            <FormGroup>
+              <Tooltip
+                title={`Filter artefacts for your responsibility (${username}, ${email_address}).`}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={filterMode === filterModes.PERSONAL}
+                      onChange={() => toggleFilterMode()}
+                    />
+                  }
+                  label='My Action Items'
+                />
+              </Tooltip>
+            </FormGroup>
+          </Box>
+        </Grid>
+        <Grid
+          size={3}
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex'
+          }}>
+          <NoMaxWidthTooltip
+            title={selectedAggregatedOcmNodes.length === 0 ? 'Select at least one artefact' : <Box
+              sx={{
+                maxHeight: '50vh',
+                overflow: 'auto'
+              }}>
+              <List>
+                {
+                  selectedAggregatedOcmNodes.sort((left, right) => {
+                    return left.ocmNode.name().localeCompare(right.ocmNode.name())
+                  }).map((aggregatedOcmNode) => <ListItem
+                    key={aggregatedOcmNode.ocmNode.identity()}
                   >
-                    <Box
-                      display='flex'
-                      justifyContent='center'
-                      alignItems='center'
+                    <Stack
+                      direction='row'
+                      spacing={1}
                     >
-                      <Typography variant='body2'>{aggregatedOcmNode.ocmNode.artefact.name}</Typography>
-                    </Box>
-                    <Box
-                      display='flex'
-                      justifyContent='center'
-                      alignItems='center'
-                    >
-                      <CopyOnClickChip
-                        value={aggregatedOcmNode.ocmNode.artefact.version}
-                        label={trimLongString(aggregatedOcmNode.ocmNode.artefact.version, 12)}
-                        chipProps={{
-                          variant: 'filled',
-                          size: 'small',
-                          sx: {
-                            '& .MuiChip-label': {
-                              color: 'white'
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}>
+                        <Typography variant='body2'>{aggregatedOcmNode.ocmNode.artefact.name}</Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}>
+                        <CopyOnClickChip
+                          value={aggregatedOcmNode.ocmNode.artefact.version}
+                          label={trimLongString(aggregatedOcmNode.ocmNode.artefact.version, 12)}
+                          chipProps={{
+                            variant: 'filled',
+                            size: 'small',
+                            sx: {
+                              '& .MuiChip-label': {
+                                color: 'white'
+                              }
                             }
-                          }
-                        }}
-                      />
-                    </Box>
-                  </Stack>
-                </ListItem>)
-              }
-            </List>
-          </Box>}
-        >
-          <span>
-            <Button
-              color='secondary'
-              disabled={selectedAggregatedOcmNodes.length === 0 || !rescorableFindingTypes({findingCfgs}).includes(findingType)}
-              fullWidth
-              onClick={() => setMountRescoring(true)}
-              endIcon={<SendIcon/>}
-            >
-              {
-                `Rescore Selected Artefacts (${selectedAggregatedOcmNodes.length})`
-              }
-            </Button>
-          </span>
-        </NoMaxWidthTooltip>
+                          }}
+                        />
+                      </Box>
+                    </Stack>
+                  </ListItem>)
+                }
+              </List>
+            </Box>}
+          >
+            <span>
+              <Button
+                color='secondary'
+                disabled={selectedAggregatedOcmNodes.length === 0 || !rescorableFindingTypes({findingCfgs}).includes(findingType)}
+                fullWidth
+                onClick={() => setMountRescoring(true)}
+                endIcon={<SendIcon/>}
+              >
+                {
+                  `Rescore Selected Artefacts (${selectedAggregatedOcmNodes.length})`
+                }
+              </Button>
+            </span>
+          </NoMaxWidthTooltip>
+        </Grid>
       </Grid>
-    </Grid>
-  </Box>
+    </Box>
+  );
 }
 Header.displayName = 'Header'
 Header.propTypes = {
@@ -859,56 +878,59 @@ const Artefacts = ({
   refreshComplianceSummary,
   user,
 }) => {
-  return <Box>
-    {
-      mountRescoring && <RescoringModal
-        ocmNodes={selectedAggregatedOcmNodes.map((aggregatedOcmNode) => aggregatedOcmNode.ocmNode)}
-        ocmRepo={ocmRepo}
-        handleClose={() => setMountRescoring(false)}
-        fetchComplianceSummary={refreshComplianceSummary}
-        initialFindingType={findingType}
-        findingCfgs={findingCfgs}
-      />
-    }
-    <Header
-      addOrUpdateFilter={addOrUpdateFilter}
-      removeFilter={removeFilter}
-      selectedAggregatedOcmNodes={selectedAggregatedOcmNodes}
-      filterMode={filterMode}
-      toggleFilterMode={toggleFilterMode}
-      setMountRescoring={setMountRescoring}
-      findingType={findingType}
-      setFindingType={setFindingType}
-      findingCfgs={findingCfgs}
-      user={user}
-    />
-    <div style={{ padding: '1em' }} />
-    {
-      aggregatedOcmNodes.length > 0 ? <ArtefactList
-        aggregatedOcmNodes={aggregatedOcmNodes}
+  return (
+    <Box>
+      {
+        mountRescoring && <RescoringModal
+          ocmNodes={selectedAggregatedOcmNodes.map((aggregatedOcmNode) => aggregatedOcmNode.ocmNode)}
+          ocmRepo={ocmRepo}
+          handleClose={() => setMountRescoring(false)}
+          fetchComplianceSummary={refreshComplianceSummary}
+          initialFindingType={findingType}
+          findingCfgs={findingCfgs}
+        />
+      }
+      <Header
+        addOrUpdateFilter={addOrUpdateFilter}
+        removeFilter={removeFilter}
         selectedAggregatedOcmNodes={selectedAggregatedOcmNodes}
-        setSelectedAggregatedOcmNodes={setSelectedAggregatedOcmNodes}
-        findingCfg={findingCfgForType({findingType, findingCfgs})}
-      /> : <Box
-        display='flex'
-        justifyContent='center'
-      >
-        {
-          filterMode === filterModes.PERSONAL
-            ? <Typography>No open findings, good job! {String.fromCodePoint('0x1F973')} {/* "Party-Face" symbol */}</Typography>
-            : <Typography>No artefacts matching filters</Typography>
-        }
-      </Box>
-    }
-    {
-      aggregatedOcmNodes.map((aggregatedOcmNode) => <FetchResponsibles
-        key={`${aggregatedOcmNode.ocmNode.identity()}${findingType}`}
-        aggregatedOcmNode={aggregatedOcmNode}
-        setAggregatedOcmNodes={setAggregatedOcmNodes}
-        ocmRepo={ocmRepo}
-      />)
-    }
-  </Box>
+        filterMode={filterMode}
+        toggleFilterMode={toggleFilterMode}
+        setMountRescoring={setMountRescoring}
+        findingType={findingType}
+        setFindingType={setFindingType}
+        findingCfgs={findingCfgs}
+        user={user}
+      />
+      <div style={{ padding: '1em' }} />
+      {
+        aggregatedOcmNodes.length > 0 ? <ArtefactList
+          aggregatedOcmNodes={aggregatedOcmNodes}
+          selectedAggregatedOcmNodes={selectedAggregatedOcmNodes}
+          setSelectedAggregatedOcmNodes={setSelectedAggregatedOcmNodes}
+          findingCfg={findingCfgForType({findingType, findingCfgs})}
+        /> : <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+          {
+            filterMode === filterModes.PERSONAL
+              ? <Typography>No open findings, good job! {String.fromCodePoint('0x1F973')} {/* "Party-Face" symbol */}</Typography>
+              : <Typography>No artefacts matching filters</Typography>
+          }
+        </Box>
+      }
+      {
+        aggregatedOcmNodes.map((aggregatedOcmNode) => <FetchResponsibles
+          key={`${aggregatedOcmNode.ocmNode.identity()}${findingType}`}
+          aggregatedOcmNode={aggregatedOcmNode}
+          setAggregatedOcmNodes={setAggregatedOcmNodes}
+          ocmRepo={ocmRepo}
+        />)
+      }
+    </Box>
+  );
 }
 Artefacts.displayName = 'Artefacts'
 Artefacts.propTypes = {

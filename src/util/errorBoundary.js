@@ -64,37 +64,43 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <Box
-        display='flex'
-        justifyContent='center'
-      >
-        <Stack direction='column'>
-          <Typography
-            display='flex'
-            justifyContent='center'
-            variant='h4'
-          >
-            {`Something went wrong ${String.fromCodePoint('0x1F625')}`} {/* "sad but relieved face" symbol */}
-          </Typography>
-          <FeatureDependent
-            requiredFeatures={[features.DASHBOARD_CREATE_ISSUE_URL]}
-          >
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+          <Stack direction='column'>
             <Typography
-              justifyContent='center'
-            >
-              If this error persists, please consider {
-                <Link
-                  href={this.state.dashboardCreateIssueUrlFeature?.url}
-                  // FeatureDependent callback might be invoked first, therefore check for feature presence
-                  color='secondary'
-                >
-                  creating
-                </Link>
-              } a bug report {String.fromCodePoint('0x1F41B')} {/* "Bug" symbol */}
+              variant='h4'
+              sx={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+              {`Something went wrong ${String.fromCodePoint('0x1F625')}`} {/* "sad but relieved face" symbol */}
             </Typography>
-          </FeatureDependent>
-        </Stack>
-      </Box>
+            <FeatureDependent
+              requiredFeatures={[features.DASHBOARD_CREATE_ISSUE_URL]}
+            >
+              <Typography
+                sx={{
+                  justifyContent: 'center'
+                }}
+              >
+                If this error persists, please consider {
+                  <Link
+                    href={this.state.dashboardCreateIssueUrlFeature?.url}
+                    // FeatureDependent callback might be invoked first, therefore check for feature presence
+                    color='secondary'
+                  >
+                    creating
+                  </Link>
+                } a bug report {String.fromCodePoint('0x1F41B')} {/* "Bug" symbol */}
+              </Typography>
+            </FeatureDependent>
+          </Stack>
+        </Box>
+      );
     }
     return this.props.children
   }

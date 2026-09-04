@@ -44,37 +44,39 @@ const NotFoundPage = ({ reason }) => {
 
   const image = images[Math.floor(Math.random() * images.length)]
 
-  return <Grid container>
-    <Grid item xs={12}>
-      <div
-        style={{
-          height: '65vh',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <img style={image.style} src={image.src} alt={image.alt} />
-      </div>
-    </Grid>
-    {
-      reason && <Grid item xs={12}>
+  return (
+    <Grid container>
+      <Grid size={12}>
         <div
           style={{
+            height: '65vh',
             display: 'flex',
-            paddingTop: '4em',
             justifyContent: 'center',
           }}
         >
-          <Alert severity='info'>{reason}</Alert>
+          <img style={image.style} src={image.src} alt={image.alt} />
         </div>
       </Grid>
-    }
-    <Grid item xs={12}>
-      <div style={{ bottom: '0', right: '0', position: 'fixed' }}>
-        {image.link}
-      </div>
+      {
+        reason && <Grid size={12}>
+          <div
+            style={{
+              display: 'flex',
+              paddingTop: '4em',
+              justifyContent: 'center',
+            }}
+          >
+            <Alert severity='info'>{reason}</Alert>
+          </div>
+        </Grid>
+      }
+      <Grid size={12}>
+        <div style={{ bottom: '0', right: '0', position: 'fixed' }}>
+          {image.link}
+        </div>
+      </Grid>
     </Grid>
-  </Grid>
+  );
 }
 
 NotFoundPage.propTypes = {

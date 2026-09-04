@@ -36,11 +36,11 @@ import {
 } from '@mui/material'
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic'
 import AutorenewIcon from '@mui/icons-material/Autorenew'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
 import LaunchIcon from '@mui/icons-material/Launch'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges'
@@ -306,111 +306,122 @@ const Component = React.memo(({
     complianceSummaryState.error,
   ])
 
-  return <Box
-    sx={{
-      paddingBottom: '0.3em',
-      '&:hover': {
-        backgroundColor: alpha(theme.palette.common.black, theme.palette.mode === 'light' ? 0.15 : 1),
-      },
-    }}
-  >
-    <Accordion
-      TransitionProps={{ unmountOnExit: true }}
-      // manual expansion control required to prevent trigger on MetadataViewerPopover events
-      expanded={expanded}
-      onClick={() => setExpanded(!expanded)}
+  return (
+    <Box
+      sx={{
+        paddingBottom: '0.3em',
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.common.black, theme.palette.mode === 'light' ? 0.15 : 1),
+        },
+      }}
     >
-      <AccordionSummary expandIcon={<ExpandMoreIcon {...isParentComponent ? {sx: {color: theme.bomButton}} : {}}/>}>
-        <Grid container alignItems='center'>
-          <Grid item {...isParentComponent ? {sx: {flexGrow: '0.05'}} : {xs: 7}} >
-            <Typography variant='body1' sx={{fontWeight: isParentComponent ? 'bold' : 1}}>
-              <Tooltip
-                title={component.name}
-              >
-                <Link
-                  color={'inherit'}
-                  // use href rather than router to enable "open in new tab"
-                  href={`#${componentPathQuery({
-                    name: component.name,
-                    version: component.version,
-                    view: 'bom',
-                    ocmRepo: ocmRepo,
-                  })}`}
-                  // don't expand accordion
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    if (referencingPaths.length === 0) return // root component has no paths
-                    updatePathFromComponentRef(referencingPaths[0])
-                  }}
+      <Accordion
+        // manual expansion control required to prevent trigger on MetadataViewerPopover events
+        expanded={expanded}
+        onClick={() => setExpanded(!expanded)}
+        slotProps={{
+          transition: { unmountOnExit: true }
+        }}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon {...isParentComponent ? {sx: {color: theme.bomButton}} : {}}/>}>
+          <Grid container sx={{
+            alignItems: 'center'
+          }}>
+            <Grid {...isParentComponent ? {sx: {flexGrow: '0.05'}} : {size: 7}} >
+              <Typography variant='body1' sx={{fontWeight: isParentComponent ? 'bold' : 1}}>
+                <Tooltip
+                  title={component.name}
                 >
-                  {name}
-                </Link>
-              </Tooltip>
-            </Typography>
-          </Grid>
-          <Grid item {...isParentComponent ? {sx: {flexGrow: '1'}} : {xs: 2}}>
-            <Box display='flex' alignItems='left' justifyContent='left'>
-              {
-                component.version.length > 8 ? <Tooltip
-                  title={JSON.stringify(component.version, null, 2)}
-                >
-                  <CopyOnClickChip
+                  <Link
+                    color={'inherit'}
+                    // use href rather than router to enable "open in new tab"
+                    href={`#${componentPathQuery({
+                      name: component.name,
+                      version: component.version,
+                      view: 'bom',
+                      ocmRepo: ocmRepo,
+                    })}`}
+                    // don't expand accordion
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      if (referencingPaths.length === 0) return // root component has no paths
+                      updatePathFromComponentRef(referencingPaths[0])
+                    }}
+                  >
+                    {name}
+                  </Link>
+                </Tooltip>
+              </Typography>
+            </Grid>
+            <Grid {...isParentComponent ? {sx: {flexGrow: '1'}} : {size: 2}}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'left',
+                  justifyContent: 'left'
+                }}>
+                {
+                  component.version.length > 8 ? <Tooltip
+                    title={JSON.stringify(component.version, null, 2)}
+                  >
+                    <CopyOnClickChip
+                      value={component.version}
+                      label={trimLongString(component.version, 8)}
+                      chipProps={{
+                        variant: 'outlined'
+                      }}
+                    />
+                  </Tooltip> : <CopyOnClickChip
                     value={component.version}
                     label={trimLongString(component.version, 8)}
                     chipProps={{
-                      variant: 'outlined'
+                      variant: 'outlined',
+                      sx: {fontWeight: isParentComponent ? 'bold' : 1},
                     }}
                   />
-                </Tooltip> : <CopyOnClickChip
-                  value={component.version}
-                  label={trimLongString(component.version, 8)}
-                  chipProps={{
-                    variant: 'outlined',
-                    sx: {fontWeight: isParentComponent ? 'bold' : 1},
-                  }}
-                />
-              }
-            </Box>
-          </Grid>
-          <FeatureDependent
-            requiredFeatures={[features.DELIVERY_DB]}
-            childrenIfFeatureUnavailable={<Grid item xs={isParentComponent ? 1 : 2}/>}
-          >
-            <Grid item xs={isParentComponent ? 1 : 2}>
-              {
-                findingCfgs.length > 0 && <ComponentChip
-                  component={component}
-                  complianceSummaryFetchDetails={complianceSummaryFetchDetails}
-                  findingCfgs={findingCfgs}
-                />
-              }
+                }
+              </Box>
             </Grid>
-          </FeatureDependent>
-          <Grid item xs={isParentComponent ? 0.5 : 1}>
-            <ComponentSettings
-              component={component}
-              ocmRepo={ocmRepo}
-              findingCfgs={findingCfgs}
-              iconProps={isParentComponent ? {sx: {color: theme.bomButton}} : {}}
-            />
+            <FeatureDependent
+              requiredFeatures={[features.DELIVERY_DB]}
+              childrenIfFeatureUnavailable={<Grid size={isParentComponent ? 1 : 2} />}
+            >
+              <Grid size={isParentComponent ? 1 : 2}>
+                {
+                  findingCfgs.length > 0 && <ComponentChip
+                    component={component}
+                    complianceSummaryFetchDetails={complianceSummaryFetchDetails}
+                    findingCfgs={findingCfgs}
+                  />
+                }
+              </Grid>
+            </FeatureDependent>
+            <Grid size={isParentComponent ? 0.5 : 1}>
+              <ComponentSettings
+                component={component}
+                ocmRepo={ocmRepo}
+                findingCfgs={findingCfgs}
+                iconProps={isParentComponent ? {sx: {color: theme.bomButton}} : {}}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      </AccordionSummary>
-      <AccordionDetails onClick={(event) => event.stopPropagation()}>
-        <ComponentDetails
-          component={component}
-          referencingPaths={referencingPaths}
-          isComponentLoading={isComponentLoading}
-          isComponentError={isComponentError}
-          ocmRepo={ocmRepo}
-          complianceSummaryFetchDetails={complianceSummaryFetchDetails}
-          fetchComplianceSummary={refreshComplianceSummary}
-          extensionsCfg={extensionsCfg}
-          findingCfgs={findingCfgs}
-        />
-      </AccordionDetails>
-    </Accordion>
-  </Box>
+        </AccordionSummary>
+        <AccordionDetails onClick={(event) => event.stopPropagation()}>
+          <ComponentDetails
+            component={component}
+            referencingPaths={referencingPaths}
+            isComponentLoading={isComponentLoading}
+            isComponentError={isComponentError}
+            ocmRepo={ocmRepo}
+            complianceSummaryFetchDetails={complianceSummaryFetchDetails}
+            fetchComplianceSummary={refreshComplianceSummary}
+            extensionsCfg={extensionsCfg}
+            findingCfgs={findingCfgs}
+          />
+        </AccordionDetails>
+      </Accordion>
+    </Box>
+  );
 })
 Component.displayName = 'Component'
 Component.propTypes = {
@@ -1053,45 +1064,54 @@ ReferencedByTableRow.propTypes = {
 
 
 const LoadingComponents = ({loadingComponentsCount}) => {
-  return <Box
-    width='50%'
-  >
-    {
-      [...Array(loadingComponentsCount).keys()].map(e => <Box key={e}>
-        <Accordion>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Grid container alignItems='center' padding={1}>
-              <Grid item xs={6}>
-                <Typography variant='body1'>
-                  <Skeleton />
-                </Typography>
+  return (
+    <Box
+      sx={{
+        width: '50%'
+      }}
+    >
+      {
+        [...Array(loadingComponentsCount).keys()].map(e => <Box key={e}>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Grid
+                container
+                sx={{
+                  alignItems: 'center',
+                  padding: 1
+                }}>
+                <Grid size={6}>
+                  <Typography variant='body1'>
+                    <Skeleton />
+                  </Typography>
+                </Grid>
+                <Grid size={1} />
+                <Grid size={1}>
+                  <Typography variant='body1'>
+                    <Skeleton />
+                  </Typography>
+                </Grid>
+                <Grid size={1} />
+                <Grid size={1}>
+                  <Typography variant='body1'>
+                    <Skeleton />
+                  </Typography>
+                </Grid>
+                <Grid size={1} />
+                <Grid size={1}>
+                  <Typography variant='body1'>
+                    <Skeleton />
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item xs={1} />
-              <Grid item xs={1}>
-                <Typography variant='body1'>
-                  <Skeleton />
-                </Typography>
-              </Grid>
-              <Grid item xs={1} />
-              <Grid item xs={1}>
-                <Typography variant='body1'>
-                  <Skeleton />
-                </Typography>
-              </Grid>
-              <Grid item xs={1} />
-              <Grid item xs={1}>
-                <Typography variant='body1'>
-                  <Skeleton />
-                </Typography>
-              </Grid>
-            </Grid>
-          </AccordionSummary>
-        </Accordion>
-        <div style={{ padding: '0.15em' }} />
-      </Box>
-      )
-    }
-  </Box>
+            </AccordionSummary>
+          </Accordion>
+          <div style={{ padding: '0.15em' }} />
+        </Box>
+        )
+      }
+    </Box>
+  );
 }
 LoadingComponents.displayName = 'LoadingComponents'
 LoadingComponents.propTypes = {
@@ -1102,45 +1122,52 @@ LoadingComponents.propTypes = {
 const LoadingDependencies = () => {
   const loadingComponentsCount = 40
 
-  return <Box>
-    <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Grid container alignItems='center' padding={1}>
-          <Grid item xs={4}>
-            <Typography variant='body1'>
-              <Skeleton />
-            </Typography>
+  return (
+    <Box>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Grid
+            container
+            sx={{
+              alignItems: 'center',
+              padding: 1
+            }}>
+            <Grid size={4}>
+              <Typography variant='body1'>
+                <Skeleton />
+              </Typography>
+            </Grid>
+            <Grid size={1} />
+            <Grid size={1}>
+              <Typography variant='body1'>
+                <Skeleton />
+              </Typography>
+            </Grid>
+            <Grid sx={{flexGrow: '1'}} />
+            <Grid size={1}>
+              <Typography variant='body1'>
+                <Skeleton />
+              </Typography>
+            </Grid>
+            <Grid size={0.5} />
+            <Grid size={0.5}>
+              <Typography variant='body1'>
+                <Skeleton />
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={1} />
-          <Grid item xs={1}>
-            <Typography variant='body1'>
-              <Skeleton />
-            </Typography>
-          </Grid>
-          <Grid item sx={{flexGrow: '1'}} />
-          <Grid item xs={1}>
-            <Typography variant='body1'>
-              <Skeleton />
-            </Typography>
-          </Grid>
-          <Grid item xs={0.5} />
-          <Grid item xs={0.5}>
-            <Typography variant='body1'>
-              <Skeleton />
-            </Typography>
-          </Grid>
-        </Grid>
-      </AccordionSummary>
-    </Accordion>
-    <div style={{ padding: '0.5em' }} />
-    <Stack
-      spacing={3}
-      direction='row'
-    >
-      <LoadingComponents loadingComponentsCount={loadingComponentsCount}/>
-      <LoadingComponents loadingComponentsCount={loadingComponentsCount}/>
-    </Stack>
-  </Box>
+        </AccordionSummary>
+      </Accordion>
+      <div style={{ padding: '0.5em' }} />
+      <Stack
+        spacing={3}
+        direction='row'
+      >
+        <LoadingComponents loadingComponentsCount={loadingComponentsCount}/>
+        <LoadingComponents loadingComponentsCount={loadingComponentsCount}/>
+      </Stack>
+    </Box>
+  );
 }
 
 const ComponentSearch = ({
@@ -1149,28 +1176,32 @@ const ComponentSearch = ({
   updateSearchQuery,
   defaultValue,
 }) => {
-  return <TextField
-    variant='standard'
-    fullWidth
-    defaultValue={defaultValue}
-    disabled={isComponentsLoading || isComponentsError}
-    label={
-      isComponentsError ? 'Search disabled, error fetching Component' :
-        'Search for Components or Artifacts'
-    }
-    onChange={(event) => {
-      updateSearchQuery(event.target.value)
-    }}
-    InputProps={{
-      endAdornment: (
-        <InputAdornment position='start'>
-          {
-            isComponentsLoading ? <CircularProgress color='inherit' size='1.5em'/> : <SearchIcon />
-          }
-        </InputAdornment>
-      ),
-    }}
-  />
+  return (
+    <TextField
+      variant='standard'
+      fullWidth
+      defaultValue={defaultValue}
+      disabled={isComponentsLoading || isComponentsError}
+      label={
+        isComponentsError ? 'Search disabled, error fetching Component' :
+          'Search for Components or Artifacts'
+      }
+      onChange={(event) => {
+        updateSearchQuery(event.target.value)
+      }}
+      slotProps={{
+        input: {
+          endAdornment: (
+            <InputAdornment position='start'>
+              {
+                isComponentsLoading ? <CircularProgress color='inherit' size='1.5em'/> : <SearchIcon />
+              }
+            </InputAdornment>
+          ),
+        }
+      }}
+    />
+  );
 }
 ComponentSearch.displayName = 'ComponentSearch'
 ComponentSearch.propTypes = {
@@ -1197,73 +1228,94 @@ const DependenciesTabHeader = React.memo(({
   const [showDownloadSbomPopover, setShowDownloadSbomPopover] = React.useState(false)
   const now = new Date()
 
-  return <Grid
-    container
-    spacing={3}
-    alignItems='center'
-  >
-    <Grid item width='40%'>
-      <ComponentSearch
-        updateSearchQuery={updateSearchQuery}
-        defaultValue={defaultSearchValue}
-      />
-    </Grid>
-    <Grid item width='15%'>
-      <FeatureDependent
-        requiredFeatures={[features.SPRINTS]}
-        childrenIfFeatureLoading={<Skeleton/>}
-      >
-        <ErrorBoundary>
-          <SprintInfo
-            sprintRules={sprintRules}
-            date={now}
-          />
-        </ErrorBoundary>
-      </FeatureDependent>
-    </Grid>
-    <Grid item width='18%' alignItems='center' display='flex' flexDirection='column'>
-      <FeatureDependent
-        requiredFeatures={[features.SPECIAL_COMPONENTS]}
-        childrenIfFeatureLoading={<Skeleton width='100%'/>} // explicitly set width as parent container is a flexbox
-      >
-        {
-          !browserLocalOnly && specialComponentId !== undefined && (isComponentLoading
-            ? <Skeleton width='100%'/>
-            : <SpecialComponentStatus
-              component={component}
-              componentRefs={componentRefs}
-              specialComponentFeature={getSpecialComponentFeature()}
-              specialComponentId={specialComponentId}
+  return (
+    <Grid
+      container
+      spacing={3}
+      sx={{
+        alignItems: 'center'
+      }}
+    >
+      <Grid sx={{
+        width: '40%'
+      }}>
+        <ComponentSearch
+          updateSearchQuery={updateSearchQuery}
+          defaultValue={defaultSearchValue}
+        />
+      </Grid>
+      <Grid sx={{
+        width: '15%'
+      }}>
+        <FeatureDependent
+          requiredFeatures={[features.SPRINTS]}
+          childrenIfFeatureLoading={<Skeleton/>}
+        >
+          <ErrorBoundary>
+            <SprintInfo
+              sprintRules={sprintRules}
+              date={now}
             />
-          )
+          </ErrorBoundary>
+        </FeatureDependent>
+      </Grid>
+      <Grid
+        sx={{
+          width: '18%',
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+        <FeatureDependent
+          requiredFeatures={[features.SPECIAL_COMPONENTS]}
+          childrenIfFeatureLoading={<Skeleton width='100%'/>} // explicitly set width as parent container is a flexbox
+        >
+          {
+            !browserLocalOnly && specialComponentId !== undefined && (isComponentLoading
+              ? <Skeleton width='100%'/>
+              : <SpecialComponentStatus
+                component={component}
+                componentRefs={componentRefs}
+                specialComponentFeature={getSpecialComponentFeature()}
+                specialComponentId={specialComponentId}
+              />
+            )
+          }
+        </FeatureDependent>
+      </Grid>
+      <Grid
+        sx={{
+          width: '27%',
+          display: 'flex',
+          justifyContent: 'right',
+          flexDirection: 'row',
+          gap: 1
+        }}>
+        <DownloadBom
+          component={component}
+          ocmRepo={searchParamContext.get('ocmRepo')}
+          isLoading={isComponentLoading}
+        />
+        {
+          extensionsCfg?.sbom_generator?.enabled &&
+            <OpenSbomPopoverButton
+              onClick={() => setShowDownloadSbomPopover(true)}
+              isLoading={isComponentLoading}
+            />
         }
-      </FeatureDependent>
-    </Grid>
-    <Grid item width='27%' display='flex' justifyContent='right' flexDirection='row' gap={1}>
-      <DownloadBom
-        component={component}
-        ocmRepo={searchParamContext.get('ocmRepo')}
-        isLoading={isComponentLoading}
-      />
+      </Grid>
       {
-        extensionsCfg?.sbom_generator?.enabled &&
-          <OpenSbomPopoverButton
-            onClick={() => setShowDownloadSbomPopover(true)}
-            isLoading={isComponentLoading}
+        showDownloadSbomPopover &&
+          <SbomDownloadPopover
+            component={component}
+            ocmRepo={searchParamContext.get('ocmRepo')}
+            isComponentLoading={isComponentLoading}
+            onClose={() => setShowDownloadSbomPopover(false)}
+            extensionsCfg={extensionsCfg}
           />
       }
     </Grid>
-    {
-      showDownloadSbomPopover &&
-        <SbomDownloadPopover
-          component={component}
-          ocmRepo={searchParamContext.get('ocmRepo')}
-          isComponentLoading={isComponentLoading}
-          onClose={() => setShowDownloadSbomPopover(false)}
-          extensionsCfg={extensionsCfg}
-        />
-    }
-  </Grid>
+  );
 })
 DependenciesTabHeader.displayName = 'DependenciesTabHeader'
 DependenciesTabHeader.propTypes = {
@@ -1380,34 +1432,37 @@ export const BomTab = React.memo(({
   const extensionsCfg = extensionsCfgFeature?.isAvailable ? extensionsCfgFeature.extensions_cfg : null
   const findingCfgs = findingCfgsFeature?.isAvailable ? findingCfgsFeature.finding_cfgs : []
 
-  return <Box
-    display='flex'
-    flexDirection='column'
-  >
-    <DependenciesTabHeader
-      updateSearchQuery={updateSearchQuery}
-      sprintRules={getSpecialComponentFeature()?.sprintRules}
-      component={component}
-      isComponentLoading={isLoading}
-      componentRefs={componentRefs}
-      getSpecialComponentFeature={getSpecialComponentFeature}
-      specialComponentId={specialComponentId}
-      browserLocalOnly={browserLocalOnly}
-      defaultSearchValue={searchQuery}
-      extensionsCfg={extensionsCfg}
-    />
-    <div style={{ padding: '0.5em' }} />
-    {
-      isLoading ? <LoadingDependencies/> : <FetchComponentRefsTab
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+      <DependenciesTabHeader
+        updateSearchQuery={updateSearchQuery}
+        sprintRules={getSpecialComponentFeature()?.sprintRules}
         component={component}
-        ocmRepo={ocmRepo}
-        searchQuery={searchQuery}
-        setComponentRefs={setComponentRefs}
+        isComponentLoading={isLoading}
+        componentRefs={componentRefs}
+        getSpecialComponentFeature={getSpecialComponentFeature}
+        specialComponentId={specialComponentId}
+        browserLocalOnly={browserLocalOnly}
+        defaultSearchValue={searchQuery}
         extensionsCfg={extensionsCfg}
-        findingCfgs={findingCfgs}
       />
-    }
-  </Box>
+      <div style={{ padding: '0.5em' }} />
+      {
+        isLoading ? <LoadingDependencies/> : <FetchComponentRefsTab
+          component={component}
+          ocmRepo={ocmRepo}
+          searchQuery={searchQuery}
+          setComponentRefs={setComponentRefs}
+          extensionsCfg={extensionsCfg}
+          findingCfgs={findingCfgs}
+        />
+      }
+    </Box>
+  );
 })
 BomTab.displayName = 'BomTab'
 BomTab.propTypes = {
@@ -1500,46 +1555,52 @@ const FetchDependenciesTab = React.memo(({
   const left = filteredBom().slice(0, half)
   const right = filteredBom().slice(half, len)
 
-  return <Box>
-    <Component
-      component={component}
-      referencingPaths={[]} // there are no paths to root component
-      ocmRepo={ocmRepo}
-      isParentComponent={true}
-      extensionsCfg={extensionsCfg}
-      findingCfgs={findingCfgs}
-    />
-    <div style={{ padding: '0.5em' }} />
-    <Stack
-      spacing={3}
-      direction='row'
-    >
-      <Box
-        width='50%'
+  return (
+    <Box>
+      <Component
+        component={component}
+        referencingPaths={[]} // there are no paths to root component
+        ocmRepo={ocmRepo}
+        isParentComponent={true}
+        extensionsCfg={extensionsCfg}
+        findingCfgs={findingCfgs}
+      />
+      <div style={{ padding: '0.5em' }} />
+      <Stack
+        spacing={3}
+        direction='row'
       >
-        <Components
-          componentReferenceGroups={left}
-          isComponentsLoading={state.isLoading}
-          isComponentsError={state.error}
-          ocmRepo={ocmRepo}
-          extensionsCfg={extensionsCfg}
-          findingCfgs={findingCfgs}
-        />
-      </Box>
-      <Box
-        width='50%'
-      >
-        <Components
-          componentReferenceGroups={right}
-          isComponentsLoading={state.isLoading}
-          isComponentsError={state.error}
-          ocmRepo={ocmRepo}
-          extensionsCfg={extensionsCfg}
-          findingCfgs={findingCfgs}
-        />
-      </Box>
-    </Stack>
-  </Box>
+        <Box
+          sx={{
+            width: '50%'
+          }}
+        >
+          <Components
+            componentReferenceGroups={left}
+            isComponentsLoading={state.isLoading}
+            isComponentsError={state.error}
+            ocmRepo={ocmRepo}
+            extensionsCfg={extensionsCfg}
+            findingCfgs={findingCfgs}
+          />
+        </Box>
+        <Box
+          sx={{
+            width: '50%'
+          }}
+        >
+          <Components
+            componentReferenceGroups={right}
+            isComponentsLoading={state.isLoading}
+            isComponentsError={state.error}
+            ocmRepo={ocmRepo}
+            extensionsCfg={extensionsCfg}
+            findingCfgs={findingCfgs}
+          />
+        </Box>
+      </Stack>
+    </Box>
+  );
 })
 FetchDependenciesTab.displayName = 'FetchDependenciesTab'
 FetchDependenciesTab.propTypes = {
@@ -1601,48 +1662,55 @@ const SpecialComponentStatus = ({
 
   const versionsMatch = evaluateVersionMatch(deps.filter((dep) => dep.name !== component.name))
 
-  return <Stack
-    spacing={1}
-    direction='row'
-  >
-    <ExtraWideTooltip
-      title={<VersionOverview
-        component={component}
-        dependencies={deps.filter((dep) => !dep.disabled)}
-        colorOverride={'white'}
-      />}
-      arrow
+  return (
+    <Stack
+      spacing={1}
+      direction='row'
     >
-      <Box display='flex' alignItems='center' justifyContent='center'>
-        {versionsMatch ? (
-          <>
-            <Typography variant='body1'>Release Succeeded</Typography>
-            <div style={{ padding: '0.3em' }} />
-            <CheckCircleOutlineIcon color='success' fontSize='large' />
-          </>
-        ) : (
-          <>
-            <Typography variant='body1'>Release Pending</Typography>
-            <div style={{ padding: '0.3em' }} />
-            <WarningAmberIcon color='warning' fontSize='large' />
-          </>
-        )}
-      </Box>
-    </ExtraWideTooltip>
-    {
-      specialComponentFeature?.releasePipelineUrl && <Tooltip
-        title={'Jump to Release Pipeline'}
+      <ExtraWideTooltip
+        title={<VersionOverview
+          component={component}
+          dependencies={deps.filter((dep) => !dep.disabled)}
+          colorOverride={'white'}
+        />}
+        arrow
       >
-        <IconButton
-          component='a'
-          href={specialComponentFeature?.releasePipelineUrl}
-          target='_blank'
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+          {versionsMatch ? (
+            <>
+              <Typography variant='body1'>Release Succeeded</Typography>
+              <div style={{ padding: '0.3em' }} />
+              <CheckCircleOutlineIcon color='success' fontSize='large' />
+            </>
+          ) : (
+            <>
+              <Typography variant='body1'>Release Pending</Typography>
+              <div style={{ padding: '0.3em' }} />
+              <WarningAmberIcon color='warning' fontSize='large' />
+            </>
+          )}
+        </Box>
+      </ExtraWideTooltip>
+      {
+        specialComponentFeature?.releasePipelineUrl && <Tooltip
+          title={'Jump to Release Pipeline'}
         >
-          <LaunchIcon/>
-        </IconButton>
-      </Tooltip>
-    }
-  </Stack>
+          <IconButton
+            component='a'
+            href={specialComponentFeature?.releasePipelineUrl}
+            target='_blank'
+          >
+            <LaunchIcon/>
+          </IconButton>
+        </Tooltip>
+      }
+    </Stack>
+  );
 }
 SpecialComponentStatus.displayName = 'SpecialComponentStatus'
 SpecialComponentStatus.propTypes = {
@@ -1694,44 +1762,53 @@ export const ComponentChip = ({
   const worstEntriesCount = componentSummary.entries.filter((entry) => entry.value === worstEntry.value).length
 
   const IndicatorTooltipTitle = ({ summaries }) => {
-    return <Stack direction='column' spacing={1}>
-      {
-        summaries.map((summary) => {
-          const Indicator = categorisationValueToIndicator(summary.value)
+    return (
+      <Stack direction='column' spacing={1}>
+        {
+          summaries.map((summary) => {
+            const Indicator = categorisationValueToIndicator(summary.value)
 
-          const findingCfg = findingCfgForType({
-            findingType: summary.type,
-            findingCfgs: findingCfgs,
-          })
-          const categorisation = findCategorisationById({
-            id: summary.categorisation,
-            findingCfg: findingCfg,
-          })
-          const displayName = categorisation
-            ? categorisation.display_name
-            : summary.categorisation
+            const findingCfg = findingCfgForType({
+              findingType: summary.type,
+              findingCfgs: findingCfgs,
+            })
+            const categorisation = findCategorisationById({
+              id: summary.categorisation,
+              findingCfg: findingCfg,
+            })
+            const displayName = categorisation
+              ? categorisation.display_name
+              : summary.categorisation
 
-          return <Stack
-            key={summary.type}
-            direction='column'
-            spacing={1}
-          >
-            <Stack direction='row' spacing={1} key={summary.type + '_title'}>
-              <Indicator color={categorisationValueToColor(summary.value)} size='small'/>
-              <Box display='flex' alignItems='center' justifyContent='center'>
-                <Typography>{findingTypeToDisplayName(summary.type)}</Typography>
-              </Box>
-            </Stack>
-            <Stack direction='column' spacing={0} key={summary.type + '_body'}>
-              <Typography variant='caption'>Severity: {displayName}</Typography>
-              <Typography variant='caption'>Source: {summary.source}</Typography>
-              <Typography variant='caption'>ScanStatus: {summary.scanStatus}</Typography>
-            </Stack>
-            <Divider/>
-          </Stack>
-        })
-      }
-    </Stack>
+            return (
+              <Stack
+                key={summary.type}
+                direction='column'
+                spacing={1}
+              >
+                <Stack direction='row' spacing={1} key={summary.type + '_title'}>
+                  <Indicator color={categorisationValueToColor(summary.value)} size='small'/>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                    <Typography>{findingTypeToDisplayName(summary.type)}</Typography>
+                  </Box>
+                </Stack>
+                <Stack direction='column' spacing={0} key={summary.type + '_body'}>
+                  <Typography variant='caption'>Severity: {displayName}</Typography>
+                  <Typography variant='caption'>Source: {summary.source}</Typography>
+                  <Typography variant='caption'>ScanStatus: {summary.scanStatus}</Typography>
+                </Stack>
+                <Divider/>
+              </Stack>
+            );
+          })
+        }
+      </Stack>
+    );
   }
   IndicatorTooltipTitle.displayName = 'IndicatorTooltipTitle'
   IndicatorTooltipTitle.propTypes = {
@@ -1740,19 +1817,26 @@ export const ComponentChip = ({
 
   const Indicator = categorisationValueToIndicator(worstEntry.value)
 
-  return <Box display='flex' alignItems='center' justifyContent='center'>
-    <Tooltip
-      title={<IndicatorTooltipTitle summaries={componentSummary.entries.sort((left, right) => right.value - left.value)}/>}
-    >
-      <Badge
-        badgeContent={worstEntriesCount}
-        color='primary'
-        invisible={worstEntriesCount <= 1}
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+      <Tooltip
+        title={<IndicatorTooltipTitle summaries={componentSummary.entries.sort((left, right) => right.value - left.value)}/>}
       >
-        <Indicator color={categorisationValueToColor(worstEntry.value)}/>
-      </Badge>
-    </Tooltip>
-  </Box>
+        <Badge
+          badgeContent={worstEntriesCount}
+          color='primary'
+          invisible={worstEntriesCount <= 1}
+        >
+          <Indicator color={categorisationValueToColor(worstEntry.value)}/>
+        </Badge>
+      </Tooltip>
+    </Box>
+  );
 }
 ComponentChip.displayName = 'ComponentChip'
 ComponentChip.propTypes = {
@@ -1776,31 +1860,33 @@ const IssueChip = ({
   const name = encodeURIComponent(`${ocmNode.component.name}:${ocmNode.artefact.name}`)
   const repoUrlForArtefact = `https://${repoUrl}/issues?q=${issueState}+${name}`
 
-  return <Tooltip
-    title={
-      <List>
-        <TriggerComplianceToolButton
-          ocmNodes={ocmNodes}
-          service={COMPLIANCE_TOOLS.ISSUE_REPLICATOR}
+  return (
+    <Tooltip
+      title={
+        <List>
+          <TriggerComplianceToolButton
+            ocmNodes={ocmNodes}
+            service={COMPLIANCE_TOOLS.ISSUE_REPLICATOR}
+          />
+          <ExternalReferenceButton
+            href={repoUrlForArtefact}
+            text='View on GitHub'
+          />
+        </List>
+      }
+    >
+      <Grid>
+        <Chip
+          color='default'
+          label='Issues'
+          variant='outlined'
+          size='small'
+          icon={<UnfoldMoreIcon/>}
+          clickable={false}
         />
-        <ExternalReferenceButton
-          href={repoUrlForArtefact}
-          text='View on GitHub'
-        />
-      </List>
-    }
-  >
-    <Grid item>
-      <Chip
-        color='default'
-        label='Issues'
-        variant='outlined'
-        size='small'
-        icon={<UnfoldMoreIcon/>}
-        clickable={false}
-      />
-    </Grid>
-  </Tooltip>
+      </Grid>
+    </Tooltip>
+  );
 }
 IssueChip.displayName = 'IssueChip'
 IssueChip.propTypes = {
@@ -1836,27 +1922,34 @@ const IconCell = ({
   const Icon = ArtefactTypeIcons[artefact.type] ?
     ArtefactTypeIcons[artefact.type] : defaultIcon
 
-  return <TableCell component='th' scope='row'>
-    <Tooltip
-      title={
-        <Typography
-          variant='inherit'
+  return (
+    <TableCell component='th' scope='row'>
+      <Tooltip
+        title={
+          <Typography
+            variant='inherit'
+            sx={{
+              whiteSpace: 'pre-wrap',
+              maxWidth: 'none',
+            }}
+          >
+            {artefactTypeFriendlyName({artefactType: artefact.type})}
+          </Typography>
+        }
+        placement='top-start'
+        describeChild
+      >
+        <Box
           sx={{
-            whiteSpace: 'pre-wrap',
-            maxWidth: 'none',
-          }}
-        >
-          {artefactTypeFriendlyName({artefactType: artefact.type})}
-        </Typography>
-      }
-      placement='top-start'
-      describeChild
-    >
-      <Box display='flex' alignItems='center' justifyContent='center'>
-        {Icon}
-      </Box>
-    </Tooltip>
-  </TableCell>
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+          {Icon}
+        </Box>
+      </Tooltip>
+    </TableCell>
+  );
 }
 IconCell.displayName = 'IconCell'
 IconCell.propTypes = {
@@ -1919,67 +2012,69 @@ const ComplianceCell = ({
 
   const manuallyRescorableFindingTypes = rescorableFindingTypes({findingCfgs})
 
-  if (isSummaryError || state.error) return <TableCell>
-    {
-      mountRescoring && <RescoringModal
-        ocmNodes={ocmNodes}
-        ocmRepo={ocmRepo}
-        handleClose={handleRescoringClose}
-        fetchComplianceSummary={fetchComplianceSummary}
-        initialFindingType={manuallyRescorableFindingTypes[0]} // we checked there is at least one finding type
-        findingCfgs={findingCfgs}
-      />
-    }
-    {
-      mountComplianceTool && <ComplianceToolPopover
-        popoverProps={{component: ocmNode.component}}
-        handleClose={(e) => {
-          e.stopPropagation()
-          setMountComplianceTool(false)
-        }}
-      />
-    }
-    <Grid
-      container
-      direction='row-reverse'
-      spacing={1}
-    >
-      <Tooltip
-        title={
-          <List>
-            {
-              manuallyRescorableFindingTypes.length > 0 && <RescoringButton
-                setMountRescoring={setMountRescoring}
-                title={'Rescoring'}
-              />
-            }
-            <ListItemButton onClick={(e) => {
-              e.stopPropagation()
-              setMountComplianceTool(prev => !prev)
-            }}>
-              <ListItemAvatar>
-                <Avatar>
-                  <PublishedWithChangesIcon/>
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={'Schedule Compliance Tool'}/>
-            </ListItemButton>
-          </List>
-        }
+  if (isSummaryError || state.error) return (
+    <TableCell>
+      {
+        mountRescoring && <RescoringModal
+          ocmNodes={ocmNodes}
+          ocmRepo={ocmRepo}
+          handleClose={handleRescoringClose}
+          fetchComplianceSummary={fetchComplianceSummary}
+          initialFindingType={manuallyRescorableFindingTypes[0]} // we checked there is at least one finding type
+          findingCfgs={findingCfgs}
+        />
+      }
+      {
+        mountComplianceTool && <ComplianceToolPopover
+          popoverProps={{component: ocmNode.component}}
+          handleClose={(e) => {
+            e.stopPropagation()
+            setMountComplianceTool(false)
+          }}
+        />
+      }
+      <Grid
+        container
+        direction='row-reverse'
+        spacing={1}
       >
-        <Grid item>
-          <Chip
-            color='critical'
-            label='Fetch Error'
-            variant='outlined'
-            size='small'
-            icon={<UnfoldMoreIcon/>}
-            clickable={false}
-          />
-        </Grid>
-      </Tooltip>
-    </Grid>
-  </TableCell>
+        <Tooltip
+          title={
+            <List>
+              {
+                manuallyRescorableFindingTypes.length > 0 && <RescoringButton
+                  setMountRescoring={setMountRescoring}
+                  title={'Rescoring'}
+                />
+              }
+              <ListItemButton onClick={(e) => {
+                e.stopPropagation()
+                setMountComplianceTool(prev => !prev)
+              }}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <PublishedWithChangesIcon/>
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={'Schedule Compliance Tool'}/>
+              </ListItemButton>
+            </List>
+          }
+        >
+          <Grid>
+            <Chip
+              color='critical'
+              label='Fetch Error'
+              variant='outlined'
+              size='small'
+              icon={<UnfoldMoreIcon/>}
+              clickable={false}
+            />
+          </Grid>
+        </Tooltip>
+      </Grid>
+    </TableCell>
+  );
 
   const getCategorisation = (findingType) => {
     const findingCfg = findingCfgForType({findingType, findingCfgs})
@@ -2249,32 +2344,35 @@ const ArtefactCell = ({
   }
 
   if (artefact.access.type === 'localBlob/v1') {
-    return <TableCell>
-      <Box
-        display='flex'
-        flexDirection='row'
-        alignItems='center'
-      >
-        <ExtraIdentityHover
-          displayName={artefactDisplayName}
-          extraIdentity={artefact.extraIdentity}
-        />
-        <div style={{ padding: '0.3em' }} />
-        <Tooltip title='Download'>
-          <span>
-            <a
-              href={downloadUrl}
-              target='_blank'
-              rel='noreferrer'
-            >
-              <IconButton size='small'>
-                <CloudDownloadIcon/>
-              </IconButton>
-            </a>
-          </span>
-        </Tooltip>
-      </Box>
-    </TableCell>
+    return (
+      <TableCell>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}>
+          <ExtraIdentityHover
+            displayName={artefactDisplayName}
+            extraIdentity={artefact.extraIdentity}
+          />
+          <div style={{ padding: '0.3em' }} />
+          <Tooltip title='Download'>
+            <span>
+              <a
+                href={downloadUrl}
+                target='_blank'
+                rel='noreferrer'
+              >
+                <IconButton size='small'>
+                  <CloudDownloadIcon/>
+                </IconButton>
+              </a>
+            </span>
+          </Tooltip>
+        </Box>
+      </TableCell>
+    );
   }
 
   return <TableCell>
@@ -2321,24 +2419,28 @@ const ExternalReferenceButton = ({
   href,
   text,
 }) => {
-  return <ListItemButton
-    onClick={(e) => e.stopPropagation()}
-    component='a'
-    href={href}
-    target='_blank'
-    divider
-  >
-    <ListItemAvatar>
-      <Avatar>
-        <OpenInNewIcon/>
-      </Avatar>
-    </ListItemAvatar>
-    <ListItemText
-      primary={text}
-      secondary={new URL(href).host}
-      secondaryTypographyProps={{ color: 'lightgrey' }}
-    />
-  </ListItemButton>
+  return (
+    <ListItemButton
+      onClick={(e) => e.stopPropagation()}
+      component='a'
+      href={href}
+      target='_blank'
+      divider
+    >
+      <ListItemAvatar>
+        <Avatar>
+          <OpenInNewIcon/>
+        </Avatar>
+      </ListItemAvatar>
+      <ListItemText
+        primary={text}
+        secondary={new URL(href).host}
+        slotProps={{
+          secondary: { color: 'lightgrey' }
+        }}
+      />
+    </ListItemButton>
+  );
 }
 ExternalReferenceButton.displayName = 'ExternalReferenceButton'
 ExternalReferenceButton.propTypes = {
@@ -2382,72 +2484,74 @@ const RescoringCell = ({
     return `${title} ${capitalise(categorisation.display_name)}`
   }
 
-  return <Grid item onClick={(e) => e.stopPropagation()}>
-    {
-      mountRescoring && <RescoringModal
-        ocmNodes={ocmNodes}
-        ocmRepo={ocmRepo}
-        handleClose={handleRescoringClose}
-        fetchComplianceSummary={fetchComplianceSummary}
-        initialFindingType={type}
-        findingCfgs={findingCfgs}
-      />
-    }
-    <Tooltip
-      title={
-        <Stack>
-          <List>
-            <TriggerComplianceToolButton
-              ocmNodes={ocmNodes}
-              service={datasource}
-            />
-            <RescoringButton
-              setMountRescoring={setMountRescoring}
-              title={'Rescoring'}
-            />
-            {
-              datasource === datasources.BDBA && lastScan?.data.report_url && <ExternalReferenceButton
-                href={lastScan?.data.report_url}
-                text='View in BDBA'
-              />
-            }
-            {
-              datasource === datasources.BLACKDUCK && lastScan?.data?.hrefs?.map(href => <ExternalReferenceButton
-                key={href}
-                href={href}
-                text='View in BlackDuck'
-              />)
-            }
-          </List>
-          {
-            isLoading ? <Skeleton/> : <Typography variant='inherit'>
-              {
-                lastScanTimestampStr(lastScan)
-              }
-            </Typography>
-          }
-        </Stack>
-      }
-    >
+  return (
+    <Grid onClick={(e) => e.stopPropagation()}>
       {
-        lastScan || isLoading ? <Chip
-          color={categorisationValueToColor(categorisation.value)}
-          label={chipLabel()}
-          variant='outlined'
-          size='small'
-          icon={<UnfoldMoreIcon/>}
-          clickable={false}
-        /> : <Chip
-          color='default'
-          label={`No ${title} Scan`}
-          variant='outlined'
-          size='small'
-          icon={<UnfoldMoreIcon/>}
-          clickable={false}
+        mountRescoring && <RescoringModal
+          ocmNodes={ocmNodes}
+          ocmRepo={ocmRepo}
+          handleClose={handleRescoringClose}
+          fetchComplianceSummary={fetchComplianceSummary}
+          initialFindingType={type}
+          findingCfgs={findingCfgs}
         />
       }
-    </Tooltip>
-  </Grid>
+      <Tooltip
+        title={
+          <Stack>
+            <List>
+              <TriggerComplianceToolButton
+                ocmNodes={ocmNodes}
+                service={datasource}
+              />
+              <RescoringButton
+                setMountRescoring={setMountRescoring}
+                title={'Rescoring'}
+              />
+              {
+                datasource === datasources.BDBA && lastScan?.data.report_url && <ExternalReferenceButton
+                  href={lastScan?.data.report_url}
+                  text='View in BDBA'
+                />
+              }
+              {
+                datasource === datasources.BLACKDUCK && lastScan?.data?.hrefs?.map(href => <ExternalReferenceButton
+                  key={href}
+                  href={href}
+                  text='View in BlackDuck'
+                />)
+              }
+            </List>
+            {
+              isLoading ? <Skeleton/> : <Typography variant='inherit'>
+                {
+                  lastScanTimestampStr(lastScan)
+                }
+              </Typography>
+            }
+          </Stack>
+        }
+      >
+        {
+          lastScan || isLoading ? <Chip
+            color={categorisationValueToColor(categorisation.value)}
+            label={chipLabel()}
+            variant='outlined'
+            size='small'
+            icon={<UnfoldMoreIcon/>}
+            clickable={false}
+          /> : <Chip
+            color='default'
+            label={`No ${title} Scan`}
+            variant='outlined'
+            size='small'
+            icon={<UnfoldMoreIcon/>}
+            clickable={false}
+          />
+        }
+      </Tooltip>
+    </Grid>
+  );
 }
 RescoringCell.displayName = 'RescoringCell'
 RescoringCell.propTypes = {

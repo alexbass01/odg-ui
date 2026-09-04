@@ -109,7 +109,7 @@ export const filterListForType = (list, type) => {
 }
 
 export const toYamlString = (obj) => {
-  return yaml.dump(obj).replace(/^\s+|\s+$/g,'')
+  return yaml.dump(obj).replace(/^\s+|\s+$/g,'');
 }
 
 export const camelCaseToDisplayText = (camelCase) => {
@@ -126,7 +126,7 @@ export const dashCaseToDisplayText = (dashCase) => {
 export const snakeToCamelCase = (snakeCase) => {
   return snakeCase.toLowerCase().replace(/([-_][a-z])/g, (group) => {
     return group.toUpperCase().replace('-', '').replace('_', '')
-  })
+  });
 }
 
 export const capitalise = (word) => {
@@ -139,8 +139,8 @@ export const pluralise = (word, count, verbSingular, verbPlural) => {
     return word
   }
 
-  if (verbPlural) return `${word.replace(/y$/, 'ie')}${word.endsWith('s') ? '' : 's'} ${verbPlural}`
-  return `${word.replace(/y$/, 'ie')}${word.endsWith('s') ? '' : 's'}`
+  if (verbPlural) return `${word.replace(/y$/, 'ie')}${word.endsWith('s') ? '' : 's'} ${verbPlural}`;
+  return `${word.replace(/y$/, 'ie')}${word.endsWith('s') ? '' : 's'}`;
 }
 
 

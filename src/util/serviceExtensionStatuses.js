@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material'
 import { tableCellClasses } from '@mui/material/TableCell'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined'
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'

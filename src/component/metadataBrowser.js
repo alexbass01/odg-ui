@@ -25,9 +25,9 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import SearchIcon from '@mui/icons-material/Search'
 
@@ -49,13 +49,13 @@ const categorisationField = 'data.severity'
 // normalizes whitespace to make term matching/removal predictable.
 // example: normalizeSpaces('  foo   bar \n baz  ') -> 'foo bar baz'
 const normalizeSpaces = (s) => {
-  return String(s || '').replace(/\s+/g, ' ').trim()
+  return String(s || '').replace(/\s+/g, ' ').trim();
 }
 
 // escapes a string so it can be safely embedded into a RegExp pattern.
 // example: escapeRegExp('a.b*') -> 'a\\.b\\*'
 const escapeRegExp = (str) => {
-  return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 // quotes a value if it contains whitespace or quotes, so it stays one DSL token.
@@ -176,7 +176,12 @@ const HelpPopover = ({ anchorEl, onClose, examples = [], onPickExample }) => {
           Query DSL — Syntax & Examples
         </Typography>
 
-        <Typography variant='body2' color='text.secondary' sx={{ mb: 1 }}>
+        <Typography
+          variant='body2'
+          sx={{
+            color: 'text.secondary',
+            mb: 1
+          }}>
           Short form: <b>field:value</b> · Exclude: <b>-field:value</b> · Wildcard: <b>*</b>
         </Typography>
 
@@ -246,14 +251,20 @@ const HelpPopover = ({ anchorEl, onClose, examples = [], onPickExample }) => {
               ))}
             </Stack>
 
-            <Typography variant='caption' color='text.secondary' sx={{ mt: 1, display: 'block' }}>
+            <Typography
+              variant='caption'
+              sx={{
+                color: 'text.secondary',
+                mt: 1,
+                display: 'block'
+              }}>
               Tip: You can edit after inserting. Use <b>Ctrl/Cmd + Enter</b> to run.
             </Typography>
           </>
         )}
       </Box>
     </Popover>
-  )
+  );
 }
 HelpPopover.propTypes = {
   anchorEl: PropTypes.any,
@@ -558,7 +569,13 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
 
     return (
       <Stack spacing={0.5} sx={{ minWidth: 260 }}>
-        <Stack direction='row' spacing={0.75} alignItems='center' sx={{ flexWrap: 'wrap' }}>
+        <Stack
+          direction='row'
+          spacing={0.75}
+          sx={{
+            alignItems: 'center',
+            flexWrap: 'wrap'
+          }}>
           {categorisationId ? (
             <Chip
               size='small'
@@ -590,14 +607,16 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
         </Stack>
 
         {(pkg || pkgVer) ? (
-          <Typography variant='caption' color='text.secondary' noWrap>
+          <Typography variant='caption' noWrap sx={{
+            color: 'text.secondary'
+          }}>
             {pkg ? `pkg: ${pkg}` : ''}
             {pkg && pkgVer ? ' · ' : ''}
             {pkgVer ? `ver: ${pkgVer}` : ''}
           </Typography>
         ) : null}
       </Stack>
-    )
+    );
   }, [getRowCategorisation])
 
 
@@ -634,10 +653,17 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
     <Stack spacing={2}>
       <Paper sx={{ p: 2 }}>
         <Stack spacing={1}>
-          <Stack direction='row' alignItems='center' justifyContent='space-between'>
+          <Stack
+            direction='row'
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}>
             <Typography variant='subtitle2'>Search</Typography>
 
-            <Stack direction='row' spacing={1} alignItems='center'>
+            <Stack direction='row' spacing={1} sx={{
+              alignItems: 'center'
+            }}>
               <Tooltip title='Help'>
                 <IconButton onClick={(e) => setHelpAnchor(e.currentTarget)}>
                   <HelpOutlineIcon />
@@ -667,11 +693,23 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
             <AccordionDetails>
               <Stack spacing={2}>
                 <Box>
-                  <Typography variant='caption' color='text.secondary' sx={{ display: 'block', mb: 1 }}>
+                  <Typography
+                    variant='caption'
+                    sx={{
+                      color: 'text.secondary',
+                      display: 'block',
+                      mb: 1
+                    }}>
                     Scope (writes <b>ocm:</b> into the query)
                   </Typography>
 
-                  <Stack direction='row' spacing={1} sx={{ flexWrap: 'wrap' }} alignItems='center'>
+                  <Stack
+                    direction='row'
+                    spacing={1}
+                    sx={{
+                      alignItems: 'center',
+                      flexWrap: 'wrap'
+                    }}>
                     <FormControlLabel
                       control={
                         <Switch
@@ -723,7 +761,9 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                       label='Include dependencies'
                     />
                     {hasScope && !hasScopeVersion && (
-                      <Typography variant='caption' color='text.secondary'>
+                      <Typography variant='caption' sx={{
+                        color: 'text.secondary'
+                      }}>
                         Include dependencies requires an OCM scope with explicit version.
                       </Typography>
                     )}
@@ -738,7 +778,13 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
 
                 <Divider />
                 <Box>
-                  <Typography variant='caption' color='text.secondary' sx={{ display: 'block', mb: 1 }}>
+                  <Typography
+                    variant='caption'
+                    sx={{
+                      color: 'text.secondary',
+                      display: 'block',
+                      mb: 1
+                    }}>
                     Finding type
                   </Typography>
 
@@ -773,22 +819,34 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                 <Divider />
 
                 <Box>
-                  <Typography variant='caption' color='text.secondary' sx={{ display: 'block', mb: 1 }}>
+                  <Typography
+                    variant='caption'
+                    sx={{
+                      color: 'text.secondary',
+                      display: 'block',
+                      mb: 1
+                    }}>
                     Severity / categorisation (depends on selected finding type)
                   </Typography>
 
                   {!singleSelectedType ? (
                     hasMultipleSelectedTypes ? (
-                      <Typography variant='body2' color='text.secondary'>
+                      <Typography variant='body2' sx={{
+                        color: 'text.secondary'
+                      }}>
                         Severity filter is only available when exactly one finding type is selected.
                       </Typography>
                     ) : (
-                      <Typography variant='body2' color='text.secondary'>
+                      <Typography variant='body2' sx={{
+                        color: 'text.secondary'
+                      }}>
                         Select a finding type to see its categorisations.
                       </Typography>
                     )
                   ) : availableCategorisations.length === 0 ? (
-                    <Typography variant='body2' color='text.secondary'>
+                    <Typography variant='body2' sx={{
+                      color: 'text.secondary'
+                    }}>
                       No categorisations available for this type.
                     </Typography>
                   ) : (
@@ -825,7 +883,13 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                     </Stack>
                   )}
 
-                  <Typography variant='caption' color='text.secondary' sx={{ mt: 1, display: 'block' }}>
+                  <Typography
+                    variant='caption'
+                    sx={{
+                      color: 'text.secondary',
+                      mt: 1,
+                      display: 'block'
+                    }}>
                     Writes terms like <b>{categorisationField}:LOW</b> into the query.
                   </Typography>
                 </Box>
@@ -833,7 +897,13 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                 <Divider />
 
                 <Box>
-                  <Typography variant='caption' color='text.secondary' sx={{ display: 'block', mb: 1 }}>
+                  <Typography
+                    variant='caption'
+                    sx={{
+                      color: 'text.secondary',
+                      display: 'block',
+                      mb: 1
+                    }}>
                     Templates
                   </Typography>
 
@@ -859,15 +929,17 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                 multiline
                 fullWidth
                 placeholder={`type:finding/vulnerability ${categorisationField}:HIGH data.cve:CVE-2024-1234`}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
                 onKeyDown={(e) => {
                   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && !loading) run({ resetPaging: true })
+                }}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }
                 }}
               />
 
@@ -881,14 +953,22 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                 <Alert severity='warning'>Unknown fields: {lint.unknown.join(', ')}</Alert>
               )}
 
-              <Typography variant='caption' color='text.secondary'>
+              <Typography variant='caption' sx={{
+                color: 'text.secondary'
+              }}>
                 Tip: Use <b>*</b> wildcards (e.g. <b>data.package_name:*openssl*</b>). Exclude with <b>-</b> (e.g. <b>-type:finding/vulnerability</b>).
                 Run: <b>Ctrl/Cmd + Enter</b>.
               </Typography>
             </Stack>
           </Box>
 
-          <Stack direction='row' spacing={1} alignItems='center' sx={{ mt: 1 }}>
+          <Stack
+            direction='row'
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              mt: 1
+            }}>
             <Button variant='contained' onClick={() => run({ resetPaging: true })} disabled={loading}>
               Run
             </Button>
@@ -939,7 +1019,9 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
         </Typography>
 
         {!rows ? (
-          <Typography variant='body2' color='text.secondary'>
+          <Typography variant='body2' sx={{
+            color: 'text.secondary'
+          }}>
             No query executed yet.
           </Typography>
         ) : rows.length === 0 ? (
@@ -987,7 +1069,9 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                     <TableCell>{componentName || '—'}</TableCell>
                     <TableCell>{componentVersion || '—'}</TableCell>
                     <TableCell>
-                      <Stack direction='row' spacing={1} alignItems='center'>
+                      <Stack direction='row' spacing={1} sx={{
+                        alignItems: 'center'
+                      }}>
                         {bomTo ? (
                           <Link component={RouterLink} to={bomTo} underline='hover'>
                             {artefactName}
@@ -1024,7 +1108,7 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                     <TableCell>{renderDetails(r)}</TableCell>
                     <TableCell>{datasource}</TableCell>
                   </TableRow>
-                )
+                );
               })}
             </TableBody>
           </Table>
@@ -1042,7 +1126,7 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
         }}
       />
     </Stack>
-  )
+  );
 }
 
 MetadataBrowserTab.propTypes = {

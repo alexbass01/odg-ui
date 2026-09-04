@@ -26,105 +26,108 @@ const SnackbarWithDetails = React.forwardRef((props, ref) => {
 
   const theme = useTheme()
 
-  return <SnackbarContent ref={ref}>
-    <Box
-      bgcolor={theme.palette.lightRed.main}
-      borderRadius={1}
-      boxShadow={1}
-      width='60vw'
-    >
+  return (
+    <SnackbarContent ref={ref}>
       <Box
-        justifyContent='center'
-        alignItems='center'
-        display='flex'
-        flexDirection='row'
-        paddingLeft={'0.5em'}
-        paddingRight={'0.5em'}
-        paddingTop={'0.1em'}
-        paddingBottom={'0.1em'}
-      >
-        {
-          (details !== undefined) ? <IconButton onClick={() => setExpanded(!expanded)}>
-            {
-              expanded ? <ExpandLessIcon color='snackbarWhite'/> : <ExpandMoreIcon color='snackbarWhite'/>
-            }
-          </IconButton> : <IconButton disableRipple
+        sx={{
+          bgcolor: theme.palette.lightRed.main,
+          borderRadius: 1,
+          boxShadow: 1,
+          width: '60vw'
+        }}>
+        <Box
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            paddingLeft: '0.5em',
+            paddingRight: '0.5em',
+            paddingTop: '0.1em',
+            paddingBottom: '0.1em'
+          }}>
+          {
+            (details !== undefined) ? <IconButton onClick={() => setExpanded(!expanded)}>
+              {
+                expanded ? <ExpandLessIcon color='snackbarWhite'/> : <ExpandMoreIcon color='snackbarWhite'/>
+              }
+            </IconButton> : <IconButton disableRipple
+              sx={{
+                '&:hover': {
+                  cursor: 'default',
+                },
+              }}
+            >
+              <ErrorIcon/>
+            </IconButton>
+          }
+          <Grid
+            container
             sx={{
-              '&:hover': {
-                cursor: 'default',
-              },
-            }}
-          >
-            <ErrorIcon/>
-          </IconButton>
-        }
-        <Grid
-          container
-          justifyContent='center'
-          alignItems='center'
-          display='flex'
-          flexDirection='row'
-          paddingLeft={'0.5em'}
-        >
-          <Grid
-            item
-            xs={10}
-          >
-            <Typography variant='body2' color='white'>{message}</Typography>
-          </Grid>
-          <Grid
-            item
-            xs={2}
-            display='flex'
-            justifyContent='right'
-          >
-            {
-              (onRetry !== undefined) && <Button
-                onClick={() => {
-                  closeSnackbar(id)
-                  onRetry()
-                }}
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'row',
+              paddingLeft: '0.5em'
+            }}>
+            <Grid size={10}>
+              <Typography variant='body2' color='white'>{message}</Typography>
+            </Grid>
+            <Grid
+              size={2}
+              sx={{
+                display: 'flex',
+                justifyContent: 'right'
+              }}>
+              {
+                (onRetry !== undefined) && <Button
+                  onClick={() => {
+                    closeSnackbar(id)
+                    onRetry()
+                  }}
+                  color='snackbarWhite'
+                >
+                  Retry
+                </Button>
+              }
+              <div style={{ padding: '0.3em' }} />
+              <Button
+                onClick={() => closeSnackbar(id)}
                 color='snackbarWhite'
               >
-                Retry
+                Dismiss
               </Button>
-            }
-            <div style={{ padding: '0.3em' }} />
-            <Button
-              onClick={() => closeSnackbar(id)}
-              color='snackbarWhite'
-            >
-              Dismiss
-            </Button>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
+        {
+          (details !== undefined) && <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Box
+              sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                paddingLeft: '0.5em',
+                paddingRight: '0.5em',
+                paddingTop: '0.1em',
+                paddingBottom: '0.1em'
+              }}>
+              <Divider flexItem/>
+              <div style={{ padding: '0.3em' }} />
+              <Typography
+                variant='body2'
+                color='white'
+                gutterBottom
+              >
+                {details}
+              </Typography>
+            </Box>
+          </Collapse>
+        }
       </Box>
-      {
-        (details !== undefined) && <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Box
-            justifyContent='center'
-            alignItems='center'
-            display='flex'
-            flexDirection='column'
-            paddingLeft={'0.5em'}
-            paddingRight={'0.5em'}
-            paddingTop={'0.1em'}
-            paddingBottom={'0.1em'}
-          >
-            <Divider flexItem/>
-            <div style={{ padding: '0.3em' }} />
-            <Typography
-              variant='body2'
-              color='white'
-              gutterBottom
-            >
-              {details}
-            </Typography>
-          </Box>
-        </Collapse>
-      }
-    </Box>
-  </SnackbarContent>
+    </SnackbarContent>
+  );
 })
 SnackbarWithDetails.displayName = 'SnackbarWithDetails'
 SnackbarWithDetails.propTypes = {

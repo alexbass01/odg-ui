@@ -79,7 +79,9 @@ const Title = () => {
       <Tooltip
         title={
           <React.Fragment>
-            <Typography color='inherit'>
+            <Typography sx={{
+              color: 'inherit'
+            }}>
               {'I have no joke for you today :('}
             </Typography>
           </React.Fragment>
@@ -92,26 +94,34 @@ const Title = () => {
           }
         </Typography>
       </Tooltip>
-    )
+    );
   }
 
   return (
     <Tooltip
       title={
         <>
-          <Typography color='inherit'>{'Here is a joke for you :)'}</Typography>
+          <Typography sx={{
+            color: 'inherit'
+          }}>{'Here is a joke for you :)'}</Typography>
           {joke.type === 'single' && (
-            <Typography variant='caption' color='inherit'>
+            <Typography variant='caption' sx={{
+              color: 'inherit'
+            }}>
               {joke.joke}
             </Typography>
           )}
           {joke.type === 'twopart' && (
             <>
-              <Typography variant='caption' color='inherit'>
+              <Typography variant='caption' sx={{
+                color: 'inherit'
+              }}>
                 {joke.setup}
               </Typography>
               <br />
-              <Typography variant='caption' color='inherit'>
+              <Typography variant='caption' sx={{
+                color: 'inherit'
+              }}>
                 {joke.delivery}
               </Typography>
             </>
@@ -128,7 +138,7 @@ const Title = () => {
         }
       </Typography>
     </Tooltip>
-  )
+  );
 }
 
 const drawerWidth = 240

@@ -1,21 +1,21 @@
 import React from 'react'
 
-import { CircularProgress, Grid } from '@mui/material'
+import { CircularProgress, Stack } from '@mui/material'
 
 import PropType from 'prop-types'
 
 const CenteredSpinner = (params) => {
   return (
-    <Grid
-      container
-      justifyContent='center'
-      alignItems='center'
+    <Stack
       direction='column'
       {...params}
-    >
+      sx={[{
+        justifyContent: 'center',
+        alignItems: 'center'
+      }, ...(Array.isArray(params.sx) ? params.sx : [params.sx])]}>
       <CircularProgress color='inherit' disableShrink size='3.5em' />
-    </Grid>
-  )
+    </Stack>
+  );
 }
 
 CenteredSpinner.propType = {

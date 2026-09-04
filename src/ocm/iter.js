@@ -77,106 +77,117 @@ const OcmNodeDetails = ({
   ocmRepo,
   iconProps,
 }) => {
-  return <NoMaxWidthTooltip
-    title={<Stack direction='column' spacing={1} onBlur={(e) => e.stopPropagation()}>
-      <Box>
-        <Typography>Component</Typography>
-        <Stack spacing={2} direction='row' padding={2}>
-          <Box
-            display='flex'
-            alignItems='center'
-          >
-            <Link
-              color='inherit'
-              href={`#${componentPathQuery({
-                name: ocmNode.component.name,
-                version: ocmNode.component.version,
-                view: 'bom',
-                ocmRepo: ocmRepo,
-              })}`}
-              variant='body2'
-              target='_blank'
-            >
-              {ocmNode.component.name}
-            </Link>
-          </Box>
-          <CopyOnClickChip
-            value={ocmNode.component.version}
-            label={trimLongString(ocmNode.component.version, 12)}
-            chipProps={{
-              variant: 'filled',
-              sx: {
-                '& .MuiChip-label': {
-                  color: 'white'
+  return (
+    <NoMaxWidthTooltip
+      title={<Stack direction='column' spacing={1} onBlur={(e) => e.stopPropagation()}>
+        <Box>
+          <Typography>Component</Typography>
+          <Stack spacing={2} direction='row' sx={{
+            padding: 2
+          }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+              <Link
+                color='inherit'
+                href={`#${componentPathQuery({
+                  name: ocmNode.component.name,
+                  version: ocmNode.component.version,
+                  view: 'bom',
+                  ocmRepo: ocmRepo,
+                })}`}
+                variant='body2'
+                target='_blank'
+              >
+                {ocmNode.component.name}
+              </Link>
+            </Box>
+            <CopyOnClickChip
+              value={ocmNode.component.version}
+              label={trimLongString(ocmNode.component.version, 12)}
+              chipProps={{
+                variant: 'filled',
+                sx: {
+                  '& .MuiChip-label': {
+                    color: 'white'
+                  }
                 }
-              }
-            }}
-          />
-        </Stack>
-      </Box>
-      <Divider/>
-      <Box>
-        <Typography>Artefact</Typography>
-        <Stack spacing={2} direction='row' padding={2}>
-          <Box
-            display='flex'
-            alignItems='center'
-          >
-            <Typography variant='body2'>{ocmNode.artefact.name}</Typography>
-          </Box>
-          <CopyOnClickChip
-            value={ocmNode.artefact.version}
-            chipProps={{
-              variant: 'filled',
-              sx: {
-                '& .MuiChip-label': {
-                  color: 'white'
+              }}
+            />
+          </Stack>
+        </Box>
+        <Divider/>
+        <Box>
+          <Typography>Artefact</Typography>
+          <Stack spacing={2} direction='row' sx={{
+            padding: 2
+          }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+              <Typography variant='body2'>{ocmNode.artefact.name}</Typography>
+            </Box>
+            <CopyOnClickChip
+              value={ocmNode.artefact.version}
+              chipProps={{
+                variant: 'filled',
+                sx: {
+                  '& .MuiChip-label': {
+                    color: 'white'
+                  }
                 }
-              }
-            }}
-          />
-        </Stack>
-        <Stack spacing={2} direction='row' padding={2}>
-          <Box
-            display='flex'
-            alignItems='center'
-          >
-            <Typography variant='body2'>Kind</Typography>
-          </Box>
-          <CopyOnClickChip
-            value={ocmNode.artefactKind}
-            chipProps={{
-              variant: 'filled',
-              sx: {
-                '& .MuiChip-label': {
-                  color: 'white'
+              }}
+            />
+          </Stack>
+          <Stack spacing={2} direction='row' sx={{
+            padding: 2
+          }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+              <Typography variant='body2'>Kind</Typography>
+            </Box>
+            <CopyOnClickChip
+              value={ocmNode.artefactKind}
+              chipProps={{
+                variant: 'filled',
+                sx: {
+                  '& .MuiChip-label': {
+                    color: 'white'
+                  }
                 }
-              }
-            }}
-            message='Artefact Kind copied!'
-          />
-        </Stack>
-      </Box>
-      {
-        Object.keys(ocmNode.artefact.extraIdentity).length > 0 && <Divider/>
-      }
-      {
-        Object.keys(ocmNode.artefact.extraIdentity).length > 0 && <Stack
-          direction='column'
-          spacing={1}
-        >
-          <Typography>Artefact Extra Identity</Typography>
-          <MultilineTextViewer
-            text={toYamlString(ocmNode.artefact.extraIdentity)}
-          />
-        </Stack>
-      }
-    </Stack>}
-  >
-    <div style={{ display: 'flex', margin: '0.4rem' }}>
-      <InfoOutlinedIcon fontSize='small' {...iconProps}/>
-    </div>
-  </NoMaxWidthTooltip>
+              }}
+              message='Artefact Kind copied!'
+            />
+          </Stack>
+        </Box>
+        {
+          Object.keys(ocmNode.artefact.extraIdentity).length > 0 && <Divider/>
+        }
+        {
+          Object.keys(ocmNode.artefact.extraIdentity).length > 0 && <Stack
+            direction='column'
+            spacing={1}
+          >
+            <Typography>Artefact Extra Identity</Typography>
+            <MultilineTextViewer
+              text={toYamlString(ocmNode.artefact.extraIdentity)}
+            />
+          </Stack>
+        }
+      </Stack>}
+    >
+      <div style={{ display: 'flex', margin: '0.4rem' }}>
+        <InfoOutlinedIcon fontSize='small' {...iconProps}/>
+      </div>
+    </NoMaxWidthTooltip>
+  );
 }
 OcmNodeDetails.displayName = 'OcmNodeDetails'
 OcmNodeDetails.propTypes = {

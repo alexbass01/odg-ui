@@ -34,9 +34,16 @@ const GroupedSection = ({ groupKey, items, renderItem }) => {
       >
         <ListItemText
           primary={groupKey}
-          primaryTypographyProps={{ variant: 'body2', fontWeight: 'bold' }}
+          slotProps={{
+            primary: { variant: 'body2', fontWeight: 'bold' }
+          }}
         />
-        <Typography variant='caption' color='text.secondary' sx={{ mr: 0.5 }}>
+        <Typography
+          variant='caption'
+          sx={{
+            color: 'text.secondary',
+            mr: 0.5
+          }}>
           {items.length}
         </Typography>
         {open ? (
@@ -61,9 +68,10 @@ const GroupedSection = ({ groupKey, items, renderItem }) => {
                   <ListItemText
                     primary={item.primary}
                     secondary={item.secondary}
-                    primaryTypographyProps={{ variant: 'body2' }}
-                    secondaryTypographyProps={{ variant: 'caption' }}
-                  />
+                    slotProps={{
+                      primary: { variant: 'body2' },
+                      secondary: { variant: 'caption' }
+                    }} />
                 </>
               )}
             </ListItem>
@@ -71,7 +79,7 @@ const GroupedSection = ({ groupKey, items, renderItem }) => {
         </List>
       </Collapse>
     </>
-  )
+  );
 }
 GroupedSection.propTypes = {
   groupKey: PropTypes.string.isRequired,
@@ -111,15 +119,16 @@ const ListContent = ({ items, groups, renderItem }) => {
               <ListItemText
                 primary={item.primary}
                 secondary={item.secondary}
-                primaryTypographyProps={{ variant: 'body2' }}
-                secondaryTypographyProps={{ variant: 'caption' }}
-              />
+                slotProps={{
+                  primary: { variant: 'body2' },
+                  secondary: { variant: 'caption' }
+                }} />
             </>
           )}
         </ListItem>
       ))}
     </List>
-  )
+  );
 }
 ListContent.propTypes = {
   items: PropTypes.array.isRequired,
@@ -151,7 +160,12 @@ const ScrollableList = ({
   }, [items, groupBy])
 
   const titleRow = (
-    <Box display='flex' alignItems='center' gap={0.5}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 0.5
+      }}>
       {titleIcon}
       <Typography variant='subtitle2' color={titleColor} sx={{ flexGrow: 1 }}>
         {title}
@@ -180,7 +194,12 @@ const ScrollableList = ({
         }}
       >
         {items.length === 0 ? (
-          <Typography variant='body2' color='text.secondary' sx={{ p: 1.5 }}>
+          <Typography
+            variant='body2'
+            sx={{
+              color: 'text.secondary',
+              p: 1.5
+            }}>
             {emptyText ?? 'No items.'}
           </Typography>
         ) : (
@@ -201,7 +220,12 @@ const ScrollableList = ({
             justifyContent: 'space-between',
           }}
         >
-          <Box display='flex' alignItems='center' gap={0.5}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5
+            }}>
             {titleIcon}
             <Typography variant='subtitle1' color={titleColor}>
               {title}
@@ -216,7 +240,7 @@ const ScrollableList = ({
         </DialogContent>
       </Dialog>
     </Box>
-  )
+  );
 }
 ScrollableList.displayName = 'ScrollableList'
 ScrollableList.propTypes = {

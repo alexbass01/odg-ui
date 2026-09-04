@@ -127,65 +127,73 @@ const SprintInfo = ({
     eventDate: PropTypes.instanceOf(Date).isRequired,
   }
 
-  return <Tooltip
-    title={
-      <Stack
-        direction='column'
-        spacing={1}
-      >
-        <Table
-          size='small'
-          sx={{
-            [`& .${tableCellClasses.root}`]: {
-              borderBottom: 'none'
-            }
-          }}
-          // rm divider between table rows
+  return (
+    <Tooltip
+      title={
+        <Stack
+          direction='column'
+          spacing={1}
         >
-          <TableBody>
-            <EventRow
-              key={'current_date'}
-              eventName={'Current Date'}
-              eventDate={date}
+          <Table
+            size='small'
+            sx={{
+              [`& .${tableCellClasses.root}`]: {
+                borderBottom: 'none'
+              }
+            }}
+            // rm divider between table rows
+          >
+            <TableBody>
+              <EventRow
+                key={'current_date'}
+                eventName={'Current Date'}
+                eventDate={date}
+              />
+              {
+                currentSprint.dates.sort((left, right) => {
+                  return new Date(left.value) - new Date(right.value)
+                }).map(sprintDate => {
+                  return <EventRow
+                    key={sprintDate.name}
+                    eventName={sprintDate.display_name || sprintDate.name}
+                    eventDate={new Date(sprintDate.value)}
+                  />
+                })
+              }
+            </TableBody>
+          </Table>
+          <Divider/>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+            <NextEvent
+              sprintInfos={currentSprint}
+              date={date}
             />
-            {
-              currentSprint.dates.sort((left, right) => {
-                return new Date(left.value) - new Date(right.value)
-              }).map(sprintDate => {
-                return <EventRow
-                  key={sprintDate.name}
-                  eventName={sprintDate.display_name || sprintDate.name}
-                  eventDate={new Date(sprintDate.value)}
-                />
-              })
-            }
-          </TableBody>
-        </Table>
-        <Divider/>
-        <Box
-          display='flex'
-          alignItems='center'
-          justifyContent='center'
-        >
-          <NextEvent
-            sprintInfos={currentSprint}
-            date={date}
-          />
-        </Box>
-      </Stack>
-    }
-    arrow
-  >
-    <Box display='flex' alignItems='center' justifyContent='center'>
-      <Typography variant='body1'>{`Sprint: ${currentSprint.name}`}</Typography>
-      <div style={{ padding: '0.3em' }} />
-      <FrozenStateIndicator
-        sprint={currentSprint}
-        sprintRules={sprintRules}
-        date={date}
-      />
-    </Box>
-  </Tooltip>
+          </Box>
+        </Stack>
+      }
+      arrow
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+        <Typography variant='body1'>{`Sprint: ${currentSprint.name}`}</Typography>
+        <div style={{ padding: '0.3em' }} />
+        <FrozenStateIndicator
+          sprint={currentSprint}
+          sprintRules={sprintRules}
+          date={date}
+        />
+      </Box>
+    </Tooltip>
+  );
 }
 SprintInfo.displayName = 'SprintInfo'
 SprintInfo.propTypes = {

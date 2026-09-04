@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import BlockIcon from '@mui/icons-material/Block'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 
 import PropTypes from 'prop-types'
@@ -241,7 +241,11 @@ const SbomDownloadPopover = ({
         }}
       >
         Download SBOM
-        <Box display='flex' gap={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1
+          }}>
           {generationMode && (
             <Tooltip title='Generation mode'>
               <Chip label={generationMode} size='small' variant='outlined' />
@@ -260,13 +264,20 @@ const SbomDownloadPopover = ({
       </DialogTitle>
       <DialogContent>
         {isLoading ? (
-          <Box display='flex' justifyContent='center' py={4}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              py: 4
+            }}>
             <CircularProgress size={32} />
           </Box>
         ) : isError ? (
           <Alert severity='error'>Failed to check SBOM readiness.</Alert>
         ) : (
-          <Stack spacing={2} mt={0.5}>
+          <Stack spacing={2} sx={{
+            mt: 0.5
+          }}>
             {isPolling && (
               <Alert severity='info' icon={<CircularProgress size={16} />}>
                 Waiting for SBOM generation to complete...
@@ -352,7 +363,7 @@ const SbomDownloadPopover = ({
         />
       </DialogActions>
     </Dialog>
-  )
+  );
 }
 SbomDownloadPopover.displayName = 'SbomDownloadPopover'
 SbomDownloadPopover.propTypes = {

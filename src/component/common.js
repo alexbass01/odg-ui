@@ -28,7 +28,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import HelpOutlineIcon from '@mui/icons-material/InfoOutlined'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
 
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router'
@@ -68,37 +68,40 @@ import ODGLogo from '../resources/odg-logo.svg'
 
 
 const ComponentNavigationHeader = () => {
-  return <div>
-    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-      <Grid item xs={12}>
-        <Link href='#'>
-          <img src={ODGLogo} alt='odg-logo'/>
-        </Link>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant='h5' gutterBottom>
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <Grid size={12}>
+          <Link href='#'>
+            <img src={ODGLogo} alt='odg-logo'/>
+          </Link>
+        </Grid>
+        <Grid size={12}>
+          <Typography variant='h5' gutterBottom>
+            {
+              // eslint-disable-next-line no-undef
+              document.title = process.env.REACT_APP_DASHBOARD_TITLE
+            }
+          </Typography>
+        </Grid>
+        <Typography
+          variant='caption'
+          color='grey'
+          gutterBottom
+          sx={{
+            marginRight: '0.4em',
+            display: 'flex',
+            alignSelf: 'flex-end'
+          }}>
+          Build:{' '}
           {
             // eslint-disable-next-line no-undef
-            document.title = process.env.REACT_APP_DASHBOARD_TITLE
+            process.env.REACT_APP_BUILD_VERSION
           }
         </Typography>
-      </Grid>
-      <Typography
-        variant='caption'
-        marginRight='0.4em'
-        display='flex'
-        alignSelf='flex-end'
-        color='grey'
-        gutterBottom
-      >
-        Build:{' '}
-        {
-          // eslint-disable-next-line no-undef
-          process.env.REACT_APP_BUILD_VERSION
-        }
-      </Typography>
+      </div>
     </div>
-  </div>
+  );
 }
 
 
@@ -594,29 +597,35 @@ const ComponentOcmRepoSelector = ({
     })
   }, [featureRegistrationContext])
 
-  return <Autocomplete
-    freeSolo
-    value={ocmRepo}
-    options={urlsFromOcmRepositoryCfgsFeature(ocmRepositoryCfgsFeature)}
-    fullWidth
-    disableClearable
-    onChange={(event, value) => setOcmRepo(value)}
-    renderInput={(params) => {
-      return (
-        <TextField
-          onChange={(event) => setOcmRepo(event.target.value)}
-          variant='standard'
-          {...params}
-          label='OCM Repository'
-          color={color}
-          focused={focused}
-          InputProps={{
-            ...params.InputProps,
-          }}
-        />
-      )
-    }}
-  />
+  return (
+    <Autocomplete
+      freeSolo
+      value={ocmRepo}
+      options={urlsFromOcmRepositoryCfgsFeature(ocmRepositoryCfgsFeature)}
+      fullWidth
+      disableClearable
+      onChange={(event, value) => setOcmRepo(value)}
+      renderInput={(params) => {
+        return (
+          <TextField
+            onChange={(event) => setOcmRepo(event.target.value)}
+            variant='standard'
+            {...params}
+            label='OCM Repository'
+            color={color}
+            focused={focused}
+            slotProps={{
+              ...params.slotProps,
+
+              input: {
+                ...params.slotProps.input,
+              }
+            }}
+          />
+        );
+      }}
+    />
+  );
 }
 ComponentOcmRepoSelector.displayName = 'ComponentOcmRepoSelector'
 ComponentOcmRepoSelector.propTypes = {
@@ -651,38 +660,44 @@ const ComponentVersionSelector = ({
     versionFilter: versionFilter,
   })
 
-  return <Autocomplete
-    freeSolo
-    options={
-      isLoading || !versions
-        ? []
-        : versions.sort().reverse()
-    }
-    disableClearable
-    onChange={(event, value) => setComponentVersion(value)}
-    loading={isLoading && !isError}
-    style={{flex: 1}}
-    value={componentVersion}
-    renderInput={(params) => <TextField
-      onChange={(event) => setComponentVersion(event.target.value)}
-      variant='standard'
-      {...params}
-      label='Component Version'
-      focused={focused}
-      color={color}
-      error={Boolean(isError)}
-      helperText={isError && 'Invalid regular expression as version filter'}
-      InputProps={{
-        ...params.InputProps,
-        onClick: () => setNameOrNull(name),
-        endAdornment: <>
-          {isLoading && !isError && <CircularProgress color='inherit' size={20}/>}
-          {params.InputProps.endAdornment}
-        </>,
-      }}
+  return (
+    <Autocomplete
+      freeSolo
+      options={
+        isLoading || !versions
+          ? []
+          : versions.sort().reverse()
+      }
+      disableClearable
+      onChange={(event, value) => setComponentVersion(value)}
+      loading={isLoading && !isError}
+      style={{flex: 1}}
+      value={componentVersion}
+      renderInput={(params) => <TextField
+        onChange={(event) => setComponentVersion(event.target.value)}
+        variant='standard'
+        {...params}
+        label='Component Version'
+        focused={focused}
+        color={color}
+        error={Boolean(isError)}
+        helperText={isError && 'Invalid regular expression as version filter'}
+        slotProps={{
+          ...params.slotProps,
+
+          input: {
+            ...params.slotProps.input,
+            onClick: () => setNameOrNull(name),
+            endAdornment: <>
+              {isLoading && !isError && <CircularProgress color='inherit' size={20}/>}
+              {params.slotProps.input.endAdornment}
+            </>,
+          }
+        }}
+      />
+      }
     />
-    }
-  />
+  );
 }
 ComponentVersionSelector.displayName = 'ComponentVersionSelector'
 ComponentVersionSelector.propTypes = {
@@ -723,39 +738,47 @@ const ComponentVersionFilterSelector = ({
     - <empty>: Default version filter of OCM repository is used`
   )
 
-  return <Autocomplete
-    freeSolo
-    value={versionFilterById(versionFilter)?.name ?? versionFilter}
-    options={options}
-    fullWidth
-    disableClearable
-    onChange={(_, value) => setVersionFilter(versionFilterByName(value)?.id ?? value)}
-    renderInput={(params) => {
-      return (
-        <TextField
-          onChange={(e) => setVersionFilter(versionFilterByName(e.target.value)?.id ?? e.target.value)}
-          variant='standard'
-          {...params}
-          label={
-            <Stack direction='row' spacing={1}>
-              <Typography>Version Filter / Regex</Typography>
-              <ExtraWideTooltip title={<Typography
-                variant='inherit'
-                whiteSpace='pre-line'
-              >
-                {help}
-              </Typography>}>
-                <HelpOutlineIcon fontSize='small'/>
-              </ExtraWideTooltip>
-            </Stack>
-          }
-          InputProps={{
-            ...params.InputProps,
-          }}
-        />
-      )
-    }}
-  />
+  return (
+    <Autocomplete
+      freeSolo
+      value={versionFilterById(versionFilter)?.name ?? versionFilter}
+      options={options}
+      fullWidth
+      disableClearable
+      onChange={(_, value) => setVersionFilter(versionFilterByName(value)?.id ?? value)}
+      renderInput={(params) => {
+        return (
+          <TextField
+            onChange={(e) => setVersionFilter(versionFilterByName(e.target.value)?.id ?? e.target.value)}
+            variant='standard'
+            {...params}
+            label={
+              <Stack direction='row' spacing={1}>
+                <Typography>Version Filter / Regex</Typography>
+                <ExtraWideTooltip title={<Typography
+                  variant='inherit'
+                  sx={{
+                    whiteSpace: 'pre-line'
+                  }}
+                >
+                  {help}
+                </Typography>}>
+                  <HelpOutlineIcon fontSize='small'/>
+                </ExtraWideTooltip>
+              </Stack>
+            }
+            slotProps={{
+              ...params.slotProps,
+
+              input: {
+                ...params.slotProps.input,
+              }
+            }}
+          />
+        );
+      }}
+    />
+  );
 }
 ComponentVersionFilterSelector.displayName = 'ComponentVersionFilterSelector'
 ComponentVersionFilterSelector.propTypes = {
@@ -914,99 +937,141 @@ const ComponentHeader = ({
     setOcmRepo(ocmRepository)
   }, [ocmRepository])
 
-  return <Grid container display='flex' alignItems='start' spacing={2}>
-    <Grid item xs={9} md={12} lg={6} xl={4}>
-      <TextField
-        value={componentName}
-        onChange={(event) => {
-          setComponentName(event.target.value)
+  return (
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        display: 'flex',
+        alignItems: 'start'
+      }}>
+      <Grid
+        size={{
+          xs: 9,
+          md: 12,
+          lg: 6,
+          xl: 4
+        }}>
+        <TextField
+          value={componentName}
+          onChange={(event) => {
+            setComponentName(event.target.value)
+          }}
+          label='Component Name'
+          variant='standard'
+          fullWidth
+          color={colorForElementName({name: selectionElementNames.NAME})}
+          focused={focusForElementName({name: selectionElementNames.NAME})}
+          disabled={isLoading}
+        />
+      </Grid>
+      <Grid
+        size={{
+          xs: 9,
+          md: 6,
+          lg: 3,
+          xl: 1.5
+        }}>
+        {
+          isLoading ? <TextField
+            value={componentVersion}
+            label='Component Version'
+            variant='standard'
+            fullWidth
+            disabled
+          /> : <ComponentVersionSelector
+            name={debouncedCName}
+            ocmRepo={debouncedOcmRepo}
+            componentVersion={componentVersion}
+            setComponentVersion={setComponentVersion}
+            versionFilter={debouncedVersionFilter}
+            color={colorForElementName({name: selectionElementNames.VERSION})}
+            focused={focusForElementName({name: selectionElementNames.VERSION})}
+          />
+        }
+      </Grid>
+      <Grid
+        size={{
+          xs: 9,
+          md: 6,
+          lg: 3,
+          xl: 1.5
+        }}>
+        {
+          isLoading ? <TextField
+            value={Object.values(VERSION_FILTER).find((f) => f.id === versionFilter)?.name ?? versionFilter}
+            label='Version Filter / Regex'
+            variant='standard'
+            fullWidth
+            disabled
+          /> : <ComponentVersionFilterSelector
+            versionFilter={versionFilter}
+            setVersionFilter={setVersionFilter}
+          />
+        }
+      </Grid>
+      <Grid
+        size={{
+          xs: 8,
+          md: 11,
+          lg: 11,
+          xl: 4
+        }}>
+        {
+          isLoading ? <TextField
+            value={ocmRepo}
+            label='OCM Repository'
+            variant='standard'
+            fullWidth
+            disabled
+          /> : <ComponentOcmRepoSelector
+            ocmRepo={ocmRepo}
+            setOcmRepo={setOcmRepo}
+            color={colorForElementName({name: selectionElementNames.OCM_REPO})}
+            focused={focusForElementName({name: selectionElementNames.OCM_REPO})}
+          />
+        }
+      </Grid>
+      <Grid
+        size={{
+          xs: 1,
+          md: 1,
+          lg: 1,
+          xl: 1
         }}
-        label='Component Name'
-        variant='standard'
-        fullWidth
-        color={colorForElementName({name: selectionElementNames.NAME})}
-        focused={focusForElementName({name: selectionElementNames.NAME})}
-        disabled={isLoading}
-      />
-    </Grid>
-    <Grid item xs={9} md={6} lg={3} xl={1.5}>
-      {
-        isLoading ? <TextField
-          value={componentVersion}
-          label='Component Version'
-          variant='standard'
-          fullWidth
-          disabled
-        /> : <ComponentVersionSelector
-          name={debouncedCName}
-          ocmRepo={debouncedOcmRepo}
-          componentVersion={componentVersion}
-          setComponentVersion={setComponentVersion}
-          versionFilter={debouncedVersionFilter}
-          color={colorForElementName({name: selectionElementNames.VERSION})}
-          focused={focusForElementName({name: selectionElementNames.VERSION})}
-        />
-      }
-    </Grid>
-    <Grid item xs={9} md={6} lg={3} xl={1.5}>
-      {
-        isLoading ? <TextField
-          value={Object.values(VERSION_FILTER).find((f) => f.id === versionFilter)?.name ?? versionFilter}
-          label='Version Filter / Regex'
-          variant='standard'
-          fullWidth
-          disabled
-        /> : <ComponentVersionFilterSelector
-          versionFilter={versionFilter}
-          setVersionFilter={setVersionFilter}
-        />
-      }
-    </Grid>
-    <Grid item xs={8} md={11} lg={11} xl={4}>
-      {
-        isLoading ? <TextField
-          value={ocmRepo}
-          label='OCM Repository'
-          variant='standard'
-          fullWidth
-          disabled
-        /> : <ComponentOcmRepoSelector
-          ocmRepo={ocmRepo}
-          setOcmRepo={setOcmRepo}
-          color={colorForElementName({name: selectionElementNames.OCM_REPO})}
-          focused={focusForElementName({name: selectionElementNames.OCM_REPO})}
-        />
-      }
-    </Grid>
-    <Grid item xs={1} md={1} lg={1} xl={1} display='flex' justifyContent='center'>
-      <IconButton
-        title='Search component'
         sx={{
-          backgroundColor: theme.palette.grey,
-          border: `1px solid ${theme.palette.text.primary}`,
-          color: theme.palette.text.primary,
-        }}
-        onClick={() => {
-          setErroneousElementName(null)
-          if (!componentVersion || !componentName) {
-            if (!componentVersion) setErroneousElementName(selectionElementNames.VERSION)
-            if (!componentName) setErroneousElementName(selectionElementNames.NAME)
-          } else {
-            navigate(componentPathQuery({
-              name: componentName,
-              version: componentVersion,
-              versionFilter: versionFilter ? versionFilter : null, // omit URL parameter if empty
-              view: searchParamContext.get('view'),
-              ocmRepo: ocmRepo,
-            }))
-          }
-        }}
-        disabled={isLoading}
-      >
-        <RefreshIcon />
-      </IconButton>
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+        <IconButton
+          title='Search component'
+          sx={{
+            backgroundColor: theme.palette.grey,
+            border: `1px solid ${theme.palette.text.primary}`,
+            color: theme.palette.text.primary,
+          }}
+          onClick={() => {
+            setErroneousElementName(null)
+            if (!componentVersion || !componentName) {
+              if (!componentVersion) setErroneousElementName(selectionElementNames.VERSION)
+              if (!componentName) setErroneousElementName(selectionElementNames.NAME)
+            } else {
+              navigate(componentPathQuery({
+                name: componentName,
+                version: componentVersion,
+                versionFilter: versionFilter ? versionFilter : null, // omit URL parameter if empty
+                view: searchParamContext.get('view'),
+                ocmRepo: ocmRepo,
+              }))
+            }
+          }}
+          disabled={isLoading}
+        >
+          <RefreshIcon />
+        </IconButton>
+      </Grid>
     </Grid>
-  </Grid>
+  );
 }
 ComponentHeader.displayName = 'ComponentHeader'
 ComponentHeader.propTypes = {

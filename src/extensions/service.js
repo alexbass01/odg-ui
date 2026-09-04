@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 import { DataGrid, gridClasses } from '@mui/x-data-grid'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined'
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined'
 import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'

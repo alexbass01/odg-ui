@@ -51,7 +51,7 @@ import { enqueueSnackbar } from 'notistack'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import EditNoteIcon from '@mui/icons-material/EditNote'
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutlined'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
@@ -202,34 +202,38 @@ const scopedComponentArtefactId = ({
 
 
 const LinearProgressWithLabel = ({value}) => {
-  return <Box sx={{ display: 'flex', alignItems: 'center' }}>
-    <Box sx={{ width: '100%', mr: 1 }}>
-      <Tooltip title='Fetching rescorings ...'>
-        <LinearProgress variant='determinate' value={value} color='secondary'/>
-      </Tooltip>
-    </Box>
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress size='3em'/>
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant='body' color='text.secondary'>
-          {
-            `${Math.round(value)}%`
-          }
-        </Typography>
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <Tooltip title='Fetching rescorings ...'>
+          <LinearProgress variant='determinate' value={value} color='secondary'/>
+        </Tooltip>
+      </Box>
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+        <CircularProgress size='3em'/>
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant='body' sx={{
+            color: 'text.secondary'
+          }}>
+            {
+              `${Math.round(value)}%`
+            }
+          </Typography>
+        </Box>
       </Box>
     </Box>
-  </Box>
+  );
 }
 LinearProgressWithLabel.displayName = 'LinearProgressWithLabel'
 LinearProgressWithLabel.propTypes = {
@@ -294,35 +298,43 @@ const VulnerabilityRescoringInputs = ({
 }) => {
   const [selectedNode, setSelectedNode] = React.useState(ocmNodes[0])
 
-  return <Stack spacing={2} paddingBottom='1em'>
-    <Typography>Risk Profile (from Component-Descriptor label)</Typography>
-    <FormControl>
-      <InputLabel>Artefact</InputLabel>
-      <Select
-        value={selectedNode.identity()}
-        label='Artefact'
-        onChange={(e) => setSelectedNode(ocmNodes.find(ocmNode => ocmNode.identity() === e.target.value))}
-      >
-        {
-          ocmNodes.map((ocmNode, idx) => <MenuItem
-            key={idx}
-            value={ocmNode.identity()}
-          >
-            {
-              ocmNode.name()
-            }
-          </MenuItem>)
-        }
-      </Select>
-    </FormControl>
-    <Box border={1} borderColor='primary.main'>
-      <RiskProfileLabel
-        ocmNode={selectedNode}
-        ocmRepo={ocmRepo}
-      />
-    </Box>
-    <Divider/>
-  </Stack>
+  return (
+    <Stack spacing={2} sx={{
+      paddingBottom: '1em'
+    }}>
+      <Typography>Risk Profile (from Component-Descriptor label)</Typography>
+      <FormControl>
+        <InputLabel>Artefact</InputLabel>
+        <Select
+          value={selectedNode.identity()}
+          label='Artefact'
+          onChange={(e) => setSelectedNode(ocmNodes.find(ocmNode => ocmNode.identity() === e.target.value))}
+        >
+          {
+            ocmNodes.map((ocmNode, idx) => <MenuItem
+              key={idx}
+              value={ocmNode.identity()}
+            >
+              {
+                ocmNode.name()
+              }
+            </MenuItem>)
+          }
+        </Select>
+      </FormControl>
+      <Box
+        sx={{
+          border: 1,
+          borderColor: 'primary.main'
+        }}>
+        <RiskProfileLabel
+          ocmNode={selectedNode}
+          ocmRepo={ocmRepo}
+        />
+      </Box>
+      <Divider/>
+    </Stack>
+  );
 }
 VulnerabilityRescoringInputs.displayName = 'VulnerabilityRescoringInputs'
 VulnerabilityRescoringInputs.propTypes = {
@@ -338,77 +350,92 @@ const RescoringRulesetDrawer = ({
   ocmNodes,
   ocmRepo,
 }) => {
-  return <Drawer
-    PaperProps={{
-      style: {
-        position: 'absolute',
-        width: '100vh',
-      }
-    }}
-    variant='persistent'
-    anchor='left'
-    open={open}
-    onClick={(e) => e.stopPropagation()}
-  >
-    <Box
-      borderLeft={1}
-      borderRight={1}
-      borderLeftColor={'primary.main'}
-      borderRightColor={'primary.main'}
+  return (
+    <Drawer
+      variant='persistent'
+      anchor='left'
+      open={open}
+      onClick={(e) => e.stopPropagation()}
+      slotProps={{
+        paper: {
+          style: {
+            position: 'absolute',
+            width: '100vh',
+          }
+        }
+      }}
     >
       <Box
-        position='sticky'
-        top={0}
-        left={0}
-        width='100%'
-        zIndex={999}
-        paddingTop={3}
-        paddingLeft={3}
-        paddingRight={3}
-        bgcolor='background.paper'
-        borderTop={1}
-        borderTopColor='primary.main'
-      >
-        <Tooltip title='Close rescoring rules'>
-          <IconButton onClick={handleClose}>
-            <ChevronLeftIcon/>
-          </IconButton>
-        </Tooltip>
-        <div style={{ padding: '0.5em' }}/>
-        <Divider/>
+        sx={{
+          borderLeft: 1,
+          borderRight: 1,
+          borderLeftColor: 'primary.main',
+          borderRightColor: 'primary.main'
+        }}>
+        <Box
+          sx={{
+            position: 'sticky',
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 999,
+            paddingTop: 3,
+            paddingLeft: 3,
+            paddingRight: 3,
+            bgcolor: 'background.paper',
+            borderTop: 1,
+            borderTopColor: 'primary.main'
+          }}>
+          <Tooltip title='Close rescoring rules'>
+            <IconButton onClick={handleClose}>
+              <ChevronLeftIcon/>
+            </IconButton>
+          </Tooltip>
+          <div style={{ padding: '0.5em' }}/>
+          <Divider/>
+        </Box>
+        <Box
+          sx={{
+            paddingLeft: 3,
+            paddingRight: 3
+          }}>
+          <div style={{ padding: '0.5em' }}/>
+          {
+            findingCfg.type === FINDING_TYPES.VULNERABILITY && <VulnerabilityRescoringInputs
+              ocmNodes={ocmNodes}
+              ocmRepo={ocmRepo}
+            />
+          }
+          <Stack spacing={2}>
+            <Typography>Rescoring Ruleset</Typography>
+            <Box
+              sx={{
+                border: 1,
+                borderColor: 'primary.main'
+              }}>
+              <MultilineTextViewer text={toYamlString(findingCfg.rescoring_ruleset)}/>
+            </Box>
+          </Stack>
+        </Box>
+        <Box
+          sx={{
+            position: 'sticky',
+            bottom: 0,
+            right: 0,
+            width: '100%',
+            zIndex: 999,
+            paddingBottom: 3,
+            paddingLeft: 3,
+            paddingRight: 3,
+            bgcolor: 'background.paper',
+            borderBottom: 1,
+            borderBottomColor: 'primary.main'
+          }}>
+          <Divider/>
+        </Box>
       </Box>
-      <Box paddingLeft={3} paddingRight={3}>
-        <div style={{ padding: '0.5em' }}/>
-        {
-          findingCfg.type === FINDING_TYPES.VULNERABILITY && <VulnerabilityRescoringInputs
-            ocmNodes={ocmNodes}
-            ocmRepo={ocmRepo}
-          />
-        }
-        <Stack spacing={2}>
-          <Typography>Rescoring Ruleset</Typography>
-          <Box border={1} borderColor='primary.main'>
-            <MultilineTextViewer text={toYamlString(findingCfg.rescoring_ruleset)}/>
-          </Box>
-        </Stack>
-      </Box>
-      <Box
-        position='sticky'
-        bottom={0}
-        right={0}
-        width='100%'
-        zIndex={999}
-        paddingBottom={3}
-        paddingLeft={3}
-        paddingRight={3}
-        bgcolor='background.paper'
-        borderBottom={1}
-        borderBottomColor='primary.main'
-      >
-        <Divider/>
-      </Box>
-    </Box>
-  </Drawer>
+    </Drawer>
+  );
 }
 RescoringRulesetDrawer.displayName = 'RescoringRulesetDrawer'
 RescoringRulesetDrawer.propTypes = {
@@ -424,27 +451,34 @@ const RescoringHeader = ({
   ocmNodes,
   title,
 }) => {
-  return <Stack display='flex' justifyContent='center' alignItems='center'>
-    <Typography variant='h6'>{title}</Typography>
-    <Tooltip
-      title={<Stack>
-        {
-          ocmNodes.map((ocmNode) => <Box key={ocmNode.identity()}>
-            <Typography variant='inherit'>{ocmNode.name()}</Typography>
-            <Typography variant='inherit'>{ocmNode.component.name}:{ocmNode.component.version}</Typography>
-            <Divider/>
-          </Box>
-          )
-        }
-      </Stack>}
-    >
-      <Typography variant='h6' color='secondary'>
-        {
-          trimLongString((ocmNodes.map((ocmNode) => ocmNode.name())).join(', '), 100)
-        }
-      </Typography>
-    </Tooltip>
-  </Stack>
+  return (
+    <Stack
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+      <Typography variant='h6'>{title}</Typography>
+      <Tooltip
+        title={<Stack>
+          {
+            ocmNodes.map((ocmNode) => <Box key={ocmNode.identity()}>
+              <Typography variant='inherit'>{ocmNode.name()}</Typography>
+              <Typography variant='inherit'>{ocmNode.component.name}:{ocmNode.component.version}</Typography>
+              <Divider/>
+            </Box>
+            )
+          }
+        </Stack>}
+      >
+        <Typography variant='h6' color='secondary'>
+          {
+            trimLongString((ocmNodes.map((ocmNode) => ocmNode.name())).join(', '), 100)
+          }
+        </Typography>
+      </Tooltip>
+    </Stack>
+  );
 }
 RescoringHeader.displayName = 'RescoringHeader'
 RescoringHeader.propTypes = {
@@ -523,11 +557,15 @@ const RescoringFilterOption = ({
   }, [updateFilterCallback, selected, filterCallback])
 
   const Loading = () => {
-    return <li>
-      <Box width='15vw'>
-        <Skeleton/>
-      </Box>
-    </li>
+    return (
+      <li>
+        <Box sx={{
+          width: '15vw'
+        }}>
+          <Skeleton/>
+        </Box>
+      </li>
+    );
   }
 
   return <Stack direction='column' spacing={2} sx={{width: '28vw'}}>
@@ -623,63 +661,72 @@ const RescoringFilter = ({
   sprintsLoading,
   rescorings,
 }) => {
-  return <Stack direction='row' spacing={5} display='flex' alignItems='center' justifyContent='center'>
-    <FormControl variant='standard' sx={{ width: '10vw'}}>
-      <InputLabel>Finding Type</InputLabel>
-      <Select
-        value={findingType}
-        label='Finding Type'
-        onChange={(e) => {
-          updateFilter('categorisation', () => true) // reset categorisation selection upon type change
-          setFindingType(e.target.value)
-        }}
-      >
-        {
-          findingTypes.map((type) => <MenuItem key={type} value={type}>
-            <Typography variant='body2'>
-              {findingTypeToDisplayName(type)}
-            </Typography>
-          </MenuItem>)
-        }
-      </Select>
-    </FormControl>
-    <Divider
-      orientation='vertical'
-      flexItem
-    />
-    <RescoringFilterOption
-      updateFilterCallback={React.useCallback((callback) => updateFilter('categorisation', callback), [updateFilter])}
-      isLoading={rescoringsLoading}
-      filterCallback={React.useCallback((selected, rescoring) => selected.some(s => {
-        return s === categoriseRescoringProposal({rescoring, findingCfg}).id
-      }), [findingCfg])}
-      countCallback={(categorisation) => rescorings.filter(rescoring => {
-        return categoriseRescoringProposal({rescoring, findingCfg}).id === categorisation.id
-      }).length}
-      colorCallback={(categorisation) => categorisationValueToColor(categorisation.value)}
-      options={findingCfg.categorisations}
-      optionIdCallback={(categorisation) => categorisation.id}
-      optionNameCallback={(categorisation) => categorisation.display_name}
-      title='Categorisation'
-    />
-    <Divider
-      orientation='vertical'
-      flexItem
-    />
-    <RescoringFilterOption
-      updateFilterCallback={React.useCallback(callback => updateFilter('sprint', callback), [updateFilter])}
-      isLoading={sprintsLoading}
-      filterCallback={React.useCallback((selected, rescoring) => selected.some((sprint) => {
-        return sprintNameForRescoring({rescoring, findingCfg}) === sprint
-      }), [])}
-      countCallback={(sprint) => sprint.count}
-      options={availableSprints}
-      optionIdCallback={(sprint) => sprint.name}
-      optionNameCallback={(sprint) => sprint.displayName}
-      title='Due Date'
-      defaultSelection={preSelectedSprints}
-    />
-  </Stack>
+  return (
+    <Stack
+      direction='row'
+      spacing={5}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+      <FormControl variant='standard' sx={{ width: '10vw'}}>
+        <InputLabel>Finding Type</InputLabel>
+        <Select
+          value={findingType}
+          label='Finding Type'
+          onChange={(e) => {
+            updateFilter('categorisation', () => true) // reset categorisation selection upon type change
+            setFindingType(e.target.value)
+          }}
+        >
+          {
+            findingTypes.map((type) => <MenuItem key={type} value={type}>
+              <Typography variant='body2'>
+                {findingTypeToDisplayName(type)}
+              </Typography>
+            </MenuItem>)
+          }
+        </Select>
+      </FormControl>
+      <Divider
+        orientation='vertical'
+        flexItem
+      />
+      <RescoringFilterOption
+        updateFilterCallback={React.useCallback((callback) => updateFilter('categorisation', callback), [updateFilter])}
+        isLoading={rescoringsLoading}
+        filterCallback={React.useCallback((selected, rescoring) => selected.some(s => {
+          return s === categoriseRescoringProposal({rescoring, findingCfg}).id
+        }), [findingCfg])}
+        countCallback={(categorisation) => rescorings.filter(rescoring => {
+          return categoriseRescoringProposal({rescoring, findingCfg}).id === categorisation.id
+        }).length}
+        colorCallback={(categorisation) => categorisationValueToColor(categorisation.value)}
+        options={findingCfg.categorisations}
+        optionIdCallback={(categorisation) => categorisation.id}
+        optionNameCallback={(categorisation) => categorisation.display_name}
+        title='Categorisation'
+      />
+      <Divider
+        orientation='vertical'
+        flexItem
+      />
+      <RescoringFilterOption
+        updateFilterCallback={React.useCallback(callback => updateFilter('sprint', callback), [updateFilter])}
+        isLoading={sprintsLoading}
+        filterCallback={React.useCallback((selected, rescoring) => selected.some((sprint) => {
+          return sprintNameForRescoring({rescoring, findingCfg}) === sprint
+        }), [])}
+        countCallback={(sprint) => sprint.count}
+        options={availableSprints}
+        optionIdCallback={(sprint) => sprint.name}
+        optionNameCallback={(sprint) => sprint.displayName}
+        title='Due Date'
+        defaultSelection={preSelectedSprints}
+      />
+    </Stack>
+  );
 }
 RescoringFilter.displayName = 'RescoringFilter'
 RescoringFilter.propTypes = {
@@ -735,31 +782,34 @@ RescoringRowLoading.propTypes = {}
 const FilesystemPathsInfo = ({
   filesystemPaths,
 }) => {
-  return <>
-    <Typography
-      variant='inherit'
-      sx={{
-        fontWeight: 'bold',
-      }}
-      marginBottom='0.5rem'
-    >
-      Filesystem Paths
-    </Typography>
-    {
-      filesystemPaths.map((filesystemPath, idx) => <React.Fragment key={`${filesystemPath.digest}${idx}`}>
-        {
-          idx !== 0 && <Divider sx={{ marginY: '0.5rem' }}/>
-        }
-        <Typography variant='inherit' whiteSpace='pre-wrap'>
+  return (
+    <>
+      <Typography
+        variant='inherit'
+        sx={{
+          marginBottom: '0.5rem',
+          fontWeight: 'bold'
+        }}>
+        Filesystem Paths
+      </Typography>
+      {
+        filesystemPaths.map((filesystemPath, idx) => <React.Fragment key={`${filesystemPath.digest}${idx}`}>
           {
-            `Digest: ${filesystemPath.digest}\nPath: ${filesystemPath.path.map((pathEntry, idx) => {
-              return `\n${'   '.repeat(idx)}- ${pathEntry.path} (${pathEntry.type})`
-            }).join('')}`
+            idx !== 0 && <Divider sx={{ marginY: '0.5rem' }}/>
           }
-        </Typography>
-      </React.Fragment>)
-    }
-  </>
+          <Typography variant='inherit' sx={{
+            whiteSpace: 'pre-wrap'
+          }}>
+            {
+              `Digest: ${filesystemPath.digest}\nPath: ${filesystemPath.path.map((pathEntry, idx) => {
+                return `\n${'   '.repeat(idx)}- ${pathEntry.path} (${pathEntry.type})`
+              }).join('')}`
+            }
+          </Typography>
+        </React.Fragment>)
+      }
+    </>
+  );
 }
 FilesystemPathsInfo.displayName = 'FilesystemPathsInfo'
 FilesystemPathsInfo.propTypes = {
@@ -859,39 +909,40 @@ const VulnerabilityExtraInfo = ({
   }
   Object.freeze(details)
 
-  return <ExtraWideTooltip
-    title={
-      <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
-        {
-          filesystemPaths.length > 0 && <>
-            <FilesystemPathsInfo filesystemPaths={filesystemPaths}/>
-            <Divider sx={{ marginTop: '0.5rem', marginBottom: '1rem' }}/>
-          </>
-        }
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          CVSS Attack Vector
-        </Typography>
-        {
-          vector.split('/').map((e) => {
-            const [name, value] = e.split(':')
-            return <Typography key={name} variant='inherit'>
-              {
-                `${details[name].name}: ${details[name].values[value]}`
-              }
-            </Typography>
-          })
-        }
-      </div>
-    }
-  >
-    <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-  </ExtraWideTooltip>
+  return (
+    <ExtraWideTooltip
+      title={
+        <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
+          {
+            filesystemPaths.length > 0 && <>
+              <FilesystemPathsInfo filesystemPaths={filesystemPaths}/>
+              <Divider sx={{ marginTop: '0.5rem', marginBottom: '1rem' }}/>
+            </>
+          }
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            CVSS Attack Vector
+          </Typography>
+          {
+            vector.split('/').map((e) => {
+              const [name, value] = e.split(':')
+              return <Typography key={name} variant='inherit'>
+                {
+                  `${details[name].name}: ${details[name].values[value]}`
+                }
+              </Typography>
+            })
+          }
+        </div>
+      }
+    >
+      <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+    </ExtraWideTooltip>
+  );
 }
 VulnerabilityExtraInfo.displayName = 'VulnerabilityExtraInfo'
 VulnerabilityExtraInfo.propTypes = {
@@ -901,22 +952,25 @@ VulnerabilityExtraInfo.propTypes = {
 
 
 const RecommendationInfo = ({ recommendation }) => {
-  return <ExtraWideTooltip
-    title={
-      <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
-        <Typography
-          variant='inherit'
-          sx={{ fontWeight: 'bold' }}
-          marginBottom='0.5rem'
-        >
-          Recommendation
-        </Typography>
-        <Typography variant='inherit'>{recommendation}</Typography>
-      </div>
-    }
-  >
-    <TipsAndUpdatesOutlinedIcon sx={{ height: '1rem' }}/>
-  </ExtraWideTooltip>
+  return (
+    <ExtraWideTooltip
+      title={
+        <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Recommendation
+          </Typography>
+          <Typography variant='inherit'>{recommendation}</Typography>
+        </div>
+      }
+    >
+      <TipsAndUpdatesOutlinedIcon sx={{ height: '1rem' }}/>
+    </ExtraWideTooltip>
+  );
 }
 RecommendationInfo.displayName = 'RecommendationInfo'
 RecommendationInfo.propTypes = {
@@ -934,30 +988,31 @@ const AppliedRulesExtraInfo = ({
     return null
   }
 
-  return <Tooltip
-    title={
-      <Stack onClick={(e) => e.stopPropagation()}>
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          Applied Rules
-        </Typography>
-        {
-          matchingRules.map((rule) => <Typography key={rule} variant='inherit'>
-            {
-              rule
-            }
-          </Typography>)
-        }
-      </Stack>
-    }
-  >
-    <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-  </Tooltip>
+  return (
+    <Tooltip
+      title={
+        <Stack onClick={(e) => e.stopPropagation()}>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Applied Rules
+          </Typography>
+          {
+            matchingRules.map((rule) => <Typography key={rule} variant='inherit'>
+              {
+                rule
+              }
+            </Typography>)
+          }
+        </Stack>
+      }
+    >
+      <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+    </Tooltip>
+  );
 }
 AppliedRulesExtraInfo.displayName = 'AppliedRulesExtraInfo'
 AppliedRulesExtraInfo.propTypes = {
@@ -1001,59 +1056,63 @@ const ApplicableRescoringsRow = ({
     return _discoveryDate.toLocaleDateString(navigator.language)
   }
 
-  return <TableRow hover>
-    <TableCell align='center'>{priority}</TableCell>
-    <TableCell>
-      <Stack alignItems='center'>
-        <Typography variant='inherit'>
+  return (
+    <TableRow hover>
+      <TableCell align='center'>{priority}</TableCell>
+      <TableCell>
+        <Stack sx={{
+          alignItems: 'center'
+        }}>
+          <Typography variant='inherit'>
+            {
+              localeDate.split(', ')[0] // date
+            }
+          </Typography>
+          <Typography variant='inherit'>
+            {
+              localeDate.split(', ')[1] // time
+            }
+          </Typography>
+        </Stack>
+      </TableCell>
+      <TableCell align='center'>
+        <CopyOnClickChip
+          value={capitalise(scope)}
+          message='Scope copied!'
+          chipProps={{
+            variant: 'outlined',
+            title: scope,
+          }}
+        />
+      </TableCell>
+      <TableCell align='center'>
+        <Typography
+          variant='inherit'
+          color={`${categorisationValueToColor(categorisation.value)}.main`}
+        >
           {
-            localeDate.split(', ')[0] // date
+            categorisation.display_name
           }
         </Typography>
-        <Typography variant='inherit'>
-          {
-            localeDate.split(', ')[1] // time
-          }
-        </Typography>
-      </Stack>
-    </TableCell>
-    <TableCell align='center'>
-      <CopyOnClickChip
-        value={capitalise(scope)}
-        message='Scope copied!'
-        chipProps={{
-          variant: 'outlined',
-          title: scope,
-        }}
-      />
-    </TableCell>
-    <TableCell align='center'>
-      <Typography
-        variant='inherit'
-        color={`${categorisationValueToColor(categorisation.value)}.main`}
-      >
+      </TableCell>
+      <TableCell align='center' sx={{ wordWrap: 'break-word' }}>{applicableRescoring.data.user.username}</TableCell>
+      <TableCell>
+        <Typography variant='inherit' sx={{ wordWrap: 'break-word' }}>{applicableRescoring.data.comment}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography align='center' variant='inherit'>{dueDate()}</Typography>
+      </TableCell>
+      <TableCell>
         {
-          categorisation.display_name
+          applicableRescoring.data.matching_rules.map((rule_name) => <Typography key={rule_name} variant='inherit'>
+            {
+              rule_name
+            }
+          </Typography>)
         }
-      </Typography>
-    </TableCell>
-    <TableCell align='center' sx={{ wordWrap: 'break-word' }}>{applicableRescoring.data.user.username}</TableCell>
-    <TableCell>
-      <Typography variant='inherit' sx={{ wordWrap: 'break-word' }}>{applicableRescoring.data.comment}</Typography>
-    </TableCell>
-    <TableCell>
-      <Typography align='center' variant='inherit'>{dueDate()}</Typography>
-    </TableCell>
-    <TableCell>
-      {
-        applicableRescoring.data.matching_rules.map((rule_name) => <Typography key={rule_name} variant='inherit'>
-          {
-            rule_name
-          }
-        </Typography>)
-      }
-    </TableCell>
-  </TableRow>
+      </TableCell>
+    </TableRow>
+  );
 }
 ApplicableRescoringsRow.displayName = 'ApplicableRescoringsRow'
 ApplicableRescoringsRow.propTypes = {
@@ -1074,70 +1133,74 @@ const ApplicableRescorings = ({
     return null
   }
 
-  return <TableRow>
-    <TableCell sx={{ padding: 0, border: 'none' }} colSpan={9}>
-      <Collapse in={expanded} unmountOnExit>
-        <Card sx={{ paddingY: '1rem' }}>
-          <Typography sx={{ paddingLeft: '1rem' }}>Rescorings</Typography>
-          <Table sx={{ tableLayout: 'fixed', overflowX: 'hidden' }}>
-            <TableHead>
-              <TableRow>
-                <TableCell width='5%' align='center'>
-                  <Tooltip
-                    title={`
-                      The rescoring with priority "1" is the one that is used for this finding.
-                      The remaining rescorings (if any), also match this finding based on their
-                      scope, but they're not applied because they are less specific or older than
-                      the rescoring with priority "1".
-                    `}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography variant='inherit'>Prio</Typography>
-                      <HelpOutlineIcon sx={{ height: '1rem' }}/>
-                    </div>
-                  </Tooltip>
-                </TableCell>
-                <TableCell width='12%' align='center'>Date</TableCell>
-                <TableCell width='12%'>
-                  <Tooltip
-                    title={<Typography
-                      variant='inherit'
-                      whiteSpace='pre-line'
+  return (
+    <TableRow>
+      <TableCell sx={{ padding: 0, border: 'none' }} colSpan={9}>
+        <Collapse in={expanded} unmountOnExit>
+          <Card sx={{ paddingY: '1rem' }}>
+            <Typography sx={{ paddingLeft: '1rem' }}>Rescorings</Typography>
+            <Table sx={{ tableLayout: 'fixed', overflowX: 'hidden' }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell width='5%' align='center'>
+                    <Tooltip
+                      title={`
+                        The rescoring with priority "1" is the one that is used for this finding.
+                        The remaining rescorings (if any), also match this finding based on their
+                        scope, but they're not applied because they are less specific or older than
+                        the rescoring with priority "1".
+                      `}
                     >
-                      {
-                        scopeHelp
-                      }
-                    </Typography>}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Typography variant='inherit'>Scope</Typography>
-                      <HelpOutlineIcon sx={{ height: '1rem' }}/>
-                    </div>
-                  </Tooltip>
-                </TableCell>
-                <TableCell width='11%' align='center'>Categorisation</TableCell>
-                <TableCell width='11%' align='center'>User</TableCell>
-                <TableCell width='20%'>Comment</TableCell>
-                <TableCell width='10%' align='center'>New Due Date</TableCell>
-                <TableCell width='19%'>Applied Rules</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {
-                rescoring.applicable_rescorings.map((ap, idx) => <ApplicableRescoringsRow
-                  key={idx}
-                  findingCfg={findingCfg}
-                  applicableRescoring={ap}
-                  discoveryDate={rescoring.discovery_date}
-                  priority={idx + 1}
-                />)
-              }
-            </TableBody>
-          </Table>
-        </Card>
-      </Collapse>
-    </TableCell>
-  </TableRow>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant='inherit'>Prio</Typography>
+                        <HelpOutlineIcon sx={{ height: '1rem' }}/>
+                      </div>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell width='12%' align='center'>Date</TableCell>
+                  <TableCell width='12%'>
+                    <Tooltip
+                      title={<Typography
+                        variant='inherit'
+                        sx={{
+                          whiteSpace: 'pre-line'
+                        }}
+                      >
+                        {
+                          scopeHelp
+                        }
+                      </Typography>}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant='inherit'>Scope</Typography>
+                        <HelpOutlineIcon sx={{ height: '1rem' }}/>
+                      </div>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell width='11%' align='center'>Categorisation</TableCell>
+                  <TableCell width='11%' align='center'>User</TableCell>
+                  <TableCell width='20%'>Comment</TableCell>
+                  <TableCell width='10%' align='center'>New Due Date</TableCell>
+                  <TableCell width='19%'>Applied Rules</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {
+                  rescoring.applicable_rescorings.map((ap, idx) => <ApplicableRescoringsRow
+                    key={idx}
+                    findingCfg={findingCfg}
+                    applicableRescoring={ap}
+                    discoveryDate={rescoring.discovery_date}
+                    priority={idx + 1}
+                  />)
+                }
+              </TableBody>
+            </Table>
+          </Card>
+        </Collapse>
+      </TableCell>
+    </TableRow>
+  );
 }
 ApplicableRescorings.displayName = 'ApplicableRescorings'
 ApplicableRescorings.propTypes = {
@@ -1151,39 +1214,39 @@ const MalwareExtraInfo = ({
   contentDigest,
   filename,
 }) => {
-  return <ExtraWideTooltip
-    title={
-      <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          Content Digest
-        </Typography>
-        <Typography variant='inherit'>
-          {contentDigest}
-        </Typography>
-        <Divider/>
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          Filename
-        </Typography>
-        <Typography variant='inherit'>
-          {filename}
-        </Typography>
-      </div>
-    }
-  >
-    <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-  </ExtraWideTooltip>
+  return (
+    <ExtraWideTooltip
+      title={
+        <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Content Digest
+          </Typography>
+          <Typography variant='inherit'>
+            {contentDigest}
+          </Typography>
+          <Divider/>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Filename
+          </Typography>
+          <Typography variant='inherit'>
+            {filename}
+          </Typography>
+        </div>
+      }
+    >
+      <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+    </ExtraWideTooltip>
+  );
 }
 MalwareExtraInfo.displayName = 'MalwareExtraInfo'
 MalwareExtraInfo.propTypes = {
@@ -1196,43 +1259,47 @@ const CryptoExtraInfo = ({
   locations,
   properties,
 }) => {
-  return <ExtraWideTooltip
-    title={
-      <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          Properties
-        </Typography>
-        <Typography variant='inherit' whiteSpace='pre-wrap'>
-          {
-            JSON.stringify(properties, null, 2)
-          }
-        </Typography>
-        <Divider/>
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          Locations
-        </Typography>
-        <Typography variant='inherit' whiteSpace='pre-wrap'>
-          {
-            JSON.stringify(locations, null, 2)
-          }
-        </Typography>
-      </div>
-    }
-  >
-    <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-  </ExtraWideTooltip>
+  return (
+    <ExtraWideTooltip
+      title={
+        <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Properties
+          </Typography>
+          <Typography variant='inherit' sx={{
+            whiteSpace: 'pre-wrap'
+          }}>
+            {
+              JSON.stringify(properties, null, 2)
+            }
+          </Typography>
+          <Divider/>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Locations
+          </Typography>
+          <Typography variant='inherit' sx={{
+            whiteSpace: 'pre-wrap'
+          }}>
+            {
+              JSON.stringify(locations, null, 2)
+            }
+          </Typography>
+        </div>
+      }
+    >
+      <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+    </ExtraWideTooltip>
+  );
 }
 CryptoExtraInfo.displayName = 'CryptoExtraInfo'
 CryptoExtraInfo.propTypes = {
@@ -1244,28 +1311,31 @@ CryptoExtraInfo.propTypes = {
 const DikiExtraInfo = ({
   finding,
 }) => {
-  return <ExtraWideTooltip
-    title={
-      <div style={{ overflowY: 'auto', maxHeight: '30rem' }}>
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          Checks
-        </Typography>
-        <Typography variant='inherit' whiteSpace='pre-wrap'>
-          {
-            JSON.stringify(finding.checks, null, 2)
-          }
-        </Typography>
-      </div>
-    }
-  >
-    <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-  </ExtraWideTooltip>
+  return (
+    <ExtraWideTooltip
+      title={
+        <div style={{ overflowY: 'auto', maxHeight: '30rem' }}>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Checks
+          </Typography>
+          <Typography variant='inherit' sx={{
+            whiteSpace: 'pre-wrap'
+          }}>
+            {
+              JSON.stringify(finding.checks, null, 2)
+            }
+          </Typography>
+        </div>
+      }
+    >
+      <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+    </ExtraWideTooltip>
+  );
 }
 DikiExtraInfo.displayName = 'DikiExtraInfo'
 DikiExtraInfo.propTypes = {
@@ -1276,28 +1346,31 @@ DikiExtraInfo.propTypes = {
 const FalcoExtraInfo = ({
   finding,
 }) => {
-  return <ExtraWideTooltip
-    title={
-      <div style={{ overflowY: 'auto', maxHeight: '30rem' }}>
-        <Typography
-          variant='inherit'
-          sx={{
-            fontWeight: 'bold',
-          }}
-          marginBottom='0.5rem'
-        >
-          Properties
-        </Typography>
-        <Typography variant='inherit' whiteSpace='pre-wrap'>
-          {
-            JSON.stringify(finding, null, 2)
-          }
-        </Typography>
-      </div>
-    }
-  >
-    <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-  </ExtraWideTooltip>
+  return (
+    <ExtraWideTooltip
+      title={
+        <div style={{ overflowY: 'auto', maxHeight: '30rem' }}>
+          <Typography
+            variant='inherit'
+            sx={{
+              marginBottom: '0.5rem',
+              fontWeight: 'bold'
+            }}>
+            Properties
+          </Typography>
+          <Typography variant='inherit' sx={{
+            whiteSpace: 'pre-wrap'
+          }}>
+            {
+              JSON.stringify(finding, null, 2)
+            }
+          </Typography>
+        </div>
+      }
+    >
+      <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+    </ExtraWideTooltip>
+  );
 }
 FalcoExtraInfo.displayName = 'FalcoExtraInfo'
 FalcoExtraInfo.propTypes = {
@@ -1318,13 +1391,17 @@ const Subject = ({
     FINDING_TYPES.IP,
   ].includes(rescoring.finding_type)
   ) {
-    return <Stack>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Typography variant='inherit'>{finding.package_name}</Typography>
-        <OcmNodeDetails ocmNode={ocmNode} ocmRepo={ocmRepo} iconProps={{ sx: { height: '1rem' } }}/>
-      </div>
-      <Typography variant='inherit' whiteSpace='pre-line'>{finding.package_versions.sort().join('\n')}</Typography>
-    </Stack>
+    return (
+      <Stack>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant='inherit'>{finding.package_name}</Typography>
+          <OcmNodeDetails ocmNode={ocmNode} ocmRepo={ocmRepo} iconProps={{ sx: { height: '1rem' } }}/>
+        </div>
+        <Typography variant='inherit' sx={{
+          whiteSpace: 'pre-line'
+        }}>{finding.package_versions.sort().join('\n')}</Typography>
+      </Stack>
+    );
 
   } else if (rescoring.finding_type === FINDING_TYPES.MALWARE) {
     return <Stack>
@@ -1392,34 +1469,38 @@ const Subject = ({
       </div>
     </Stack>
   } else if (rescoring.finding_type === FINDING_TYPES.FALCO) {
-    return <Stack>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div>
-          <Typography variant='inherit'>
-            {
-              finding.finding.landscape
-            }
-          </Typography>
-          <Typography variant='inherit' marginRight='0.4rem'>
-            {
-              `Project: ${finding.finding.project}`
-            }
-          </Typography>
-          {
-            finding.finding.clusters && <>
-              <Typography variant='inherit'>Clusters:</Typography>
+    return (
+      <Stack>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div>
+            <Typography variant='inherit'>
               {
-                finding.finding.clusters.map((cluster, idx) => <Typography key={idx} variant='inherit'>
-                  {
-                    `- ${cluster.name}`
-                  }
-                </Typography>)
+                finding.finding.landscape
               }
-            </>
-          }
+            </Typography>
+            <Typography variant='inherit' sx={{
+              marginRight: '0.4rem'
+            }}>
+              {
+                `Project: ${finding.finding.project}`
+              }
+            </Typography>
+            {
+              finding.finding.clusters && <>
+                <Typography variant='inherit'>Clusters:</Typography>
+                {
+                  finding.finding.clusters.map((cluster, idx) => <Typography key={idx} variant='inherit'>
+                    {
+                      `- ${cluster.name}`
+                    }
+                  </Typography>)
+                }
+              </>
+            }
+          </div>
         </div>
-      </div>
-    </Stack>
+      </Stack>
+    );
   }
 }
 Subject.displayName = 'Subject'
@@ -1461,33 +1542,37 @@ const ScopeSelector = ({
   scope,
   setScope,
 }) => {
-  return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end', marginRight: 'auto' }}>
-    <Tooltip title={
-      <Typography variant='inherit' whiteSpace='pre-line'>
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end', marginRight: 'auto' }}>
+      <Tooltip title={
+        <Typography variant='inherit' sx={{
+          whiteSpace: 'pre-line'
+        }}>
+          {
+            scopeHelp
+          }
+        </Typography>
+      }>
+        <div style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>
+          <Typography variant='inherit'>Scope</Typography>
+          <HelpOutlineIcon sx={{ height: '1rem' }}/>
+        </div>
+      </Tooltip>
+      <Select
+        value={scope}
+        onChange={(e) => setScope(e.target.value)}
+        variant='standard'
+        fullWidth
+        sx={{ minWidth: '8rem' }}
+      >
         {
-          scopeHelp
+          Object.values(scopeOptions).map((scopeOption) => <MenuItem key={scopeOption} value={scopeOption}>
+            <Typography variant='inherit'>{capitalise(scopeOption)}</Typography>
+          </MenuItem>)
         }
-      </Typography>
-    }>
-      <div style={{ display: 'flex', alignItems: 'center', marginRight: '1rem' }}>
-        <Typography variant='inherit'>Scope</Typography>
-        <HelpOutlineIcon sx={{ height: '1rem' }}/>
-      </div>
-    </Tooltip>
-    <Select
-      value={scope}
-      onChange={(e) => setScope(e.target.value)}
-      variant='standard'
-      fullWidth
-      sx={{ minWidth: '8rem' }}
-    >
-      {
-        Object.values(scopeOptions).map((scopeOption) => <MenuItem key={scopeOption} value={scopeOption}>
-          <Typography variant='inherit'>{capitalise(scopeOption)}</Typography>
-        </MenuItem>)
-      }
-    </Select>
-  </div>
+      </Select>
+    </div>
+  );
 }
 ScopeSelector.displayName = 'ScopeSelector'
 ScopeSelector.propTypes = {
@@ -1621,81 +1706,91 @@ const LicenseOverwriteFields = ({
 
   const [licenseToFocused, setLicenseToFocused] = React.useState(false)
 
-  return <Stack spacing={2}>
-    <Box>
-      <Typography variant='caption' color='text.secondary'>Package Name</Typography>
-      <Typography variant='body2'>{packageName}</Typography>
-    </Box>
-    <TextField
-      label='Package Version (optional)'
-      value={packageVersion}
-      onChange={(e) => setPackageVersion(e.target.value)}
-      variant='outlined'
-      size='small'
-      helperText={`Leave empty to apply to all versions of ${packageName}`}
-    />
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <FormControl variant='outlined' size='small' sx={{ flex: 1 }} error={Boolean(equalLicenses || emptyLicenses)}>
-        <InputLabel>Detected License</InputLabel>
-        <Select
-          value={licenseFrom}
-          onChange={(e) => setLicenseFrom(e.target.value)}
-          renderValue={(value) => <LicenseSelectValue label={value}/>}
-          label='Detected License'
-        >
-          {licenseMenuItems}
-        </Select>
-        <FormHelperText>{' '/* this is a dummy for formatting reasons*/}</FormHelperText>
-      </FormControl>
-      <Box sx={{ marginBottom: '1.25rem', display: 'flex' }}>
-        <TrendingFlatIcon/>
+  return (
+    <Stack spacing={2}>
+      <Box>
+        <Typography variant='caption' sx={{
+          color: 'text.secondary'
+        }}>Package Name</Typography>
+        <Typography variant='body2'>{packageName}</Typography>
       </Box>
-      <Autocomplete
-        options={allLicenses}
-        value={licenseTo || null}
-        onChange={(_, newValue) => setLicenseTo(newValue ?? '')}
-        onInputChange={(_, newValue, reason) => {
-          if (reason === 'input') setLicenseTo(newValue)
-        }}
-        freeSolo
-        sx={{ flex: 1 }}
-        ListboxProps={{ style: { maxHeight: '20rem' } }}
-        renderInput={(params) => <Box sx={{
-          position: 'relative',
-          '&:hover .license-to-marquee': {
-            display: 'inline-block',
-            animation: 'marquee 3s linear infinite',
-          },
-        }}>
-          <TextField
-            {...params}
-            label='New License'
-            variant='outlined'
-            size='small'
-            error={hasError}
-            helperText={unknownLicense ?? emptyLicenses ?? equalLicenses ?? ' '}
-            onFocus={() => setLicenseToFocused(true)}
-            onBlur={() => setLicenseToFocused(false)}
-            InputProps={{
-              ...params.InputProps,
-              sx: !licenseToFocused ? { '& input': { color: 'transparent' } } : undefined,
-            }}
-          />
-          {!licenseToFocused && <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            transform: 'translateY(calc(-50% - 0.65rem))',
-            left: '14px',
-            right: '40px',
-            overflow: 'hidden',
-            pointerEvents: 'none',
-          }}>
-            <LicenseSelectValue label={licenseTo ?? ''} marqueeClass='license-to-marquee'/>
-          </Box>}
-        </Box>}
+      <TextField
+        label='Package Version (optional)'
+        value={packageVersion}
+        onChange={(e) => setPackageVersion(e.target.value)}
+        variant='outlined'
+        size='small'
+        helperText={`Leave empty to apply to all versions of ${packageName}`}
       />
-    </Box>
-  </Stack>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <FormControl variant='outlined' size='small' sx={{ flex: 1 }} error={Boolean(equalLicenses || emptyLicenses)}>
+          <InputLabel>Detected License</InputLabel>
+          <Select
+            value={licenseFrom}
+            onChange={(e) => setLicenseFrom(e.target.value)}
+            renderValue={(value) => <LicenseSelectValue label={value}/>}
+            label='Detected License'
+          >
+            {licenseMenuItems}
+          </Select>
+          <FormHelperText>{' '/* this is a dummy for formatting reasons*/}</FormHelperText>
+        </FormControl>
+        <Box sx={{ marginBottom: '1.25rem', display: 'flex' }}>
+          <TrendingFlatIcon/>
+        </Box>
+        <Autocomplete
+          options={allLicenses}
+          value={licenseTo || null}
+          onChange={(_, newValue) => setLicenseTo(newValue ?? '')}
+          onInputChange={(_, newValue, reason) => {
+            if (reason === 'input') setLicenseTo(newValue)
+          }}
+          freeSolo
+          sx={{ flex: 1 }}
+          renderInput={(params) => <Box sx={{
+            position: 'relative',
+            '&:hover .license-to-marquee': {
+              display: 'inline-block',
+              animation: 'marquee 3s linear infinite',
+            },
+          }}>
+            <TextField
+              {...params}
+              label='New License'
+              variant='outlined'
+              size='small'
+              error={hasError}
+              helperText={unknownLicense ?? emptyLicenses ?? equalLicenses ?? ' '}
+              onFocus={() => setLicenseToFocused(true)}
+              onBlur={() => setLicenseToFocused(false)}
+              slotProps={{
+                ...params.slotProps,
+
+                input: {
+                  ...params.slotProps.input,
+                  sx: !licenseToFocused ? { '& input': { color: 'transparent' } } : undefined,
+                }
+              }}
+            />
+            {!licenseToFocused && <Box sx={{
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(calc(-50% - 0.65rem))',
+              left: '14px',
+              right: '40px',
+              overflow: 'hidden',
+              pointerEvents: 'none',
+            }}>
+              <LicenseSelectValue label={licenseTo ?? ''} marqueeClass='license-to-marquee'/>
+            </Box>}
+          </Box>}
+          slotProps={{
+            listbox: { style: { maxHeight: '20rem' } }
+          }}
+        />
+      </Box>
+    </Stack>
+  );
 }
 LicenseOverwriteFields.displayName = 'LicenseOverwriteFields'
 LicenseOverwriteFields.propTypes = {
@@ -1741,38 +1836,42 @@ const PackageVersionOverwriteFields = ({
     </MenuItem>),
   ]
 
-  return <Stack spacing={2}>
-    <Box>
-      <Typography variant='caption' color='text.secondary'>Package Name</Typography>
-      <Typography variant='body2'>{packageName}</Typography>
-    </Box>
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <FormControl variant='outlined' size='small' sx={{ flex: 1 }}>
-        <InputLabel>Detected Package Version</InputLabel>
-        <Select
-          value={packageVersionFrom}
-          onChange={(e) => setPackageVersionFrom(e.target.value)}
-          label='Detected Package Version'
-        >
-          {packageVersionMenuItems}
-        </Select>
-        <FormHelperText>Leave empty to apply to all versions</FormHelperText>
-      </FormControl>
-      <Box sx={{ marginBottom: '1.25rem', display: 'flex' }}>
-        <TrendingFlatIcon/>
+  return (
+    <Stack spacing={2}>
+      <Box>
+        <Typography variant='caption' sx={{
+          color: 'text.secondary'
+        }}>Package Name</Typography>
+        <Typography variant='body2'>{packageName}</Typography>
       </Box>
-      <TextField
-        label='New Package Version'
-        variant='outlined'
-        size='small'
-        sx={{ flex: 1 }}
-        error={hasError}
-        helperText={equalPackageVersions ?? emptyPackageVersion ?? ' '}
-        value={packageVersionTo}
-        onChange={(e) => setPackageVersionTo(e.target.value)}
-      />
-    </Box>
-  </Stack>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <FormControl variant='outlined' size='small' sx={{ flex: 1 }}>
+          <InputLabel>Detected Package Version</InputLabel>
+          <Select
+            value={packageVersionFrom}
+            onChange={(e) => setPackageVersionFrom(e.target.value)}
+            label='Detected Package Version'
+          >
+            {packageVersionMenuItems}
+          </Select>
+          <FormHelperText>Leave empty to apply to all versions</FormHelperText>
+        </FormControl>
+        <Box sx={{ marginBottom: '1.25rem', display: 'flex' }}>
+          <TrendingFlatIcon/>
+        </Box>
+        <TextField
+          label='New Package Version'
+          variant='outlined'
+          size='small'
+          sx={{ flex: 1 }}
+          error={hasError}
+          helperText={equalPackageVersions ?? emptyPackageVersion ?? ' '}
+          value={packageVersionTo}
+          onChange={(e) => setPackageVersionTo(e.target.value)}
+        />
+      </Box>
+    </Stack>
+  );
 }
 PackageVersionOverwriteFields.displayName = 'PackageVersionOverwriteFields'
 PackageVersionOverwriteFields.propTypes = {
@@ -1889,7 +1988,7 @@ const OverwriteDialog = ({
         rescoring: {
           ...rescoring,
           pending_scanner_writebacks: [
-            ...rescoring.pending_scanner_writebacks ?? [],
+            ...(rescoring.pending_scanner_writebacks ?? []),
             serialisedWriteback,
           ],
         },
@@ -2008,288 +2107,352 @@ const Finding = ({
   })
 
   if (rescoring.finding_type === FINDING_TYPES.VULNERABILITY) {
-    return <Stack spacing={0.5}>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.4rem'}}>
-        <Tooltip
-          title={<div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
-            {
-              finding.summary ?? 'No description available, please use the link instead'
-            }
-          </div>}
-        >
-          <Link
-            href={finding.urls[0]} // assume first always nist.gov
-            target='_blank'
-            rel='noopener'
-            color='secondary'
-            marginRight='0.4rem'
-            variant='inherit'
-          >
-            {
-              finding.cve
-            }
-          </Link>
-        </Tooltip>
-        {finding.cvss && <VulnerabilityExtraInfo vector={finding.cvss} filesystemPaths={finding.filesystem_paths}/>}
-        {finding.recommendation && <RecommendationInfo recommendation={finding.recommendation}/>}
-      </div>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>
-          {finding.cvss ? 'CVSS v3:' : 'Score:'}
-        </Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            finding.cvss_score ?? finding.cvss_v3_score
-          }
-        </Typography>
-      </div>
-      {finding.rating_source && <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Source:</Typography>
-        <Typography variant='inherit'>{finding.rating_source}</Typography>
-      </div>}
-    </Stack>
-
-  } else if (rescoring.finding_type === FINDING_TYPES.MALWARE) {
-    return <Stack spacing={0.5}>
-      <TruncatedTextWithTooltip
-        text={finding.finding.malware}
-        maxLength={24}
-        typographyProps={{
-          variant: 'inherit',
-          marginRight: '0.4rem',
-        }}
-      />
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-        <MalwareExtraInfo
-          contentDigest={finding.finding.content_digest}
-          filename={finding.finding.filename}
-        />
-      </div>
-    </Stack>
-
-  } else if (rescoring.finding_type === FINDING_TYPES.LICENSE) {
-    return <Stack spacing={0.5}>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>{finding.license.name}</Typography>
-        <ExtraWideTooltip
-          title={
-            <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
+    return (
+      <Stack spacing={0.5}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.4rem'}}>
+          <Tooltip
+            title={<div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
               {
-                finding.filesystem_paths.length > 0 && <>
-                  <FilesystemPathsInfo filesystemPaths={finding.filesystem_paths}/>
-                  <Divider sx={{ marginTop: '0.5rem', marginBottom: '1rem' }}/>
-                </>
+                finding.summary ?? 'No description available, please use the link instead'
               }
-            </div>
-          }
-        >
-          <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-        </ExtraWideTooltip>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-      </div>
-      <Typography variant='inherit' marginRight='0.4rem'>{finding.malware}</Typography>
-    </Stack>
-  } else if (rescoring.finding_type === FINDING_TYPES.SAST) {
-    return <Stack spacing={0.5}>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-      </div>
-      <Typography variant='inherit' marginRight='0.4rem'>{finding.sast_status}</Typography>
-    </Stack>
-
-  } else if (rescoring.finding_type === FINDING_TYPES.CODEQL) {
-    return <Stack spacing={0.5}>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-      </div>
-      <Typography variant='inherit' marginRight='0.4rem'>{finding.codeql_status}</Typography>
-    </Stack>
-
-  } else if (rescoring.finding_type === FINDING_TYPES.CRYPTO) {
-    return <Stack spacing={0.5}>
-      <Tooltip
-        title={<div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
-          <Typography variant='inherit' whiteSpace='pre-line'>
-            {
-              finding.summary ?? 'No summary available'
-            }
-          </Typography>
-        </div>}
-      >
-        <Typography variant='inherit' marginRight='0.4rem'>
-          {
-            finding.asset.asset_type
-          }
-        </Typography>
-      </Tooltip>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-        <CryptoExtraInfo
-          locations={finding.asset.locations}
-          properties={finding.asset.properties}
-        />
-      </div>
-      <Typography variant='inherit'>
-        {
-          finding.standard
-        }
-      </Typography>
-    </Stack>
-  } else if (rescoring.finding_type === FINDING_TYPES.OSID) {
-    return <Stack spacing={0.5}>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-      </div>
-      <Typography variant='inherit' marginRight='0.4rem'>{finding.osid.VERSION_ID} → {finding.greatest_version}</Typography>
-    </Stack>
-  } else if (rescoring.finding_type === FINDING_TYPES.DIKI) {
-    const rule_url = diki_rule_url(finding)
-
-    return <Stack spacing={0.5}>
-      <div style={{ marginBottom: '0.4rem'}}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {
-            rule_url ? <Link
-              href={rule_url}
+            </div>}
+          >
+            <Link
+              href={finding.urls[0]} // assume first always nist.gov
               target='_blank'
               rel='noopener'
               color='secondary'
               variant='inherit'
+              sx={{
+                marginRight: '0.4rem'
+              }}
             >
               {
-                `Rule ${finding.rule_id}`
+                finding.cve
               }
-            </Link> : <Typography variant='inherit'>
+            </Link>
+          </Tooltip>
+          {finding.cvss && <VulnerabilityExtraInfo vector={finding.cvss} filesystemPaths={finding.filesystem_paths}/>}
+          {finding.recommendation && <RecommendationInfo recommendation={finding.recommendation}/>}
+        </div>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>
+            {finding.cvss ? 'CVSS v3:' : 'Score:'}
+          </Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              finding.cvss_score ?? finding.cvss_v3_score
+            }
+          </Typography>
+        </div>
+        {finding.rating_source && <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Source:</Typography>
+          <Typography variant='inherit'>{finding.rating_source}</Typography>
+        </div>}
+      </Stack>
+    );
+
+  } else if (rescoring.finding_type === FINDING_TYPES.MALWARE) {
+    return (
+      <Stack spacing={0.5}>
+        <TruncatedTextWithTooltip
+          text={finding.finding.malware}
+          maxLength={24}
+          typographyProps={{
+            variant: 'inherit',
+            marginRight: '0.4rem',
+          }}
+        />
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+          <MalwareExtraInfo
+            contentDigest={finding.finding.content_digest}
+            filename={finding.finding.filename}
+          />
+        </div>
+      </Stack>
+    );
+
+  } else if (rescoring.finding_type === FINDING_TYPES.LICENSE) {
+    return (
+      <Stack spacing={0.5}>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>{finding.license.name}</Typography>
+          <ExtraWideTooltip
+            title={
+              <div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
+                {
+                  finding.filesystem_paths.length > 0 && <>
+                    <FilesystemPathsInfo filesystemPaths={finding.filesystem_paths}/>
+                    <Divider sx={{ marginTop: '0.5rem', marginBottom: '1rem' }}/>
+                  </>
+                }
+              </div>
+            }
+          >
+            <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+          </ExtraWideTooltip>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+        </div>
+        <Typography variant='inherit' sx={{
+          marginRight: '0.4rem'
+        }}>{finding.malware}</Typography>
+      </Stack>
+    );
+  } else if (rescoring.finding_type === FINDING_TYPES.SAST) {
+    return (
+      <Stack spacing={0.5}>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+        </div>
+        <Typography variant='inherit' sx={{
+          marginRight: '0.4rem'
+        }}>{finding.sast_status}</Typography>
+      </Stack>
+    );
+
+  } else if (rescoring.finding_type === FINDING_TYPES.CODEQL) {
+    return (
+      <Stack spacing={0.5}>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+        </div>
+        <Typography variant='inherit' sx={{
+          marginRight: '0.4rem'
+        }}>{finding.codeql_status}</Typography>
+      </Stack>
+    );
+
+  } else if (rescoring.finding_type === FINDING_TYPES.CRYPTO) {
+    return (
+      <Stack spacing={0.5}>
+        <Tooltip
+          title={<div style={{ overflowY: 'auto', maxHeight: '15rem' }}>
+            <Typography variant='inherit' sx={{
+              whiteSpace: 'pre-line'
+            }}>
               {
-                `Rule ${finding.rule_id}`
+                finding.summary ?? 'No summary available'
               }
             </Typography>
-          }
-          <DikiExtraInfo finding={finding}/>
+          </div>}
+        >
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>
+            {
+              finding.asset.asset_type
+            }
+          </Typography>
+        </Tooltip>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+          <CryptoExtraInfo
+            locations={finding.asset.locations}
+            properties={finding.asset.properties}
+          />
         </div>
-        <Typography variant='inherit' marginRight='0.4rem'>
+        <Typography variant='inherit'>
           {
-            finding.rule_name
+            finding.standard
           }
         </Typography>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <Typography variant='inherit' marginRight='0.4rem'>Original:</Typography>
-        <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
-          {
-            categorisation.display_name
-          }
-        </Typography>
-      </div>
-    </Stack>
+      </Stack>
+    );
+  } else if (rescoring.finding_type === FINDING_TYPES.OSID) {
+    return (
+      <Stack spacing={0.5}>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+        </div>
+        <Typography variant='inherit' sx={{
+          marginRight: '0.4rem'
+        }}>{finding.osid.VERSION_ID} → {finding.greatest_version}</Typography>
+      </Stack>
+    );
+  } else if (rescoring.finding_type === FINDING_TYPES.DIKI) {
+    const rule_url = diki_rule_url(finding)
+
+    return (
+      <Stack spacing={0.5}>
+        <div style={{ marginBottom: '0.4rem'}}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            {
+              rule_url ? <Link
+                href={rule_url}
+                target='_blank'
+                rel='noopener'
+                color='secondary'
+                variant='inherit'
+              >
+                {
+                  `Rule ${finding.rule_id}`
+                }
+              </Link> : <Typography variant='inherit'>
+                {
+                  `Rule ${finding.rule_id}`
+                }
+              </Typography>
+            }
+            <DikiExtraInfo finding={finding}/>
+          </div>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>
+            {
+              finding.rule_name
+            }
+          </Typography>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <Typography variant='inherit' sx={{
+            marginRight: '0.4rem'
+          }}>Original:</Typography>
+          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+            {
+              categorisation.display_name
+            }
+          </Typography>
+        </div>
+      </Stack>
+    );
   } else if (rescoring.finding_type === FINDING_TYPES.FALCO) {
-    return <div style={{ display: 'flex' }}>
-      <Typography variant='inherit' marginRight='0.4rem'>
-        {
-          `Rule: ${finding.finding.rule ?? 'Interactive Event'}`
-        }
-      </Typography>
-      <FalcoExtraInfo finding={finding.finding}/>
-    </div>
+    return (
+      <div style={{ display: 'flex' }}>
+        <Typography variant='inherit' sx={{
+          marginRight: '0.4rem'
+        }}>
+          {
+            `Rule: ${finding.finding.rule ?? 'Interactive Event'}`
+          }
+        </Typography>
+        <FalcoExtraInfo finding={finding.finding}/>
+      </div>
+    );
   } else if (rescoring.finding_type === FINDING_TYPES.IP) {
     const sortedPolicyViolations = finding.policy_violations.map((pv) => pv.name).sort()
     const sortedLicenses = finding.licenses.map((license) => license.name).sort()
 
-    return <Stack spacing={0.5}>
-      {
-        sortedPolicyViolations.length > 0 && <div>
-          <Typography variant='caption' color='text.secondary'>
-            {`${pluralise('Policy Violation', sortedPolicyViolations.length)} (${sortedPolicyViolations.length})`}
-          </Typography>
-          {
-            sortedPolicyViolations.map((policyViolation) => <Typography
-              key={policyViolation}
-              variant='inherit'
-              sx={{ wordBreak: 'break-word', lineHeight: 1.25 }}
-            >
-              {`• ${policyViolation}`}
-            </Typography>)
-          }
-        </div>
-      }
-      {
-        sortedLicenses.length > 0 && <div>
-          <Typography variant='caption' color='text.secondary'>
-            {`${pluralise('License', sortedLicenses.length)} (${sortedLicenses.length})`}
-          </Typography>
-          {
-            sortedLicenses.map((license) => <Typography
-              key={license}
-              variant='inherit'
-              sx={{ wordBreak: 'break-word', lineHeight: 1.25 }}
-            >
-              {`• ${license}`}
-            </Typography>)
-          }
-        </div>
-      }
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Typography variant='inherit'>Original:</Typography>
-        <Typography
-          variant='inherit'
-          sx={{ color: `${categorisationValueToColor(categorisation.value)}.main` }}
-        >
-          {categorisation.display_name}
-        </Typography>
-
-        {finding.labels &&
-          <Tooltip
-            arrow placement='top'
-            title={<Typography variant='caption'>Labels: {finding.labels.join(', ')}</Typography>}
-          >
-            <IconButton size='small'>
-              <InfoOutlinedIcon sx={{ height: '1rem', width: '1rem' }}/>
-            </IconButton>
-          </Tooltip>
+    return (
+      <Stack spacing={0.5}>
+        {
+          sortedPolicyViolations.length > 0 && <div>
+            <Typography variant='caption' sx={{
+              color: 'text.secondary'
+            }}>
+              {`${pluralise('Policy Violation', sortedPolicyViolations.length)} (${sortedPolicyViolations.length})`}
+            </Typography>
+            {
+              sortedPolicyViolations.map((policyViolation) => <Typography
+                key={policyViolation}
+                variant='inherit'
+                sx={{ wordBreak: 'break-word', lineHeight: 1.25 }}
+              >
+                {`• ${policyViolation}`}
+              </Typography>)
+            }
+          </div>
         }
-      </Box>
-    </Stack>
+        {
+          sortedLicenses.length > 0 && <div>
+            <Typography variant='caption' sx={{
+              color: 'text.secondary'
+            }}>
+              {`${pluralise('License', sortedLicenses.length)} (${sortedLicenses.length})`}
+            </Typography>
+            {
+              sortedLicenses.map((license) => <Typography
+                key={license}
+                variant='inherit'
+                sx={{ wordBreak: 'break-word', lineHeight: 1.25 }}
+              >
+                {`• ${license}`}
+              </Typography>)
+            }
+          </div>
+        }
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography variant='inherit'>Original:</Typography>
+          <Typography
+            variant='inherit'
+            sx={{ color: `${categorisationValueToColor(categorisation.value)}.main` }}
+          >
+            {categorisation.display_name}
+          </Typography>
+
+          {finding.labels &&
+            <Tooltip
+              arrow placement='top'
+              title={<Typography variant='caption'>Labels: {finding.labels.join(', ')}</Typography>}
+            >
+              <IconButton size='small'>
+                <InfoOutlinedIcon sx={{ height: '1rem', width: '1rem' }}/>
+              </IconButton>
+            </Tooltip>
+          }
+        </Box>
+      </Stack>
+    );
   }
 }
 Finding.displayName = 'Finding'
@@ -2352,69 +2515,77 @@ const PendingScannerWritebacks = ({
     }
   }
 
-  return <Tooltip
-    title={<Stack spacing={0.5}>
-      <Typography variant='inherit' fontWeight='bold'>
-        {`${pendingScannerWritebacks.length} pending change${pendingScannerWritebacks.length > 1 ? 's' : ''}`}
-      </Typography>
-      <Typography variant='inherit' sx={{ opacity: 0.85 }}>
-        {'A re-scan is required before these take effect'}
-        { isAuthorised && ' '}
+  return (
+    <Tooltip
+      title={<Stack spacing={0.5}>
+        <Typography variant='inherit' sx={{
+          fontWeight: 'bold'
+        }}>
+          {`${pendingScannerWritebacks.length} pending change${pendingScannerWritebacks.length > 1 ? 's' : ''}`}
+        </Typography>
+        <Typography variant='inherit' sx={{ opacity: 0.85 }}>
+          {'A re-scan is required before these take effect'}
+          { isAuthorised && ' '}
+          {
+            isAuthorised && <Box
+              component='span'
+              onClick={triggerRescans}
+              sx={{ cursor: 'pointer', textDecoration: 'underline' }}
+            >
+              {'(trigger now)'}
+            </Box>
+          }
+          {'.'}
+        </Typography>
         {
-          isAuthorised && <Box
-            component='span'
-            onClick={triggerRescans}
-            sx={{ cursor: 'pointer', textDecoration: 'underline' }}
-          >
-            {'(trigger now)'}
-          </Box>
+          licenseOverwrites.length > 0 && <>
+            <Typography variant='inherit' sx={{
+              fontWeight: 'bold'
+            }}>
+              License Changes
+            </Typography>
+            {
+              licenseOverwrites.map((licenseOverwrite, idx) => {
+                const from = licenseOverwrite.data.license_from
+                const to = licenseOverwrite.data.license_to
+                const version = licenseOverwrite.data.package_version
+                const operation = !from ? 'added' : (!to ? 'removed' : '')
+                return <Box key={`license-${idx}`} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  {from && <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{from}</Typography>}
+                  {from && to && <Typography variant='inherit'>{'→'}</Typography>}
+                  {to && <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{to}</Typography>}
+                  {operation && <Typography variant='inherit' sx={{ opacity: 0.7 }}>{`(${operation})`}</Typography>}
+                  {version && <Typography variant='inherit' sx={{ opacity: 0.7 }}>{`(${version})`}</Typography>}
+                </Box>
+              })
+            }
+          </>
         }
-        {'.'}
-      </Typography>
-      {
-        licenseOverwrites.length > 0 && <>
-          <Typography variant='inherit' fontWeight='bold'>
-            License Changes
-          </Typography>
-          {
-            licenseOverwrites.map((licenseOverwrite, idx) => {
-              const from = licenseOverwrite.data.license_from
-              const to = licenseOverwrite.data.license_to
-              const version = licenseOverwrite.data.package_version
-              const operation = !from ? 'added' : (!to ? 'removed' : '')
-              return <Box key={`license-${idx}`} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                {from && <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{from}</Typography>}
-                {from && to && <Typography variant='inherit'>{'→'}</Typography>}
-                {to && <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{to}</Typography>}
-                {operation && <Typography variant='inherit' sx={{ opacity: 0.7 }}>{`(${operation})`}</Typography>}
-                {version && <Typography variant='inherit' sx={{ opacity: 0.7 }}>{`(${version})`}</Typography>}
-              </Box>
-            })
-          }
-        </>
-      }
-      {
-        packageVersionOverwrites.length > 0 && <>
-          <Typography variant='inherit' fontWeight='bold'>
-            Package Version Changes
-          </Typography>
-          {
-            packageVersionOverwrites.map((packageVersionOverwrite, idx) => {
-              const from = packageVersionOverwrite.data.package_version_from ?? '(any)'
-              const to = packageVersionOverwrite.data.package_version_to
-              return <Box key={`license-${idx}`} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{from}</Typography>
-                <Typography variant='inherit'>{'→'}</Typography>
-                <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{to}</Typography>
-              </Box>
-            })
-          }
-        </>
-      }
-    </Stack>}
-  >
-    <PendingActionsIcon color='levelWarning'/>
-  </Tooltip>
+        {
+          packageVersionOverwrites.length > 0 && <>
+            <Typography variant='inherit' sx={{
+              fontWeight: 'bold'
+            }}>
+              Package Version Changes
+            </Typography>
+            {
+              packageVersionOverwrites.map((packageVersionOverwrite, idx) => {
+                const from = packageVersionOverwrite.data.package_version_from ?? '(any)'
+                const to = packageVersionOverwrite.data.package_version_to
+                return <Box key={`license-${idx}`} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{from}</Typography>
+                  <Typography variant='inherit'>{'→'}</Typography>
+                  <Typography variant='inherit' sx={{ fontFamily: 'monospace' }}>{to}</Typography>
+                </Box>
+              })
+            }
+          </>
+        }
+      </Stack>}
+    >
+      <PendingActionsIcon color='levelWarning'/>
+    </Tooltip>
+  );
 }
 PendingScannerWritebacks.displayName = 'PendingScannerWritebacks'
 PendingScannerWritebacks.propTypes = {
@@ -2487,7 +2658,9 @@ const RescoringContentTableRow = ({
     title={`Rescoring to "${rescoredCategorisation.display_name}" will modify the due date by ${diffDays}`}
   >
     <Typography variant='inherit'>{diffDays}</Typography>
-  </Tooltip> : <Typography variant='inherit' visibility='hidden'>Dummy</Typography>
+  </Tooltip> : <Typography variant='inherit' sx={{
+    visibility: 'hidden'
+  }}>Dummy</Typography>
 
   const [updateDelayTimer, setUpdateDelayTimer] = React.useState(null)
 
@@ -2513,258 +2686,276 @@ const RescoringContentTableRow = ({
     )
   }
 
-  return <>
-    {
-      overwriteOpen && <OverwriteDialog
-        rescoring={rescoring}
-        editRescoring={editRescoring}
-        scannerWritebackType={scannerWritebackType}
-        defaultScope={findingCfg.default_scope}
-        onClose={() => setOverwriteOpen(false)}
-      />
-    }
-    <TableRow
-      onClick={() => {
-        if (applicableRescorings.length > 0) {
-          setExpanded(!expanded)
-        }
-      }}
-      sx={{
-        height: '15vh',
-        ...(applicableRescorings.length > 0 ? { '&:hover': { cursor: 'pointer' }} : {})
-      }}
-      hover
-    >
-      <TableCell
-        onClick={(e) => {
-          e.stopPropagation()
-          selectRescoring(rescoring)
-        }}
-        sx={{ '&:hover': { cursor: 'pointer' } }}>
-        <Checkbox
-          checked={Boolean(selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring)))}
-        />
-      </TableCell>
-      <TableCell>
-        <Subject
+  return (
+    <>
+      {
+        overwriteOpen && <OverwriteDialog
           rescoring={rescoring}
-          ocmNode={ocmNode}
-          ocmRepo={ocmRepo}
+          editRescoring={editRescoring}
+          scannerWritebackType={scannerWritebackType}
+          defaultScope={findingCfg.default_scope}
+          onClose={() => setOverwriteOpen(false)}
         />
-      </TableCell>
-      <TableCell>
-        <Finding rescoring={rescoring} findingCfg={findingCfg}/>
-      </TableCell>
-      <TableCell align='center'>
-        {
-          sprintInfo && <Tooltip
-            title={<Typography
-              variant='inherit'
-              whiteSpace='pre-line'
-            >
-              {
-                `${sprintInfo.tooltip}\nFirst discovered on ${new Date(discovery_date).toLocaleDateString(navigator.language)}`
-              }
-            </Typography>}
-          >
-            <Chip
-              label={sprintInfo.displayName}
-              variant='outlined'
-              color={sprintInfo.color}
-              size='small'
-            />
-          </Tooltip>
-        }
-      </TableCell>
-      <TableCell align='right' sx={{ paddingX: 0 }}>
-        <Typography variant='inherit' color={`${categorisationValueToColor(currentCategorisation.value)}.main`}>
-          {
-            currentCategorisation.display_name
+      }
+      <TableRow
+        onClick={() => {
+          if (applicableRescorings.length > 0) {
+            setExpanded(!expanded)
           }
-        </Typography>
-      </TableCell>
-      <TableCell align='center'>
-        <TrendingFlatIcon/>
-      </TableCell>
-      <TableCell sx={{ paddingX: '0.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div>
-            <Typography variant='inherit' visibility='hidden'>Dummy</Typography>
-            <Select
-              value={severity}
-              onChange={(e) => {
-                const id = e.target.value
-
-                if (id === licenseOverwriteKey) {
-                  setScannerWritebackType(SCANNER_WRITEBACK_TYPES.LICENSE)
-                  setOverwriteOpen(true)
-                  return
-                } else if (id === packageVersionOverwriteKey) {
-                  setScannerWritebackType(SCANNER_WRITEBACK_TYPES.PACKAGE_VERSION)
-                  setOverwriteOpen(true)
-                  return
-                }
-
-                const categorisation = findCategorisationById({id, findingCfg})
-                const dueDate = categorisation.allowed_processing_time === META_ALLOWED_PROCESSING_TIME.INPUT
-                  ? originalDueDate
-                  : new Date(discovery_date) + categorisation.allowed_processing_time * 1000 // sec -> ms
-
-                editRescoring({
-                  rescoring: rescoring,
-                  severity: id,
-                  matchingRules: [META_RESCORING_RULES.CUSTOM_RESCORING],
-                  due_date: dueDate,
-                })
-                if (!selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring))) {
-                  selectRescoring(rescoring)
-                }
-              }}
-              onClick={(e) => e.stopPropagation()}
-              variant='standard'
-              sx={{
-                marginY: '0.5rem',
-                '& .MuiSelect-select': {
-                  whiteSpace: 'normal',
-                },
-              }}
-            >
-              {
-                [
-                  FINDING_TYPES.IP,
-                ].includes(findingCfg.type) && <MenuItem key={licenseOverwriteKey} value={licenseOverwriteKey}>
-                  <EditNoteIcon fontSize='small'/>
-                  <Typography variant='body2' fontStyle='italic' marginLeft='0.25em'>
-                    Change License
-                  </Typography>
-                </MenuItem>
-              }
-              {
-                [
-                  FINDING_TYPES.IP,
-                  FINDING_TYPES.LICENSE,
-                  FINDING_TYPES.VULNERABILITY,
-                ].includes(findingCfg.type) && <MenuItem key={packageVersionOverwriteKey} value={packageVersionOverwriteKey}>
-                  <EditNoteIcon fontSize='small'/>
-                  <Typography variant='body2' fontStyle='italic' marginLeft='0.25em'>
-                    Change Package Version
-                  </Typography>
-                </MenuItem>
-              }
-              {
-                findingCfg.categorisations.filter((categorisation) => {
-                  return categorisation.rescoring?.includes(RESCORING_MODES.MANUAL)
-                }).map((categorisation) => <MenuItem
-                  key={categorisation.id}
-                  value={categorisation.id}
-                >
-                  <Typography color={`${categorisationValueToColor(categorisation.value)}.main`} variant='body2'>
-                    {
-                      categorisation.display_name
-                    }
-                  </Typography>
-                </MenuItem>)
-              }
-            </Select>
-            {
-              newProccesingDays
-            }
-          </div>
+        }}
+        sx={{
+          height: '15vh',
+          ...(applicableRescorings.length > 0 ? { '&:hover': { cursor: 'pointer' }} : {})
+        }}
+        hover
+      >
+        <TableCell
+          onClick={(e) => {
+            e.stopPropagation()
+            selectRescoring(rescoring)
+          }}
+          sx={{ '&:hover': { cursor: 'pointer' } }}>
+          <Checkbox
+            checked={Boolean(selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring)))}
+          />
+        </TableCell>
+        <TableCell>
+          <Subject
+            rescoring={rescoring}
+            ocmNode={ocmNode}
+            ocmRepo={ocmRepo}
+          />
+        </TableCell>
+        <TableCell>
+          <Finding rescoring={rescoring} findingCfg={findingCfg}/>
+        </TableCell>
+        <TableCell align='center'>
           {
-            severity !== originalSeverityProposal && <Tooltip
-              title={`Reset to ${originalCategorisationProposal.display_name}`}
+            sprintInfo && <Tooltip
+              title={<Typography
+                variant='inherit'
+                sx={{
+                  whiteSpace: 'pre-line'
+                }}
+              >
+                {
+                  `${sprintInfo.tooltip}\nFirst discovered on ${new Date(discovery_date).toLocaleDateString(navigator.language)}`
+                }
+              </Typography>}
             >
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation()
+              <Chip
+                label={sprintInfo.displayName}
+                variant='outlined'
+                color={sprintInfo.color}
+                size='small'
+              />
+            </Tooltip>
+          }
+        </TableCell>
+        <TableCell align='right' sx={{ paddingX: 0 }}>
+          <Typography variant='inherit' color={`${categorisationValueToColor(currentCategorisation.value)}.main`}>
+            {
+              currentCategorisation.display_name
+            }
+          </Typography>
+        </TableCell>
+        <TableCell align='center'>
+          <TrendingFlatIcon/>
+        </TableCell>
+        <TableCell sx={{ paddingX: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div>
+              <Typography variant='inherit' sx={{
+                visibility: 'hidden'
+              }}>Dummy</Typography>
+              <Select
+                value={severity}
+                onChange={(e) => {
+                  const id = e.target.value
+
+                  if (id === licenseOverwriteKey) {
+                    setScannerWritebackType(SCANNER_WRITEBACK_TYPES.LICENSE)
+                    setOverwriteOpen(true)
+                    return
+                  } else if (id === packageVersionOverwriteKey) {
+                    setScannerWritebackType(SCANNER_WRITEBACK_TYPES.PACKAGE_VERSION)
+                    setOverwriteOpen(true)
+                    return
+                  }
+
+                  const categorisation = findCategorisationById({id, findingCfg})
+                  const dueDate = categorisation.allowed_processing_time === META_ALLOWED_PROCESSING_TIME.INPUT
+                    ? originalDueDate
+                    : new Date(discovery_date) + categorisation.allowed_processing_time * 1000 // sec -> ms
+
                   editRescoring({
                     rescoring: rescoring,
-                    severity: originalSeverityProposal,
-                    matchingRules: originalMatchingRules,
+                    severity: id,
+                    matchingRules: [META_RESCORING_RULES.CUSTOM_RESCORING],
+                    due_date: dueDate,
                   })
-                  if (selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring))) {
+                  if (!selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring))) {
                     selectRescoring(rescoring)
                   }
                 }}
+                onClick={(e) => e.stopPropagation()}
+                variant='standard'
+                sx={{
+                  marginY: '0.5rem',
+                  '& .MuiSelect-select': {
+                    whiteSpace: 'normal',
+                  },
+                }}
               >
-                <UndoIcon fontSize='small'/>
-              </IconButton>
+                {
+                  [
+                    FINDING_TYPES.IP,
+                  ].includes(findingCfg.type) && <MenuItem key={licenseOverwriteKey} value={licenseOverwriteKey}>
+                    <EditNoteIcon fontSize='small'/>
+                    <Typography
+                      variant='body2'
+                      sx={{
+                        fontStyle: 'italic',
+                        marginLeft: '0.25em'
+                      }}>
+                      Change License
+                    </Typography>
+                  </MenuItem>
+                }
+                {
+                  [
+                    FINDING_TYPES.IP,
+                    FINDING_TYPES.LICENSE,
+                    FINDING_TYPES.VULNERABILITY,
+                  ].includes(findingCfg.type) && <MenuItem key={packageVersionOverwriteKey} value={packageVersionOverwriteKey}>
+                    <EditNoteIcon fontSize='small'/>
+                    <Typography
+                      variant='body2'
+                      sx={{
+                        fontStyle: 'italic',
+                        marginLeft: '0.25em'
+                      }}>
+                      Change Package Version
+                    </Typography>
+                  </MenuItem>
+                }
+                {
+                  findingCfg.categorisations.filter((categorisation) => {
+                    return categorisation.rescoring?.includes(RESCORING_MODES.MANUAL)
+                  }).map((categorisation) => <MenuItem
+                    key={categorisation.id}
+                    value={categorisation.id}
+                  >
+                    <Typography color={`${categorisationValueToColor(categorisation.value)}.main`} variant='body2'>
+                      {
+                        categorisation.display_name
+                      }
+                    </Typography>
+                  </MenuItem>)
+                }
+              </Select>
+              {
+                newProccesingDays
+              }
+            </div>
+            {
+              severity !== originalSeverityProposal && <Tooltip
+                title={`Reset to ${originalCategorisationProposal.display_name}`}
+              >
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    editRescoring({
+                      rescoring: rescoring,
+                      severity: originalSeverityProposal,
+                      matchingRules: originalMatchingRules,
+                    })
+                    if (selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring))) {
+                      selectRescoring(rescoring)
+                    }
+                  }}
+                >
+                  <UndoIcon fontSize='small'/>
+                </IconButton>
+              </Tooltip>
+            }
+            <PendingScannerWritebacks pendingScannerWritebacks={pending_scanner_writebacks} ocmNode={ocmNode}/>
+            <AppliedRulesExtraInfo matchingRules={matchingRules}/>
+          </div>
+        </TableCell>
+        <TableCell>
+          <Stack spacing={2}>
+            <TextField
+              label='Comment'
+              defaultValue={rescoring.comment}
+              onChange={(e) => delayRescoringUpdate({comment: e.target.value})}
+              onClick={(e) => e.stopPropagation()}
+              error={rescoringNeedsComment(rescoring, Boolean(selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring))))}
+              size='small'
+              maxRows={4}
+              fullWidth
+              multiline
+              slotProps={{
+                input: {
+                  sx: {
+                    fontSize: 'inherit',
+                  },
+                }
+              }}
+            />
+            {
+              rescoredCategorisation.allowed_processing_time === META_ALLOWED_PROCESSING_TIME.INPUT && <Box
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <LocalizationProvider
+                  dateAdapter={AdapterLuxon}
+                  adapterLocale={navigator.language}
+                >
+                  <DatePicker
+                    label='Due Date'
+                    defaultValue={DateTime.fromJSDate(due_date ? new Date(due_date) : new Date())}
+                    onChange={(value) => delayRescoringUpdate({due_date: value.toFormat('yyyy-MM-dd')})}
+                    slotProps={{
+                      textField: {
+                        size: 'small',
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
+              </Box>
+            }
+          </Stack>
+        </TableCell>
+        <TableCell align='center'>
+          {
+            applicableRescorings.length > 0 && <Tooltip
+              title='Show Rescorings'
+            >
+              <span>
+                {
+                  (
+                    applicableRescorings.length > 0
+                    && expanded
+                  )
+                    ? <KeyboardArrowUpIcon fontSize='small'/>
+                    : <KeyboardArrowDownIcon fontSize='small'/>
+                }
+              </span>
             </Tooltip>
           }
-          <PendingScannerWritebacks pendingScannerWritebacks={pending_scanner_writebacks} ocmNode={ocmNode}/>
-          <AppliedRulesExtraInfo matchingRules={matchingRules}/>
-        </div>
-      </TableCell>
-      <TableCell>
-        <Stack spacing={2}>
-          <TextField
-            label='Comment'
-            defaultValue={rescoring.comment}
-            onChange={(e) => delayRescoringUpdate({comment: e.target.value})}
-            onClick={(e) => e.stopPropagation()}
-            error={rescoringNeedsComment(rescoring, Boolean(selectedRescorings.find((r) => rescoringIdentity(r) === rescoringIdentity(rescoring))))}
-            size='small'
-            maxRows={4}
-            InputProps={{
-              sx: {
-                fontSize: 'inherit',
-              },
-            }}
-            fullWidth
-            multiline
-          />
-          {
-            rescoredCategorisation.allowed_processing_time === META_ALLOWED_PROCESSING_TIME.INPUT && <Box
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <LocalizationProvider
-                dateAdapter={AdapterLuxon}
-                adapterLocale={navigator.language}
-              >
-                <DatePicker
-                  label='Due Date'
-                  defaultValue={DateTime.fromJSDate(due_date ? new Date(due_date) : new Date())}
-                  onChange={(value) => delayRescoringUpdate({due_date: value.toFormat('yyyy-MM-dd')})}
-                  slotProps={{
-                    textField: {
-                      size: 'small',
-                    },
-                  }}
-                />
-              </LocalizationProvider>
-            </Box>
-          }
-        </Stack>
-      </TableCell>
-      <TableCell align='center'>
-        {
-          applicableRescorings.length > 0 && <Tooltip
-            title='Show Rescorings'
-          >
-            <span>
-              {
-                (
-                  applicableRescorings.length > 0
-                  && expanded
-                )
-                  ? <KeyboardArrowUpIcon fontSize='small'/>
-                  : <KeyboardArrowDownIcon fontSize='small'/>
-              }
-            </span>
-          </Tooltip>
-        }
-      </TableCell>
-    </TableRow>
-    <ApplicableRescorings
-      findingCfg={findingCfg}
-      rescoring={rescoring}
-      expanded={expanded}
-    />
-  </>
+        </TableCell>
+      </TableRow>
+      <ApplicableRescorings
+        findingCfg={findingCfg}
+        rescoring={rescoring}
+        expanded={expanded}
+      />
+    </>
+  );
 }
 RescoringContentTableRow.displayName = 'RescoringContentTableRow'
 RescoringContentTableRow.propTypes = {
@@ -3306,29 +3497,52 @@ const Rescoring = ({
     setRescoringsLoading,
   ])
 
-  if (isError) return <Box display='flex' justifyContent='center'>
-    <Typography display='flex' justifyContent='center' variant='h6'>
-      {
-        `Something went wrong ${String.fromCodePoint('0x1F625')}` // "sad but relieved face" symbol
-      }
-    </Typography>
-  </Box>
+  if (isError) return (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center'
+      }}>
+      <Typography
+        variant='h6'
+        sx={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+        {
+          `Something went wrong ${String.fromCodePoint('0x1F625')}` // "sad but relieved face" symbol
+        }
+      </Typography>
+    </Box>
+  );
 
   if (
     rescorings?.length === 0
     && !rescoringsLoading
-  ) return <Box display='flex' justifyContent='center'>
+  ) return (
     <Box
-      display='flex'
-      flexDirection='column'
-      alignItems='center'
-      alignContent='center'
-    >
-      <Typography display='flex' justifyContent='center' variant='h6'>
-        No rescorings match your selection
-      </Typography>
+      sx={{
+        display: 'flex',
+        justifyContent: 'center'
+      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          alignContent: 'center'
+        }}>
+        <Typography
+          variant='h6'
+          sx={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
+          No rescorings match your selection
+        </Typography>
+      </Box>
     </Box>
-  </Box>
+  );
 
   return <RescoringContent
     rescorings={rescorings}
@@ -3661,12 +3875,12 @@ const RescoringModal = ({
       // explicitly check for `undefined` as `null` is a valid value
       prev[index] = {
         ...rescoring,
-        ...severity !== undefined && {severity: severity},
-        ...matchingRules !== undefined && {
+        ...(severity !== undefined && {severity: severity}),
+        ...(matchingRules !== undefined && {
           matching_rules: severity === rescoring.originalSeverityProposal ? rescoring.originalMatchingRules : matchingRules,
-        },
-        ...comment !== undefined && {comment: comment},
-        ...due_date !== undefined && {due_date: due_date}
+        }),
+        ...(comment !== undefined && {comment: comment}),
+        ...(due_date !== undefined && {due_date: due_date})
       }
 
       // reconstruct array to trigger state-update (thus re-render)
@@ -3744,184 +3958,203 @@ const RescoringModal = ({
     }
   }, [])
 
-  return <Dialog
-    open
-    onClose={handleClose}
-    maxWidth={false}
-    fullWidth
-    PaperProps={{ sx: { width: '85%', height: '95%' } }}
-    onClick={(e) => {
-      handleClose()
-      e.stopPropagation()
-    }}
-  >
-    <DialogTitle
-      sx={{
-        bgcolor: 'background.paper',
-        border: 1,
-        borderColor: 'primary.main',
+  return (
+    <Dialog
+      open
+      onClose={handleClose}
+      maxWidth={false}
+      fullWidth
+      onClick={(e) => {
+        handleClose()
+        e.stopPropagation()
       }}
-      onClick={closeInput}
+      slotProps={{
+        paper: { sx: { width: '85%', height: '95%' } }
+      }}
     >
-      <Grid container>
-        {
-          <Grid item xs={1}>
-            {
-              findingCfg.rescoring_ruleset && <>
-                {
-                  openInput ? <ErrorBoundary>
-                    <RescoringRulesetDrawer
-                      open={openInput}
-                      handleClose={closeInput}
-                      findingCfg={findingCfg}
-                      ocmNodes={ocmNodes}
-                      ocmRepo={ocmRepo}
-                    />
-                  </ErrorBoundary> : <Box paddingTop={1}>
-                    <Tooltip title='Open rescoring rules'>
-                      <IconButton onClick={() => setOpenInput(true)}>
-                        <ChevronRightIcon/>
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                }
-              </>
-            }
+      <DialogTitle
+        sx={{
+          bgcolor: 'background.paper',
+          border: 1,
+          borderColor: 'primary.main',
+        }}
+        onClick={closeInput}
+      >
+        <Grid container>
+          {
+            <Grid size={1}>
+              {
+                findingCfg.rescoring_ruleset && <>
+                  {
+                    openInput ? <ErrorBoundary>
+                      <RescoringRulesetDrawer
+                        open={openInput}
+                        handleClose={closeInput}
+                        findingCfg={findingCfg}
+                        ocmNodes={ocmNodes}
+                        ocmRepo={ocmRepo}
+                      />
+                    </ErrorBoundary> : <Box sx={{
+                      paddingTop: 1
+                    }}>
+                      <Tooltip title='Open rescoring rules'>
+                        <IconButton onClick={() => setOpenInput(true)}>
+                          <ChevronRightIcon/>
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  }
+                </>
+              }
+            </Grid>
+          }
+          <Grid size={10}>
+            <RescoringHeader
+              ocmNodes={ocmNodes}
+              title='Rescoring'
+            />
           </Grid>
-        }
-        <Grid item xs={10}>
-          <RescoringHeader
-            ocmNodes={ocmNodes}
-            title='Rescoring'
+          <Grid size={1} />
+        </Grid>
+        <Grid size={12}>
+          <div style={{ padding: '0.3em' }} />
+          <RescoringFilter
+            availableSprints={sprints.filter((sprint) => sprint.name !== META_SPRINT_NAMES.RESOLVED)}
+            preSelectedSprints={preSelectedSprints}
+            findingCfg={findingCfg}
+            findingType={findingType}
+            setFindingType={setFindingType}
+            findingTypes={rescorableFindingTypes({findingCfgs})}
+            updateFilter={updateFilter}
+            rescoringsLoading={rescoringsLoading}
+            sprintsLoading={sprintsLoading}
+            rescorings={rescoringsForType ?? []}
           />
         </Grid>
-        <Grid item xs={1}/>
-      </Grid>
-      <Grid item xs={12}>
-        <div style={{ padding: '0.3em' }} />
-        <RescoringFilter
-          availableSprints={sprints.filter((sprint) => sprint.name !== META_SPRINT_NAMES.RESOLVED)}
-          preSelectedSprints={preSelectedSprints}
-          findingCfg={findingCfg}
-          findingType={findingType}
-          setFindingType={setFindingType}
-          findingTypes={rescorableFindingTypes({findingCfgs})}
-          updateFilter={updateFilter}
-          rescoringsLoading={rescoringsLoading}
-          sprintsLoading={sprintsLoading}
-          rescorings={rescoringsForType ?? []}
-        />
-      </Grid>
-    </DialogTitle>
-    <DialogContent
-      sx={{
-        bgcolor: 'background.paper',
-        // top/bottom borders via header/footer borders
-        borderRight: 1,
-        borderLeft: 1,
-        borderRightColor: 'primary.main',
-        borderLeftColor: 'primary.main',
-        boxShadow: 24,
-      }}
-      onClick={closeInput}
-    >
-      <ErrorBoundary>
-        <div style={{ padding: '0.5em' }}/>
-        <Rescoring
-          ocmNodes={ocmNodes}
-          ocmRepo={ocmRepo}
-          rescorings={filteredRescorings}
-          setRescorings={setRescorings}
-          setFilteredRescorings={setFilteredRescorings}
-          selectedRescorings={selectedRescorings}
-          setSelectedRescorings={setSelectedRescorings}
-          editRescoring={editRescoring}
-          setProgress={setProgress}
-          setShowProgress={setShowProgress}
-          sprints={sprints}
-          sprintsLoading={sprintsLoading}
-          findingCfg={findingCfg}
-          findingCfgs={findingCfgs}
-          findingType={findingType}
-          setRescoringsLoading={setRescoringsLoading}
-          rescoringsLoading={rescoringsLoading}
-        />
-      </ErrorBoundary>
-    </DialogContent>
-    <DialogActions
-      sx={{
-        bgcolor: 'background.paper',
-        border: 1,
-        borderColor: 'primary.main',
-        padding: 2,
-      }}
-      onClick={closeInput}
-    >
-      <Grid container alignItems='center' spacing={2}>
-        <Grid item xs={1}>
-          <Box
-            display='flex'
-            justifyContent='left'
-          >
+      </DialogTitle>
+      <DialogContent
+        sx={{
+          bgcolor: 'background.paper',
+          // top/bottom borders via header/footer borders
+          borderRight: 1,
+          borderLeft: 1,
+          borderRightColor: 'primary.main',
+          borderLeftColor: 'primary.main',
+          boxShadow: 24,
+        }}
+        onClick={closeInput}
+      >
+        <ErrorBoundary>
+          <div style={{ padding: '0.5em' }}/>
+          <Rescoring
+            ocmNodes={ocmNodes}
+            ocmRepo={ocmRepo}
+            rescorings={filteredRescorings}
+            setRescorings={setRescorings}
+            setFilteredRescorings={setFilteredRescorings}
+            selectedRescorings={selectedRescorings}
+            setSelectedRescorings={setSelectedRescorings}
+            editRescoring={editRescoring}
+            setProgress={setProgress}
+            setShowProgress={setShowProgress}
+            sprints={sprints}
+            sprintsLoading={sprintsLoading}
+            findingCfg={findingCfg}
+            findingCfgs={findingCfgs}
+            findingType={findingType}
+            setRescoringsLoading={setRescoringsLoading}
+            rescoringsLoading={rescoringsLoading}
+          />
+        </ErrorBoundary>
+      </DialogContent>
+      <DialogActions
+        sx={{
+          bgcolor: 'background.paper',
+          border: 1,
+          borderColor: 'primary.main',
+          padding: 2,
+        }}
+        onClick={closeInput}
+      >
+        <Grid container spacing={2} sx={{
+          alignItems: 'center'
+        }}>
+          <Grid size={1}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'left'
+              }}>
+              {
+                rescoringsLoading ? <Box sx={{
+                  width: '100vw'
+                }}>
+                  <Skeleton/>
+                </Box> : <Typography
+                  variant='body1'
+                  color='secondary'
+                >
+                  {`${filteredRescorings?.length}/${rescorings.length}`}
+                </Typography>
+              }
+            </Box>
+          </Grid>
+          <Grid size={2}>
             {
-              rescoringsLoading ? <Box width='100vw'>
-                <Skeleton/>
-              </Box> : <Typography
-                variant='body1'
+              showProgress && <LinearProgressWithLabel value={progress}/>
+            }
+          </Grid>
+          <Grid size={2}>
+            <ScopeSelector scope={scope} setScope={setScope}/>
+          </Grid>
+          <Grid size={4}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+              <Rescore
+                rescorings={allowedRescorings}
+                handleClose={handleClose}
+                setShowProgress={setShowProgress}
+                scope={scope}
+                findingCfg={findingCfg}
+                fetchComplianceSummary={fetchComplianceSummary}
+              />
+            </Box>
+          </Grid>
+          <Grid size={1}>
+            {
+              filteredOutRescoringsLength > 0 && <Tooltip
+                title={
+                  `${filteredOutRescoringsLength} ${pluralise('rescoring', filteredOutRescoringsLength, 'is', 'are')}
+                  filtered out`
+                }
+              >
+                <InfoOutlinedIcon sx={{ height: '1rem' }}/>
+              </Tooltip>
+            }
+          </Grid>
+          <Grid size={1} />
+          <Grid size={1}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'right'
+              }}>
+              <Button
+                sx={{ height: '100%', width: '100%' }}
+                onClick={handleClose}
                 color='secondary'
               >
-                {`${filteredRescorings?.length}/${rescorings.length}`}
-              </Typography>
-            }
-          </Box>
+                Close
+              </Button>
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={2}>
-          {
-            showProgress && <LinearProgressWithLabel value={progress}/>
-          }
-        </Grid>
-        <Grid item xs={2}>
-          <ScopeSelector scope={scope} setScope={setScope}/>
-        </Grid>
-        <Grid item xs={4}>
-          <Box display='flex' justifyContent='center'>
-            <Rescore
-              rescorings={allowedRescorings}
-              handleClose={handleClose}
-              setShowProgress={setShowProgress}
-              scope={scope}
-              findingCfg={findingCfg}
-              fetchComplianceSummary={fetchComplianceSummary}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={1}>
-          {
-            filteredOutRescoringsLength > 0 && <Tooltip
-              title={
-                `${filteredOutRescoringsLength} ${pluralise('rescoring', filteredOutRescoringsLength, 'is', 'are')}
-                filtered out`
-              }
-            >
-              <InfoOutlinedIcon sx={{ height: '1rem' }}/>
-            </Tooltip>
-          }
-        </Grid>
-        <Grid item xs={1}/>
-        <Grid item xs={1}>
-          <Box display='flex' justifyContent='right'>
-            <Button
-              sx={{ height: '100%', width: '100%' }}
-              onClick={handleClose}
-              color='secondary'
-            >
-              Close
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </DialogActions>
-  </Dialog>
+      </DialogActions>
+    </Dialog>
+  );
 }
 RescoringModal.displayName = 'RescoringModal'
 RescoringModal.propTypes = {

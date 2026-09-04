@@ -131,27 +131,30 @@ export const CdTab = ({
     searchParamContext.update({'rawCd': showRaw})
   }, [showRaw])
 
-  return <Box
-    display='flex'
-    flexDirection='column'
-  >
-    <Options
-      isLoading={isLoading}
-      showRaw={showRaw}
-      setShowRaw={setShowRaw}
-    />
-    {
-      isLoading
-        ? <CenteredSpinner/>
-        : <ComponentDescriptor
-          showRaw={showRaw}
-          raw={raw}
-          setRaw={setRaw}
-          componentDescriptor={componentDescriptor}
-          ocmRepo={ocmRepo}
-        />
-    }
-  </Box>
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+      <Options
+        isLoading={isLoading}
+        showRaw={showRaw}
+        setShowRaw={setShowRaw}
+      />
+      {
+        isLoading
+          ? <CenteredSpinner/>
+          : <ComponentDescriptor
+            showRaw={showRaw}
+            raw={raw}
+            setRaw={setRaw}
+            componentDescriptor={componentDescriptor}
+            ocmRepo={ocmRepo}
+          />
+      }
+    </Box>
+  );
 }
 CdTab.displayName = 'CdTab'
 CdTab.propTypes = {
