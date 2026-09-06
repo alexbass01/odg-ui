@@ -32,7 +32,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import SearchIcon from '@mui/icons-material/Search'
 
 import Link from '@mui/material/Link'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router'
 
 import { getQueryFields, runSearchQuery } from '../api'
 import { buildPrefillText, parseQueryToCriteria } from '../util/searchDsl'

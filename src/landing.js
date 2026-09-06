@@ -43,7 +43,8 @@ import LaunchIcon from '@mui/icons-material/Launch'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { styled, useTheme } from '@mui/material/styles'
 
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import { DndContext, closestCenter } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import PropTypes from 'prop-types'
 
 import {
@@ -282,9 +283,9 @@ const SpecialComponents = () => {
     }
   }, {})
 
-  const handleDragEnd = (result) => {
-    if (!result.destination || result.reason === 'CANCEL' || result.destination.index === result.source.index) return
-    const [depName, specialComponentId, browserLocalOnly] = result.draggableId.split('|')
+  const handleDragEnd = ({ active, over }) => {
+    if (!over || active.id === over.id) return
+    const [depName, specialComponentId, browserLocalOnly] = active.id.split('|')
 
     const componentIdentity = (comp) => {
       return JSON.stringify({
@@ -302,14 +303,18 @@ const SpecialComponents = () => {
       return componentIdentity(comp) === componentIdentity(localComp)
     })
 
-    editDepOfComp(depName, component, { action: editDepOfCompActions.REORDER, fromIndex: result.source.index, toIndex: result.destination.index })
+    const deps = [...(component.dependencies ?? [])].filter((d) => !d.disabled).sort((a, b) => a.position - b.position)
+    const fromIndex = deps.findIndex((d) => d.name === depName)
+    const toIndex = deps.findIndex((d) => d.name === over.id.split('|')[0])
+
+    editDepOfComp(depName, component, { action: editDepOfCompActions.REORDER, fromIndex, toIndex })
     specialComponentsFeature.triggerRerender()
   }
 
   const specialComponentTypes = Object.keys(specialComponentsByType)
 
   return <>
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
       <Stack
         direction='column'
         spacing={2}
@@ -334,7 +339,7 @@ const SpecialComponents = () => {
           } )
         }
       </Stack>
-    </DragDropContext>
+    </DndContext>
     <Fab
       style={{
         backgroundColor: theme.odg.light,
@@ -669,31 +674,31 @@ const ComponentBody = ({
             marginTop: '0.5rem',
             marginBottom: '0.5rem',
           }}>
-            <Droppable droppableId={`${component.id}|${component.browserLocalOnly}`} type={`${component.id}-${component.browserLocalOnly}`}>
-              {(provided) => (
-                <Stack ref={provided.innerRef} {...provided.droppableProps} direction='column'>
-                  <VersionOverview
-                    component={component}
-                    dependencies={dependencies.filter((dep) => !dep.disabled)}
-                    removeDepFromComp={(depName, component) => editDepOfComp(depName, component, { action: editDepOfCompActions.REMOVE })}
-                    specialComponentsFeature={specialComponentsFeature}
-                    isEditMode={isEditMode}
-                    provided={provided}
-                  />
-                  {
-                    isEditMode && disabledDependencyNames.length > 0 && <Grid container columns={11} spacing={1} sx={{py: 0}}>
-                      <Grid size={5} />
-                      <Grid size={1}>
-                        <IconButton onClick={handleAddDep}>
-                          <AddIcon style={{color: theme.bomButton.color}}/>
-                        </IconButton>
-                      </Grid>
-                      <Grid size={5} />
+            <SortableContext
+              items={dependencies.filter((dep) => !dep.disabled).sort((a, b) => a.position - b.position).map((dep) => `${dep.name}|${component.id}|${component.browserLocalOnly}`)}
+              strategy={verticalListSortingStrategy}
+            >
+              <Stack direction='column'>
+                <VersionOverview
+                  component={component}
+                  dependencies={dependencies.filter((dep) => !dep.disabled)}
+                  removeDepFromComp={(depName, component) => editDepOfComp(depName, component, { action: editDepOfCompActions.REMOVE })}
+                  specialComponentsFeature={specialComponentsFeature}
+                  isEditMode={isEditMode}
+                />
+                {
+                  isEditMode && disabledDependencyNames.length > 0 && <Grid container columns={11} spacing={1} sx={{py: 0}}>
+                    <Grid size={5} />
+                    <Grid size={1}>
+                      <IconButton onClick={handleAddDep}>
+                        <AddIcon style={{color: theme.bomButton.color}}/>
+                      </IconButton>
                     </Grid>
-                  }
-                </Stack>
-              )}
-            </Droppable>
+                    <Grid size={5} />
+                  </Grid>
+                }
+              </Stack>
+            </SortableContext>
           </DependentComponentBox>
         }
       </a>

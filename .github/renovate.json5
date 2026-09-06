@@ -58,39 +58,6 @@
       matchUpdateTypes: ['major'],
       enabled: false,
     },
-    {
-      // HOLD react/react-dom 19: blocked by deprecated react-beautiful-dnd
-      // (used in src/landing.js and src/util/versionOverview.js) — the DnD
-      // library must be replaced first. Tracked in issue #289
-      // ("Migrate to React 19").
-      matchDepNames: ['react', 'react-dom'],
-      matchUpdateTypes: ['major'],
-      enabled: false,
-    },
-    {
-      // HOLD react-router 8: its peer deps require react >= 19.2.7, so it is
-      // transitively blocked by the React 19 migration (issue #289) and
-      // cannot be merged independently.
-      matchDepNames: ['react-router', 'react-router-dom'],
-      matchUpdateTypes: ['major'],
-      enabled: false,
-    },
-    {
-      // HOLD @mui/* 9: this repo is 2-4 majors behind (core 5→9, x-* 7→9)
-      // with ~188 import sites across 40 files and no automated tests, so
-      // the upgrade needs a dedicated migration (MUI codemods + manual
-      // click-through of the UI) rather than a renovate PR. Tracked in a
-      // dedicated migration ticket.
-      matchDepNames: [
-        '@mui/material',
-        '@mui/icons-material',
-        '@mui/x-charts',
-        '@mui/x-data-grid',
-        '@mui/x-date-pickers',
-      ],
-      matchUpdateTypes: ['major'],
-      enabled: false,
-    },
   ],
   postUpgradeTasks: {
     commands: [

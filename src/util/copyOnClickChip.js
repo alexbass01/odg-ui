@@ -17,8 +17,7 @@ import { copyNotificationCfg } from '../consts'
  * - `chipProps` are passed to Chip component
  */
 // eslint-disable-next-line no-unused-vars
-const CopyOnClickChip = React.forwardRef((props, ref) => {
-  const {value, message, label, chipProps} = props
+const CopyOnClickChip = ({ value, message, label, chipProps, ref }) => {
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -41,13 +40,14 @@ const CopyOnClickChip = React.forwardRef((props, ref) => {
       })
     }}
   />
-})
+}
 CopyOnClickChip.displayName = 'CopyOnClickChip'
 CopyOnClickChip.propTypes = {
   value: PropType.string.isRequired,
   label: PropType.string,
   message: PropType.string,
   chipProps: PropType.object,
+  ref: PropType.object,
 }
 
 export default CopyOnClickChip

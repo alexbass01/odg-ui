@@ -18,8 +18,7 @@ import { useTheme } from '@emotion/react'
 import { SnackbarContent, useSnackbar } from 'notistack'
 
 
-const SnackbarWithDetails = React.forwardRef((props, ref) => {
-  const {id, message, details, onRetry} = props
+const SnackbarWithDetails = ({ id, message, details, onRetry, ref }) => {
 
   const { closeSnackbar } = useSnackbar()
   const [expanded, setExpanded] = React.useState(false)
@@ -128,13 +127,14 @@ const SnackbarWithDetails = React.forwardRef((props, ref) => {
       </Box>
     </SnackbarContent>
   )
-})
+}
 SnackbarWithDetails.displayName = 'SnackbarWithDetails'
 SnackbarWithDetails.propTypes = {
   id: PropType.number.isRequired,
   message: PropType.string.isRequired,
   details: PropType.string,
   onRetry: PropType.func,
+  ref: PropType.object,
 }
 
 export default SnackbarWithDetails
