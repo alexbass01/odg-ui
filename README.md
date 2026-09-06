@@ -20,7 +20,7 @@ To run the local dev server:
 npm start
 ```
 
-The dev server starts on [http://localhost:5173](http://localhost:5173) (Vite default).
+The dev server starts on [http://localhost:3000](http://localhost:3000).
 
 For startup, `Delivery-Dashboard` requires a running instance of `Delivery-Service`.
 Configure the API URL via `.env.development` or by setting the `VITE_DELIVERY_SERVICE_API_URL`
