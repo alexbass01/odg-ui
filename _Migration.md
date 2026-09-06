@@ -90,14 +90,40 @@ Vite 8 ships with rolldown/OXC as the bundler/transformer. OXC's built-in transf
 
 ## Manual smoke test checklist
 
+### How to run locally
+
+```sh
+npm start          # dev server on http://localhost:5173 (was :3000 with CRA)
+```
+
+Point a browser at `http://localhost:5173`. You need a running Delivery Service
+(or mock) at the URL in `.env.development` (`VITE_DELIVERY_SERVICE_API_URL`).
+Without it, API calls will fail with 401/CORS — that's expected and doesn't block
+UI testing.
+
+### What to click through
+
 CI only checks `npm run build` and `.ci/lint`. These areas need a human:
 
 - [ ] Landing page loads, component cards render
 - [ ] Edit mode on a component card: rows are draggable, drag-to-reorder persists after toggling edit off
-- [ ] Component BOM view: accordion expands/collapses, NavigationHeader drill-up/drill-down buttons work
+- [ ] Component BOM view: accordion expands/collapses, NavigationHeader drill-up/drill-down buttons work (no button-in-button console warnings)
 - [ ] Snackbar error notifications appear and can be dismissed; "Retry" button works if visible
 - [ ] Copy-on-click chip copies to clipboard and shows notification
 - [ ] `metadataBrowser` link navigation works (the one import that moved from `react-router-dom`)
+
+### Helm chart — no change needed
+
+`charts/delivery-dashboard/templates/deployment.yaml` has an init container that writes
+`window.REACT_APP_DELIVERY_SERVICE_API_URL = '...'` into `/delivery-dashboard/dynamic/config.js`
+at pod startup. This runtime injection works unchanged because `src/api.js` still reads
+`window.REACT_APP_DELIVERY_SERVICE_API_URL` first (and falls back to the build-time
+`import.meta.env.VITE_DELIVERY_SERVICE_API_URL` for local dev). The key name in the
+`window.*` assignment was intentionally kept as-is.
+
+If the chart ever needs to inject additional config values, note that the init container
+grep pattern is `grep ^REACT` — any new runtime-injected env vars must still be prefixed
+`REACT_APP_` in the pod environment to get picked up.
 
 ---
 
@@ -105,4 +131,4 @@ CI only checks `npm run build` and `.ci/lint`. These areas need a human:
 
 - `Uncaught SyntaxError: Unexpected token '<' (at config.js:1:1)` — pre-existing; the backend config endpoint is not running locally. Not a frontend bug.
 - `GET http://localhost:5000/features 401` / `GET http://localhost:5000/service-extensions 401` — expected when running without a backend.
-- `TypeError: Cannot read properties of undefined (reading 'startTime')` — comes from a web-vitals/performance observer inside `react-scripts`, triggered by backend errors. Not app code.
+- `TypeError: Cannot read properties of undefined (reading 'startTime')` — was triggered by a web-vitals observer inside `react-scripts`. Should no longer appear now that `react-scripts` is gone; if it does, it's from a different source.

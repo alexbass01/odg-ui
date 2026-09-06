@@ -14,19 +14,29 @@ framework `material-ui`.
 
 ## Development
 
-To run the local dev server run:
+To run the local dev server:
 
-`npm start`
+```
+npm start
+```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The dev server starts on [http://localhost:5173](http://localhost:5173) (Vite default).
 
 For startup, `Delivery-Dashboard` requires a running instance of `Delivery-Service`.
-It can be configured by passing the `REACT_APP_DELIVERY_SERVICE_API_URL` environment
-variable to the npm-build cmd.
+Configure the API URL via `.env.development` or by setting the `VITE_DELIVERY_SERVICE_API_URL`
+environment variable before running `npm start`.
+
+To produce a production build:
+
+```
+npm run build
+```
+
+Output goes to `dist/`. Preview the production build locally with `npm run preview`.
 
 ## Code style
 
-Make use of [eslint](https://eslint.org/) and use our config `.eslintrc.yml`.
+Make use of [eslint](https://eslint.org/) and use our config `eslint.config.mjs`.
 Also, it is recommended to install a pre-push hook executing `eslint`.
 Please note that linter plugins are expected to be installed in global npm context.
 Either install them via `npm install -g` or adjust `.ci/lint` accordingly.
