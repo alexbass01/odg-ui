@@ -323,7 +323,7 @@ const Component = React.memo(({
           transition: { unmountOnExit: true }
         }}
       >
-        <AccordionSummary expandIcon={<ExpandMoreIcon {...isParentComponent ? {sx: {color: theme.bomButton}} : {}}/>}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon {...isParentComponent ? {sx: {color: theme.bomButton}} : {}}/>} slotProps={{ root: { component: 'div' } }}>
           <Grid container sx={{
             alignItems: 'center'
           }}>

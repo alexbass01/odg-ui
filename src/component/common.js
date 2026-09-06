@@ -800,7 +800,7 @@ const NavigationHeader = ({
   const pathPos = pathPosItem ? parseInt(pathPosItem) : 0
 
   return <Accordion>
-    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+    <AccordionSummary expandIcon={<ExpandMoreIcon />} slotProps={{ root: { component: 'div' } }}>
       <IconButton
         title='Drill up'
         sx={{
