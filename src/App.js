@@ -64,8 +64,7 @@ const App = () => {
 
   React.useEffect(() => {
     setThemeMode(prefersDarkMode)
-    // eslint-disable-next-line no-undef
-    document.title = process.env.REACT_APP_DASHBOARD_TITLE
+    document.title = import.meta.env.VITE_DASHBOARD_TITLE
   }, [prefersDarkMode])
 
   const switchThemeMode = () => {

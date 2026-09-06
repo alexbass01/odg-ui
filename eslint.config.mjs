@@ -6,7 +6,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y'
 import pluginSecurity from 'eslint-plugin-security'
 
 export default [
-  { ignores: ['build/'] },
+  { ignores: ['build/', 'dist/'] },
   js.configs.recommended,
   jsxA11y.flatConfigs.recommended,
   pluginSecurity.configs.recommended,

@@ -67,8 +67,7 @@ const Title = () => {
     return (
       <Typography variant='h6' noWrap>
         {
-          // eslint-disable-next-line no-undef
-          document.title = process.env.REACT_APP_DASHBOARD_TITLE
+          document.title = import.meta.env.VITE_DASHBOARD_TITLE
         }
       </Typography>
     )
@@ -89,8 +88,7 @@ const Title = () => {
       >
         <Typography variant='h6' noWrap>
           {
-            // eslint-disable-next-line no-undef
-            document.title = process.env.REACT_APP_DASHBOARD_TITLE
+            document.title = import.meta.env.VITE_DASHBOARD_TITLE
           }
         </Typography>
       </Tooltip>
@@ -133,8 +131,7 @@ const Title = () => {
     >
       <Typography variant='h6' noWrap>
         {
-          // eslint-disable-next-line no-undef
-          document.title = process.env.REACT_APP_DASHBOARD_TITLE
+          document.title = import.meta.env.VITE_DASHBOARD_TITLE
         }
       </Typography>
     </Tooltip>

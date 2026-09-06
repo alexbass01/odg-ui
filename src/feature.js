@@ -13,16 +13,13 @@ import {
 const featureCfgsFromEnv = () => {
   return [
     {
-      // eslint-disable-next-line no-undef
-      state: JSON.parse(process.env.REACT_APP_FEATURE_JOKES_API) ? featureStates.AVAILABLE : featureStates.UNAVAILABLE,
+      state: JSON.parse(import.meta.env.VITE_FEATURE_JOKES_API) ? featureStates.AVAILABLE : featureStates.UNAVAILABLE,
       name: featureNames.JOKES_API,
     },
     {
-      // eslint-disable-next-line no-undef
-      state: process.env.REACT_APP_DASHBOARD_CREATE_ISSUE_URL ? featureStates.AVAILABLE : featureStates.UNAVAILABLE,
+      state: import.meta.env.VITE_DASHBOARD_CREATE_ISSUE_URL ? featureStates.AVAILABLE : featureStates.UNAVAILABLE,
       name: featureNames.DASHBOARD_CREATE_ISSUE_URL,
-      // eslint-disable-next-line no-undef
-      url: process.env.REACT_APP_DASHBOARD_CREATE_ISSUE_URL ? process.env.REACT_APP_DASHBOARD_CREATE_ISSUE_URL : null,
+      url: import.meta.env.VITE_DASHBOARD_CREATE_ISSUE_URL ? import.meta.env.VITE_DASHBOARD_CREATE_ISSUE_URL : null,
     },
   ]
 }

@@ -79,8 +79,7 @@ const ComponentNavigationHeader = () => {
         <Grid size={12}>
           <Typography variant='h5' gutterBottom>
             {
-              // eslint-disable-next-line no-undef
-              document.title = process.env.REACT_APP_DASHBOARD_TITLE
+              document.title = import.meta.env.VITE_DASHBOARD_TITLE
             }
           </Typography>
         </Grid>
@@ -95,8 +94,7 @@ const ComponentNavigationHeader = () => {
           }}>
           Build:{' '}
           {
-            // eslint-disable-next-line no-undef
-            process.env.REACT_APP_BUILD_VERSION
+            import.meta.env.VITE_BUILD_VERSION
           }
         </Typography>
       </div>
