@@ -167,7 +167,7 @@ const FreeTextFilter = ({
         }
       }}
     />
-  );
+  )
 }
 FreeTextFilter.displayName = 'FreeTextFilter'
 FreeTextFilter.propTypes = {
@@ -235,7 +235,7 @@ const ArtefactRow = ({
         />
       </TableCell>
     </TableRow>
-  );
+  )
 }
 ArtefactRow.displayName = 'ArtefactRow'
 ArtefactRow.propTypes = {
@@ -672,7 +672,7 @@ const ComplianceToolPopover = ({
         </Grid>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 ComplianceToolPopover.displayName = 'ScanPopover'
 ComplianceToolPopover.propTypes = {

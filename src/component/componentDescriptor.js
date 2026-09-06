@@ -154,7 +154,7 @@ export const CdTab = ({
           />
       }
     </Box>
-  );
+  )
 }
 CdTab.displayName = 'CdTab'
 CdTab.propTypes = {

@@ -100,7 +100,7 @@ class ErrorBoundary extends React.Component {
             </FeatureDependent>
           </Stack>
         </Box>
-      );
+      )
     }
     return this.props.children
   }

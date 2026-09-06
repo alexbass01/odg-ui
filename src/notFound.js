@@ -76,7 +76,7 @@ const NotFoundPage = ({ reason }) => {
         </div>
       </Grid>
     </Grid>
-  );
+  )
 }
 
 NotFoundPage.propTypes = {

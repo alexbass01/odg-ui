@@ -40,7 +40,7 @@ export const TabPanel = (props) => {
         p: 2
       }}>{children}</Box>}
     </div>
-  );
+  )
 }
 
 TabPanel.propTypes = {

@@ -570,7 +570,7 @@ const SelectComponentAccordion = ({
         </Grid>
       </AccordionDetails>
     </Accordion>
-  );
+  )
 }
 SelectComponentAccordion.displayName = 'SelectComponentAccordion'
 SelectComponentAccordion.propTypes = {
@@ -628,7 +628,7 @@ const DoraDependenciesViewChangeLeadTime = ({
         selectedComponentNames={selectedComponentNames}
       />
     </Grid>
-  );
+  )
 }
 DoraDependenciesViewChangeLeadTime.displayName = 'DoraDependenciesViewChangeLeadTime'
 DoraDependenciesViewChangeLeadTime.propTypes = {
@@ -699,7 +699,7 @@ const DoraDependenciesViewDeploymentFrequency = ({
         selectedComponentNames={selectedComponentNames}
       />
     </Grid>
-  );
+  )
 }
 DoraDependenciesViewDeploymentFrequency.displayName = 'DoraDependenciesViewDeploymentFrequency'
 DoraDependenciesViewDeploymentFrequency.propTypes = {
@@ -737,7 +737,7 @@ const DoraDependenciesView = ({
         />
       </Grid>
     </div>
-  );
+  )
 }
 DoraDependenciesView.displayName = 'DoraDependenciesView'
 DoraDependenciesView.propTypes = {
@@ -803,7 +803,7 @@ const DoraComponentViewChangeLeadTime = ({
         </Typography>
       }
     </Grid>
-  );
+  )
 }
 DoraComponentViewChangeLeadTime.displayName = 'DoraComponentViewChangeLeadTime'
 DoraComponentViewChangeLeadTime.propTypes = {
@@ -862,7 +862,7 @@ const DoraComponentViewDeploymentFrequency = ({
         </Typography>
       }
     </Grid>
-  );
+  )
 }
 DoraComponentViewDeploymentFrequency.displayName = 'DoraComponentViewDeploymentFrequency'
 DoraComponentViewDeploymentFrequency.propTypes = {
@@ -902,7 +902,7 @@ const DoraComponentView = ({
         deployments={deployments}
       />
     </Grid>
-  );
+  )
 }
 DoraComponentView.displayName = 'DoraComponentView'
 DoraComponentView.propTypes = {
@@ -948,7 +948,7 @@ const DoraTab = ({
           Fetching dora metrics may take a while...
         </Alert>
       </Stack>
-    );
+    )
   }
 
   if (isSpecialComponent) {

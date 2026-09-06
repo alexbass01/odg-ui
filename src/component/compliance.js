@@ -223,7 +223,7 @@ const FreeTextFilter = ({
         }
       }}
     />
-  );
+  )
 }
 FreeTextFilter.displayName = 'FreeTextFilter'
 FreeTextFilter.propTypes = {
@@ -282,7 +282,7 @@ const Filters = ({
         />
       </Grid>
     </>
-  );
+  )
 }
 Filters.displayName = 'Filters'
 Filters.propTypes = {
@@ -322,7 +322,7 @@ const ComponentOrArtefactItem = ({
         </NoMaxWidthTooltip>
       }
     </Box>
-  );
+  )
 }
 ComponentOrArtefactItem.displayName = 'ComponentOrArtefactItem'
 ComponentOrArtefactItem.propTypes = {
@@ -781,7 +781,7 @@ const Header = ({
         </Grid>
       </Grid>
     </Box>
-  );
+  )
 }
 Header.displayName = 'Header'
 Header.propTypes = {
@@ -930,7 +930,7 @@ const Artefacts = ({
         />)
       }
     </Box>
-  );
+  )
 }
 Artefacts.displayName = 'Artefacts'
 Artefacts.propTypes = {

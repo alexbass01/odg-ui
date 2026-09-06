@@ -421,7 +421,7 @@ const Component = React.memo(({
         </AccordionDetails>
       </Accordion>
     </Box>
-  );
+  )
 })
 Component.displayName = 'Component'
 Component.propTypes = {
@@ -1111,7 +1111,7 @@ const LoadingComponents = ({loadingComponentsCount}) => {
         )
       }
     </Box>
-  );
+  )
 }
 LoadingComponents.displayName = 'LoadingComponents'
 LoadingComponents.propTypes = {
@@ -1167,7 +1167,7 @@ const LoadingDependencies = () => {
         <LoadingComponents loadingComponentsCount={loadingComponentsCount}/>
       </Stack>
     </Box>
-  );
+  )
 }
 
 const ComponentSearch = ({
@@ -1201,7 +1201,7 @@ const ComponentSearch = ({
         }
       }}
     />
-  );
+  )
 }
 ComponentSearch.displayName = 'ComponentSearch'
 ComponentSearch.propTypes = {
@@ -1315,7 +1315,7 @@ const DependenciesTabHeader = React.memo(({
           />
       }
     </Grid>
-  );
+  )
 })
 DependenciesTabHeader.displayName = 'DependenciesTabHeader'
 DependenciesTabHeader.propTypes = {
@@ -1462,7 +1462,7 @@ export const BomTab = React.memo(({
         />
       }
     </Box>
-  );
+  )
 })
 BomTab.displayName = 'BomTab'
 BomTab.propTypes = {
@@ -1600,7 +1600,7 @@ const FetchDependenciesTab = React.memo(({
         </Box>
       </Stack>
     </Box>
-  );
+  )
 })
 FetchDependenciesTab.displayName = 'FetchDependenciesTab'
 FetchDependenciesTab.propTypes = {
@@ -1710,7 +1710,7 @@ const SpecialComponentStatus = ({
         </Tooltip>
       }
     </Stack>
-  );
+  )
 }
 SpecialComponentStatus.displayName = 'SpecialComponentStatus'
 SpecialComponentStatus.propTypes = {
@@ -1804,11 +1804,11 @@ export const ComponentChip = ({
                 </Stack>
                 <Divider/>
               </Stack>
-            );
+            )
           })
         }
       </Stack>
-    );
+    )
   }
   IndicatorTooltipTitle.displayName = 'IndicatorTooltipTitle'
   IndicatorTooltipTitle.propTypes = {
@@ -1836,7 +1836,7 @@ export const ComponentChip = ({
         </Badge>
       </Tooltip>
     </Box>
-  );
+  )
 }
 ComponentChip.displayName = 'ComponentChip'
 ComponentChip.propTypes = {
@@ -1886,7 +1886,7 @@ const IssueChip = ({
         />
       </Grid>
     </Tooltip>
-  );
+  )
 }
 IssueChip.displayName = 'IssueChip'
 IssueChip.propTypes = {
@@ -1949,7 +1949,7 @@ const IconCell = ({
         </Box>
       </Tooltip>
     </TableCell>
-  );
+  )
 }
 IconCell.displayName = 'IconCell'
 IconCell.propTypes = {
@@ -2074,7 +2074,7 @@ const ComplianceCell = ({
         </Tooltip>
       </Grid>
     </TableCell>
-  );
+  )
 
   const getCategorisation = (findingType) => {
     const findingCfg = findingCfgForType({findingType, findingCfgs})
@@ -2372,7 +2372,7 @@ const ArtefactCell = ({
           </Tooltip>
         </Box>
       </TableCell>
-    );
+    )
   }
 
   return <TableCell>
@@ -2440,7 +2440,7 @@ const ExternalReferenceButton = ({
         }}
       />
     </ListItemButton>
-  );
+  )
 }
 ExternalReferenceButton.displayName = 'ExternalReferenceButton'
 ExternalReferenceButton.propTypes = {
@@ -2551,7 +2551,7 @@ const RescoringCell = ({
         }
       </Tooltip>
     </Grid>
-  );
+  )
 }
 RescoringCell.displayName = 'RescoringCell'
 RescoringCell.propTypes = {

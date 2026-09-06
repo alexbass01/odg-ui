@@ -102,7 +102,7 @@ const LoadingDiff = () => {
         </Grid>
       </AccordionSummary>
     </Accordion>
-  );
+  )
 }
 
 
@@ -210,7 +210,7 @@ export const ComponentDiffTabLoading = ({
         }
       </Stack>
     </Stack>
-  );
+  )
 }
 ComponentDiffTabLoading.diplayName = 'ComponentDiffTabLoading'
 ComponentDiffTabLoading.propTypes = {
@@ -441,10 +441,10 @@ const ComponentVersionSelect = ({
               }
             }}
           />
-        );
+        )
       }}
     />
-  );
+  )
 }
 ComponentVersionSelect.displayName = 'ComponentVersionSelect'
 ComponentVersionSelect.propTypes = {
@@ -489,10 +489,10 @@ const ComponentNameSelect = ({
               }
             }}
           />
-        );
+        )
       }}
     />
-  );
+  )
 }
 ComponentNameSelect.displayName = 'ComponentNameSelect'
 ComponentNameSelect.propTypes = {
@@ -617,7 +617,7 @@ const ComponentSelection = ({
         </Tooltip>
       </Grid>
     </Grid>
-  );
+  )
 }
 ComponentSelection.displayName = 'ComponentSelection'
 ComponentSelection.propTypes = {
@@ -780,12 +780,12 @@ const ClosedPullRequests = ({
                   </Grid>
                 </Grid>
               </MenuItem>
-            );
+            )
           })
         }
       </Select>
     </FormControl>
-  );
+  )
 }
 ClosedPullRequests.displayName = 'ClosedPullRequests'
 ClosedPullRequests.propTypes = {
@@ -1084,7 +1084,7 @@ export const ComponentDiffTab = React.memo(({
         />
       </Stack>
     </Stack>
-  );
+  )
 })
 ComponentDiffTab.displayName = 'ComponentDiffTab'
 ComponentDiffTab.propTypes = {
@@ -1263,7 +1263,7 @@ export const ComponentVector = ({ diff }) => {
             </Grid>
           </AccordionDetails>
         </Accordion>
-      );
+      )
     })
   }
   return (
@@ -1306,7 +1306,7 @@ export const ComponentVector = ({ diff }) => {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 ComponentVector.displayName = 'ComponentVector'
 ComponentVector.propTypes = {
@@ -1337,7 +1337,7 @@ const ComponentEntry = ({ icon, name, version }) => {
         />
       </Grid>
     </Grid>
-  );
+  )
 }
 ComponentEntry.displayName = 'ComponentEntry'
 ComponentEntry.propTypes = {
@@ -1389,7 +1389,7 @@ const LabelDiff = ({ left, right }) => {
         <ChangedLabelCard label={right} />
       </Grid>
     </>
-  );
+  )
 }
 
 LabelDiff.propTypes = {
@@ -1435,7 +1435,7 @@ const LabelResource = ({ icon, resource }) => {
       </Grid>
       {labelItems}
     </Grid>
-  );
+  )
 }
 LabelResource.displayName = 'LabelResource'
 LabelResource.propTypes = {
@@ -1472,7 +1472,7 @@ const LabelItem = ({ icon, name, value }) => {
         </Typography>
       </Grid>
     </>
-  );
+  )
 }
 LabelItem.displayName = 'LabelItem'
 LabelItem.propTypes = {
@@ -1539,7 +1539,7 @@ export const LabelVector = ({ resources }) => {
           size={12}>
           <ChangedLabels resourcePair={resourcePair} />
         </Grid>
-      );
+      )
     })
   }
   return (
@@ -1558,7 +1558,7 @@ export const LabelVector = ({ resources }) => {
         {changedLabels}
       </Grid>
     </>
-  );
+  )
 }
 LabelVector.displayName = 'LabelVector'
 LabelVector.propTypes = {
@@ -1655,7 +1655,7 @@ const ChangedLabels = ({ resourcePair }) => {
         {changedLabels}
       </Grid>
     </>
-  );
+  )
 }
 ChangedLabels.displayName = 'ChangedLabels'
 ChangedLabels.propTypes = {
@@ -1681,7 +1681,7 @@ const getLabelsFromResources = (resources) => {
               resource={resource}
             />
           </Grid>
-        );
+        )
       })
   }
   return labels
@@ -1862,7 +1862,7 @@ const ChangedResource = ({ name, fromVersion, toVersion }) => {
         </div>
       </Grid>
     </Grid>
-  );
+  )
 }
 ChangedResource.displayName = 'ChangedResource'
 ChangedResource.propTypes = {

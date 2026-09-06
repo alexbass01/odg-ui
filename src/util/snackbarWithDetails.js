@@ -127,7 +127,7 @@ const SnackbarWithDetails = React.forwardRef((props, ref) => {
         }
       </Box>
     </SnackbarContent>
-  );
+  )
 })
 SnackbarWithDetails.displayName = 'SnackbarWithDetails'
 SnackbarWithDetails.propTypes = {

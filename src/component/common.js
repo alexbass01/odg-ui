@@ -101,7 +101,7 @@ const ComponentNavigationHeader = () => {
         </Typography>
       </div>
     </div>
-  );
+  )
 }
 
 
@@ -622,10 +622,10 @@ const ComponentOcmRepoSelector = ({
               }
             }}
           />
-        );
+        )
       }}
     />
-  );
+  )
 }
 ComponentOcmRepoSelector.displayName = 'ComponentOcmRepoSelector'
 ComponentOcmRepoSelector.propTypes = {
@@ -697,7 +697,7 @@ const ComponentVersionSelector = ({
       />
       }
     />
-  );
+  )
 }
 ComponentVersionSelector.displayName = 'ComponentVersionSelector'
 ComponentVersionSelector.propTypes = {
@@ -775,10 +775,10 @@ const ComponentVersionFilterSelector = ({
               }
             }}
           />
-        );
+        )
       }}
     />
-  );
+  )
 }
 ComponentVersionFilterSelector.displayName = 'ComponentVersionFilterSelector'
 ComponentVersionFilterSelector.propTypes = {
@@ -1071,7 +1071,7 @@ const ComponentHeader = ({
         </IconButton>
       </Grid>
     </Grid>
-  );
+  )
 }
 ComponentHeader.displayName = 'ComponentHeader'
 ComponentHeader.propTypes = {

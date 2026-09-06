@@ -15,7 +15,7 @@ const CenteredSpinner = (params) => {
       }, ...(Array.isArray(params.sx) ? params.sx : [params.sx])]}>
       <CircularProgress color='inherit' disableShrink size='3.5em' />
     </Stack>
-  );
+  )
 }
 
 CenteredSpinner.propType = {

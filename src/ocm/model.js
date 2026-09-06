@@ -285,7 +285,7 @@ const MetadataViewer = ({
         />
       </AccordionDetails>
     </Accordion>
-  );
+  )
 }
 MetadataViewer.displayName = 'MetadataViewer'
 MetadataViewer.propTypes = {
@@ -389,7 +389,7 @@ const MetadataFilter = ({
         </>
       }
     </Stack>
-  );
+  )
 }
 MetadataFilter.displayName = 'MetadataFilter'
 MetadataFilter.propTypes = {
@@ -521,7 +521,7 @@ const AccordionHeader = ({
         </Grid>
       </Grid>
     </Paper>
-  );
+  )
 }
 AccordionHeader.displayName = 'AccordionHeader'
 AccordionHeader.propTypes = {
@@ -615,12 +615,12 @@ const MetadataViewerAccordion = ({
                 })}
                 timestamp={data.meta.last_update ?? data.meta.creation_date}
               />
-            );
+            )
           })
         }
       </AccordionDetails>
     </Accordion>
-  );
+  )
 }
 MetadataViewerAccordion.displayName = 'MetadataViewerAccordion'
 MetadataViewerAccordion.propTypes = {
@@ -947,7 +947,7 @@ const MetadataViewerPopover = ({
         </Grid>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 MetadataViewerPopover.displayName = 'MetadataViewerPopover'
 MetadataViewerPopover.propTypes = {

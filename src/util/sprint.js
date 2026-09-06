@@ -193,7 +193,7 @@ const SprintInfo = ({
         />
       </Box>
     </Tooltip>
-  );
+  )
 }
 SprintInfo.displayName = 'SprintInfo'
 SprintInfo.propTypes = {

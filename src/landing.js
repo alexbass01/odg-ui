@@ -140,7 +140,7 @@ const SpecialComponent = ({
         />
       </Paper>
     </Grid>
-  );
+  )
 }
 SpecialComponent.displayName = 'SpecialComponent'
 SpecialComponent.propTypes = {
@@ -476,7 +476,7 @@ const SpecialComponentDialog = ({
                       maxLength: 20,
                     }
                   }} />
-              );
+              )
             }}
           />
           <Autocomplete
@@ -501,7 +501,7 @@ const SpecialComponentDialog = ({
                     }
                   }}
                 />
-              );
+              )
             }}
           />
           <FormControl style={{marginTop: '1rem'}}>
@@ -528,7 +528,7 @@ const SpecialComponentDialog = ({
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 SpecialComponentDialog.displayName = 'SpecialComponentDialog'
 SpecialComponentDialog.propTypes = {
@@ -715,7 +715,7 @@ const ComponentBody = ({
         />
       }
     </>
-  );
+  )
 }
 ComponentBody.displayName = 'ComponentBody'
 ComponentBody.propTypes = {
@@ -993,7 +993,7 @@ const ComponentHeader = ({
         />
       }
     </>
-  );
+  )
 }
 ComponentHeader.displayName = 'ComponentHeader'
 ComponentHeader.propTypes = {
@@ -1107,7 +1107,7 @@ const DefaultFooter = ({
         </FeatureDependent>
       </Grid>
     </Grid>
-  );
+  )
 }
 DefaultFooter.displayName = 'DefaultFooter'
 DefaultFooter.propTypes = {
@@ -1177,7 +1177,7 @@ const PullRequestsOverview = ({
         </Button>
       </Box>
     </Tooltip>
-  );
+  )
 }
 PullRequestsOverview.displayName = 'PullRequestsOverview'
 PullRequestsOverview.propTypes = {
@@ -1201,7 +1201,7 @@ const PullRequestReference = ({ pr }) => {
         </Grid>
       </ListItemButton>
     </ListItem>
-  );
+  )
 }
 PullRequestReference.displayName = 'PullRequestReference'
 PullRequestReference.propTypes = {

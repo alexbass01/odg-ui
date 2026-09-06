@@ -94,7 +94,7 @@ const Title = () => {
           }
         </Typography>
       </Tooltip>
-    );
+    )
   }
 
   return (
@@ -138,7 +138,7 @@ const Title = () => {
         }
       </Typography>
     </Tooltip>
-  );
+  )
 }
 
 const drawerWidth = 240

@@ -49,13 +49,13 @@ const categorisationField = 'data.severity'
 // normalizes whitespace to make term matching/removal predictable.
 // example: normalizeSpaces('  foo   bar \n baz  ') -> 'foo bar baz'
 const normalizeSpaces = (s) => {
-  return String(s || '').replace(/\s+/g, ' ').trim();
+  return String(s || '').replace(/\s+/g, ' ').trim()
 }
 
 // escapes a string so it can be safely embedded into a RegExp pattern.
 // example: escapeRegExp('a.b*') -> 'a\\.b\\*'
 const escapeRegExp = (str) => {
-  return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 // quotes a value if it contains whitespace or quotes, so it stays one DSL token.
@@ -264,7 +264,7 @@ const HelpPopover = ({ anchorEl, onClose, examples = [], onPickExample }) => {
         )}
       </Box>
     </Popover>
-  );
+  )
 }
 HelpPopover.propTypes = {
   anchorEl: PropTypes.any,
@@ -616,7 +616,7 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
           </Typography>
         ) : null}
       </Stack>
-    );
+    )
   }, [getRowCategorisation])
 
 
@@ -1108,7 +1108,7 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
                     <TableCell>{renderDetails(r)}</TableCell>
                     <TableCell>{datasource}</TableCell>
                   </TableRow>
-                );
+                )
               })}
             </TableBody>
           </Table>
@@ -1126,7 +1126,7 @@ const MetadataBrowserTab = ({ component, prefill, findingCfgs = [] }) => {
         }}
       />
     </Stack>
-  );
+  )
 }
 
 MetadataBrowserTab.propTypes = {

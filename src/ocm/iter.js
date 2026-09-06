@@ -187,7 +187,7 @@ const OcmNodeDetails = ({
         <InfoOutlinedIcon fontSize='small' {...iconProps}/>
       </div>
     </NoMaxWidthTooltip>
-  );
+  )
 }
 OcmNodeDetails.displayName = 'OcmNodeDetails'
 OcmNodeDetails.propTypes = {

@@ -133,7 +133,7 @@ const Responsibles = ({ componentResponsibles, isResponsibleDataLoading }) => {
           />
         </TableRow>
       </TableFooter>
-    );
+    )
   }
 
   if (
@@ -344,7 +344,7 @@ const GithubUsers = ({ githubUsers }) => {
                   }}
                 />
               </ListItemButton>
-            );
+            )
           })}
         </List>
       }
@@ -353,7 +353,7 @@ const GithubUsers = ({ githubUsers }) => {
     >
       <Link color='inherit'>{mainUser.username}</Link>
     </Tooltip>
-  );
+  )
 }
 GithubUsers.displayName = 'GithubUsers'
 GithubUsers.propTypes = {

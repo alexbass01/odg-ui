@@ -79,7 +79,7 @@ const GroupedSection = ({ groupKey, items, renderItem }) => {
         </List>
       </Collapse>
     </>
-  );
+  )
 }
 GroupedSection.propTypes = {
   groupKey: PropTypes.string.isRequired,
@@ -128,7 +128,7 @@ const ListContent = ({ items, groups, renderItem }) => {
         </ListItem>
       ))}
     </List>
-  );
+  )
 }
 ListContent.propTypes = {
   items: PropTypes.array.isRequired,
@@ -240,7 +240,7 @@ const ScrollableList = ({
         </DialogContent>
       </Dialog>
     </Box>
-  );
+  )
 }
 ScrollableList.displayName = 'ScrollableList'
 ScrollableList.propTypes = {

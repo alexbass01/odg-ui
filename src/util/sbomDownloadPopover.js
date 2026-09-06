@@ -363,7 +363,7 @@ const SbomDownloadPopover = ({
         />
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 SbomDownloadPopover.displayName = 'SbomDownloadPopover'
 SbomDownloadPopover.propTypes = {

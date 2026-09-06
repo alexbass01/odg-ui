@@ -141,7 +141,7 @@ const LoginPanelTop = () => {
         }
       </Typography>
     </div>
-  );
+  )
 }
 LoginPanelTop.displayName = 'LoginPanelTop'
 
@@ -319,7 +319,7 @@ const OAuthTab = ({
         isLoginPending={isLoginPending}
       />
     </>
-  );
+  )
 }
 OAuthTab.displayName = 'OAuthTab'
 OAuthTab.propTypes = {
@@ -438,7 +438,7 @@ const TokenTab = ({
         isLoginPending={isLoginPending}
       />
     </>
-  );
+  )
 }
 TokenTab.displayName = 'TokenTab'
 TokenTab.propTypes = {

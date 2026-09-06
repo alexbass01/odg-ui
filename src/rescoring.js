@@ -233,7 +233,7 @@ const LinearProgressWithLabel = ({value}) => {
         </Box>
       </Box>
     </Box>
-  );
+  )
 }
 LinearProgressWithLabel.displayName = 'LinearProgressWithLabel'
 LinearProgressWithLabel.propTypes = {
@@ -334,7 +334,7 @@ const VulnerabilityRescoringInputs = ({
       </Box>
       <Divider/>
     </Stack>
-  );
+  )
 }
 VulnerabilityRescoringInputs.displayName = 'VulnerabilityRescoringInputs'
 VulnerabilityRescoringInputs.propTypes = {
@@ -435,7 +435,7 @@ const RescoringRulesetDrawer = ({
         </Box>
       </Box>
     </Drawer>
-  );
+  )
 }
 RescoringRulesetDrawer.displayName = 'RescoringRulesetDrawer'
 RescoringRulesetDrawer.propTypes = {
@@ -478,7 +478,7 @@ const RescoringHeader = ({
         </Typography>
       </Tooltip>
     </Stack>
-  );
+  )
 }
 RescoringHeader.displayName = 'RescoringHeader'
 RescoringHeader.propTypes = {
@@ -565,7 +565,7 @@ const RescoringFilterOption = ({
           <Skeleton/>
         </Box>
       </li>
-    );
+    )
   }
 
   return <Stack direction='column' spacing={2} sx={{width: '28vw'}}>
@@ -726,7 +726,7 @@ const RescoringFilter = ({
         defaultSelection={preSelectedSprints}
       />
     </Stack>
-  );
+  )
 }
 RescoringFilter.displayName = 'RescoringFilter'
 RescoringFilter.propTypes = {
@@ -809,7 +809,7 @@ const FilesystemPathsInfo = ({
         </React.Fragment>)
       }
     </>
-  );
+  )
 }
 FilesystemPathsInfo.displayName = 'FilesystemPathsInfo'
 FilesystemPathsInfo.propTypes = {
@@ -942,7 +942,7 @@ const VulnerabilityExtraInfo = ({
     >
       <InfoOutlinedIcon sx={{ height: '1rem' }}/>
     </ExtraWideTooltip>
-  );
+  )
 }
 VulnerabilityExtraInfo.displayName = 'VulnerabilityExtraInfo'
 VulnerabilityExtraInfo.propTypes = {
@@ -970,7 +970,7 @@ const RecommendationInfo = ({ recommendation }) => {
     >
       <TipsAndUpdatesOutlinedIcon sx={{ height: '1rem' }}/>
     </ExtraWideTooltip>
-  );
+  )
 }
 RecommendationInfo.displayName = 'RecommendationInfo'
 RecommendationInfo.propTypes = {
@@ -1012,7 +1012,7 @@ const AppliedRulesExtraInfo = ({
     >
       <InfoOutlinedIcon sx={{ height: '1rem' }}/>
     </Tooltip>
-  );
+  )
 }
 AppliedRulesExtraInfo.displayName = 'AppliedRulesExtraInfo'
 AppliedRulesExtraInfo.propTypes = {
@@ -1112,7 +1112,7 @@ const ApplicableRescoringsRow = ({
         }
       </TableCell>
     </TableRow>
-  );
+  )
 }
 ApplicableRescoringsRow.displayName = 'ApplicableRescoringsRow'
 ApplicableRescoringsRow.propTypes = {
@@ -1200,7 +1200,7 @@ const ApplicableRescorings = ({
         </Collapse>
       </TableCell>
     </TableRow>
-  );
+  )
 }
 ApplicableRescorings.displayName = 'ApplicableRescorings'
 ApplicableRescorings.propTypes = {
@@ -1246,7 +1246,7 @@ const MalwareExtraInfo = ({
     >
       <InfoOutlinedIcon sx={{ height: '1rem' }}/>
     </ExtraWideTooltip>
-  );
+  )
 }
 MalwareExtraInfo.displayName = 'MalwareExtraInfo'
 MalwareExtraInfo.propTypes = {
@@ -1299,7 +1299,7 @@ const CryptoExtraInfo = ({
     >
       <InfoOutlinedIcon sx={{ height: '1rem' }}/>
     </ExtraWideTooltip>
-  );
+  )
 }
 CryptoExtraInfo.displayName = 'CryptoExtraInfo'
 CryptoExtraInfo.propTypes = {
@@ -1335,7 +1335,7 @@ const DikiExtraInfo = ({
     >
       <InfoOutlinedIcon sx={{ height: '1rem' }}/>
     </ExtraWideTooltip>
-  );
+  )
 }
 DikiExtraInfo.displayName = 'DikiExtraInfo'
 DikiExtraInfo.propTypes = {
@@ -1370,7 +1370,7 @@ const FalcoExtraInfo = ({
     >
       <InfoOutlinedIcon sx={{ height: '1rem' }}/>
     </ExtraWideTooltip>
-  );
+  )
 }
 FalcoExtraInfo.displayName = 'FalcoExtraInfo'
 FalcoExtraInfo.propTypes = {
@@ -1401,7 +1401,7 @@ const Subject = ({
           whiteSpace: 'pre-line'
         }}>{finding.package_versions.sort().join('\n')}</Typography>
       </Stack>
-    );
+    )
 
   } else if (rescoring.finding_type === FINDING_TYPES.MALWARE) {
     return <Stack>
@@ -1500,7 +1500,7 @@ const Subject = ({
           </div>
         </div>
       </Stack>
-    );
+    )
   }
 }
 Subject.displayName = 'Subject'
@@ -1572,7 +1572,7 @@ const ScopeSelector = ({
         }
       </Select>
     </div>
-  );
+  )
 }
 ScopeSelector.displayName = 'ScopeSelector'
 ScopeSelector.propTypes = {
@@ -1790,7 +1790,7 @@ const LicenseOverwriteFields = ({
         />
       </Box>
     </Stack>
-  );
+  )
 }
 LicenseOverwriteFields.displayName = 'LicenseOverwriteFields'
 LicenseOverwriteFields.propTypes = {
@@ -1871,7 +1871,7 @@ const PackageVersionOverwriteFields = ({
         />
       </Box>
     </Stack>
-  );
+  )
 }
 PackageVersionOverwriteFields.displayName = 'PackageVersionOverwriteFields'
 PackageVersionOverwriteFields.propTypes = {
@@ -2164,7 +2164,7 @@ const Finding = ({
           <Typography variant='inherit'>{finding.rating_source}</Typography>
         </div>}
       </Stack>
-    );
+    )
 
   } else if (rescoring.finding_type === FINDING_TYPES.MALWARE) {
     return (
@@ -2192,7 +2192,7 @@ const Finding = ({
           />
         </div>
       </Stack>
-    );
+    )
 
   } else if (rescoring.finding_type === FINDING_TYPES.LICENSE) {
     return (
@@ -2230,7 +2230,7 @@ const Finding = ({
           marginRight: '0.4rem'
         }}>{finding.malware}</Typography>
       </Stack>
-    );
+    )
   } else if (rescoring.finding_type === FINDING_TYPES.SAST) {
     return (
       <Stack spacing={0.5}>
@@ -2248,7 +2248,7 @@ const Finding = ({
           marginRight: '0.4rem'
         }}>{finding.sast_status}</Typography>
       </Stack>
-    );
+    )
 
   } else if (rescoring.finding_type === FINDING_TYPES.CODEQL) {
     return (
@@ -2267,7 +2267,7 @@ const Finding = ({
           marginRight: '0.4rem'
         }}>{finding.codeql_status}</Typography>
       </Stack>
-    );
+    )
 
   } else if (rescoring.finding_type === FINDING_TYPES.CRYPTO) {
     return (
@@ -2311,7 +2311,7 @@ const Finding = ({
           }
         </Typography>
       </Stack>
-    );
+    )
   } else if (rescoring.finding_type === FINDING_TYPES.OSID) {
     return (
       <Stack spacing={0.5}>
@@ -2329,7 +2329,7 @@ const Finding = ({
           marginRight: '0.4rem'
         }}>{finding.osid.VERSION_ID} → {finding.greatest_version}</Typography>
       </Stack>
-    );
+    )
   } else if (rescoring.finding_type === FINDING_TYPES.DIKI) {
     const rule_url = diki_rule_url(finding)
 
@@ -2375,7 +2375,7 @@ const Finding = ({
           </Typography>
         </div>
       </Stack>
-    );
+    )
   } else if (rescoring.finding_type === FINDING_TYPES.FALCO) {
     return (
       <div style={{ display: 'flex' }}>
@@ -2388,7 +2388,7 @@ const Finding = ({
         </Typography>
         <FalcoExtraInfo finding={finding.finding}/>
       </div>
-    );
+    )
   } else if (rescoring.finding_type === FINDING_TYPES.IP) {
     const sortedPolicyViolations = finding.policy_violations.map((pv) => pv.name).sort()
     const sortedLicenses = finding.licenses.map((license) => license.name).sort()
@@ -2452,7 +2452,7 @@ const Finding = ({
           }
         </Box>
       </Stack>
-    );
+    )
   }
 }
 Finding.displayName = 'Finding'
@@ -2585,7 +2585,7 @@ const PendingScannerWritebacks = ({
     >
       <PendingActionsIcon color='levelWarning'/>
     </Tooltip>
-  );
+  )
 }
 PendingScannerWritebacks.displayName = 'PendingScannerWritebacks'
 PendingScannerWritebacks.propTypes = {
@@ -2955,7 +2955,7 @@ const RescoringContentTableRow = ({
         expanded={expanded}
       />
     </>
-  );
+  )
 }
 RescoringContentTableRow.displayName = 'RescoringContentTableRow'
 RescoringContentTableRow.propTypes = {
@@ -3514,7 +3514,7 @@ const Rescoring = ({
         }
       </Typography>
     </Box>
-  );
+  )
 
   if (
     rescorings?.length === 0
@@ -3542,7 +3542,7 @@ const Rescoring = ({
         </Typography>
       </Box>
     </Box>
-  );
+  )
 
   return <RescoringContent
     rescorings={rescorings}
@@ -4154,7 +4154,7 @@ const RescoringModal = ({
         </Grid>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 RescoringModal.displayName = 'RescoringModal'
 RescoringModal.propTypes = {

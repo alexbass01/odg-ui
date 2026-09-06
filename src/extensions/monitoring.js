@@ -423,7 +423,7 @@ const BacklogHeader = ({
         }
       </span>
     </Stack>
-  );
+  )
 }
 BacklogHeader.displayName = 'BacklogHeader'
 BacklogHeader.propTypes = {
@@ -869,7 +869,7 @@ const LogTab = ({
       <div style={{height: '2rem'}}/>
       <Logs logs={logs} isLoading={showLoadingAnimation} isError={Boolean(error)}/>
     </>
-  );
+  )
 }
 LogTab.displayName = 'LogTab'
 LogTab.propTypes = {
