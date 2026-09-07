@@ -13,7 +13,7 @@ import {
 const featureCfgsFromEnv = () => {
   return [
     {
-      state: JSON.parse(import.meta.env.VITE_FEATURE_JOKES_API) ? featureStates.AVAILABLE : featureStates.UNAVAILABLE,
+      state: JSON.parse(import.meta.env.VITE_FEATURE_JOKES_API ?? 'false') ? featureStates.AVAILABLE : featureStates.UNAVAILABLE,
       name: featureNames.JOKES_API,
     },
     {
