@@ -570,9 +570,10 @@ const ArtefactList = ({
                 Artefact
               </TableSortLabel>
             </TableCell>
+            { /* artefact version, no column title required */ }
             <TableCell
               width={'8%'}
-            /> { /* artefact version, no column title required */ }
+            />
             <TableCell
               width={'24%'}
             >
@@ -584,9 +585,10 @@ const ArtefactList = ({
                 Component
               </TableSortLabel>
             </TableCell>
+            { /* component version, no column title required */ }
             <TableCell
               width={'8%'}
-            /> { /* component version, no column title required */ }
+            />
             <TableCell
               width={'8%'}
             >
