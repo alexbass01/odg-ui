@@ -106,13 +106,13 @@ const ServiceExtensionStatusChip = ({
     <TableHead>
       <TableRow>
         <TableCell sx={{width: '34%'}}>
-          <Typography variant='inherit' color='white' sx={{marginRight: '8rem'}}>Name</Typography>
+          <Typography variant='inherit' sx={{color: 'white', marginRight: '8rem'}}>Name</Typography>
         </TableCell>
         <TableCell sx={{width: '33%'}}>
-          <Typography variant='inherit' color='white' sx={{marginRight: '8rem'}}>Container Status</Typography>
+          <Typography variant='inherit' sx={{color: 'white', marginRight: '8rem'}}>Container Status</Typography>
         </TableCell>
         <TableCell sx={{width: '33%'}}>
-          <Typography variant='inherit' color='white'>Logging Status</Typography>
+          <Typography variant='inherit' sx={{color: 'white'}}>Logging Status</Typography>
         </TableCell>
       </TableRow>
     </TableHead>
@@ -132,7 +132,7 @@ const ServiceExtensionStatusChip = ({
           }}}
         >
           <TableCell sx={{width: '34%'}}>
-            <Typography variant='inherit' color='white'>
+            <Typography variant='inherit' sx={{color: 'white'}}>
               {camelCaseToDisplayText(serviceStatus.service)}
             </Typography>
           </TableCell>
