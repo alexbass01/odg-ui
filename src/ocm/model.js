@@ -256,7 +256,8 @@ const MetadataViewer = ({
         expandIcon={<ExpandMoreIcon />}
       >
         <Grid container sx={{
-          alignItems: 'center'
+          alignItems: 'center',
+          flexGrow: 1
         }}>
           <Grid size={3}>
             <Typography>
@@ -562,7 +563,8 @@ const MetadataViewerAccordion = ({
         expandIcon={<ExpandMoreIcon />}
       >
         <Grid container sx={{
-          alignItems: 'center'
+          alignItems: 'center',
+          flexGrow: 1
         }}>
           <Grid size={5}>
             <ExtraIdentityHover
@@ -916,7 +918,8 @@ const MetadataViewerPopover = ({
         }}
       >
         <Grid container sx={{
-          alignItems: 'center'
+          alignItems: 'center',
+          flexGrow: 1
         }}>
           <Grid size={3}>
             <Box

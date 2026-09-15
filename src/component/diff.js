@@ -1206,7 +1206,8 @@ export const ComponentVector = ({ diff }) => {
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Grid container sx={{
-              alignItems: 'center'
+              alignItems: 'center',
+              flexGrow: 1
             }}>
               <Grid size={5}>
                 <Typography
