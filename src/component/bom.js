@@ -325,7 +325,8 @@ const Component = React.memo(({
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon {...isParentComponent ? {sx: {color: theme.bomButton}} : {}}/>} slotProps={{ root: { component: 'div' } }}>
           <Grid container sx={{
-            alignItems: 'center'
+            alignItems: 'center',
+            flexGrow: 1
           }}>
             <Grid {...isParentComponent ? {sx: {flexGrow: '0.05'}} : {size: 7}} >
               <Typography variant='body1' sx={{fontWeight: isParentComponent ? 'bold' : 1}}>
@@ -1232,6 +1233,7 @@ const DependenciesTabHeader = React.memo(({
     <Grid
       container
       spacing={3}
+      wrap='nowrap'
       sx={{
         alignItems: 'center'
       }}
