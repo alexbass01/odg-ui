@@ -98,7 +98,7 @@ const PriorityConfiguration = ({
     >
       {
         Object.values(PRIORITIES).map((p) => <MenuItem key={p.name} value={p}>
-          <Typography color={`${p.color}.main`} variant='body2'>
+          <Typography color={p.color} variant='body2'>
             {p.name}
           </Typography>
         </MenuItem>)

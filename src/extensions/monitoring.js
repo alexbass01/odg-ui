@@ -745,13 +745,13 @@ const BacklogItemRow = ({
           >
             {
               Object.values(PRIORITIES).map((p) => <MenuItem key={p.name} value={p}>
-                <Typography color={`${p.color}.main`} variant='body2'>
+                <Typography color={p.color} variant='body2'>
                   {p.name}
                 </Typography>
               </MenuItem>)
             }
           </Select>
-        </FormControl> : <Typography color={`${priority.color}.main`} variant='body2'>
+        </FormControl> : <Typography color={priority.color} variant='body2'>
           {
             priority.name
           }
@@ -789,7 +789,7 @@ const PriorityFilter = ({
     >
       {
         Object.values(PRIORITIES).map((p) => <MenuItem key={p.name} value={p}>
-          <Typography color={`${p.color}.main`} variant='body2'>
+          <Typography color={p.color} variant='body2'>
             {p.name}
           </Typography>
         </MenuItem>)
@@ -983,7 +983,7 @@ const LogLevelFilter = ({
     >
       {
         logLevels.map((level) => <MenuItem key={level} value={level}>
-          <Typography color={`${logLevelToThemeColor(level)}.main`} variant='body2'>
+          <Typography color={logLevelToThemeColor(level)} variant='body2'>
             {level}
           </Typography>
         </MenuItem>)

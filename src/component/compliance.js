@@ -110,10 +110,9 @@ const CategorisationFilter = ({
         categorisations.map((categorisation) => <MenuItem
           key={categorisation.id}
           value={categorisation.id}
-          color={categorisationValueToColor(categorisation.value)}
         >
           <Typography
-            color={`${categorisationValueToColor(categorisation.value)}.main`}
+            color={categorisationValueToColor(categorisation.value)}
             variant='body2'
           >
             {categorisation.display_name}

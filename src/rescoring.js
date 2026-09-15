@@ -1088,7 +1088,7 @@ const ApplicableRescoringsRow = ({
       <TableCell align='center'>
         <Typography
           variant='inherit'
-          color={`${categorisationValueToColor(categorisation.value)}.main`}
+          color={categorisationValueToColor(categorisation.value)}
         >
           {
             categorisation.display_name
@@ -2139,7 +2139,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2151,7 +2151,7 @@ const Finding = ({
           }}>
             {finding.cvss ? 'CVSS v3:' : 'Score:'}
           </Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               finding.cvss_score ?? finding.cvss_v3_score
             }
@@ -2181,7 +2181,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2220,7 +2220,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2238,7 +2238,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2257,7 +2257,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2295,7 +2295,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2319,7 +2319,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2368,7 +2368,7 @@ const Finding = ({
           <Typography variant='inherit' sx={{
             marginRight: '0.4rem'
           }}>Original:</Typography>
-          <Typography variant='inherit' color={`${categorisationValueToColor(categorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(categorisation.value)}>
             {
               categorisation.display_name
             }
@@ -2753,7 +2753,7 @@ const RescoringContentTableRow = ({
           }
         </TableCell>
         <TableCell align='right' sx={{ paddingX: 0 }}>
-          <Typography variant='inherit' color={`${categorisationValueToColor(currentCategorisation.value)}.main`}>
+          <Typography variant='inherit' color={categorisationValueToColor(currentCategorisation.value)}>
             {
               currentCategorisation.display_name
             }
@@ -2846,7 +2846,7 @@ const RescoringContentTableRow = ({
                     key={categorisation.id}
                     value={categorisation.id}
                   >
-                    <Typography color={`${categorisationValueToColor(categorisation.value)}.main`} variant='body2'>
+                    <Typography color={categorisationValueToColor(categorisation.value)} variant='body2'>
                       {
                         categorisation.display_name
                       }
