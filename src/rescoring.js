@@ -4076,8 +4076,9 @@ const RescoringModal = ({
         }}
         onClick={closeInput}
       >
-        <Grid container spacing={2} sx={{
-          alignItems: 'center'
+        <Grid container spacing={2} wrap='nowrap' sx={{
+          alignItems: 'center',
+          flexGrow: 1,
         }}>
           <Grid size={1}>
             <Box
