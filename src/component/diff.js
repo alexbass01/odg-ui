@@ -34,7 +34,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutlined'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
@@ -44,7 +44,9 @@ import SyncAltIcon from '@mui/icons-material/SyncAlt'
 
 import PropTypes from 'prop-types'
 import { useTheme } from '@emotion/react'
-import yaml from 'js-yaml'
+// namespace import on purpose: js-yaml v5 dropped its default export,
+// this form works with both v4 (CJS) and v5 (named exports)
+import * as yaml from 'js-yaml'
 
 import { SearchParamContext } from '../App'
 import { downloadObject, shortenComponentName, trimComponentName } from '../util'
@@ -66,43 +68,42 @@ import { generateArtefactID } from '../ocm/util'
 
 
 const LoadingDiff = () => {
-  return <Accordion>
-    <AccordionSummary disabled>
-      <Grid
-        container
-        alignItems='center'
-        spacing={3}
-      >
-        <Grid item xs={3}>
-          <Skeleton/>
-        </Grid>
+  return (
+    <Accordion>
+      <AccordionSummary disabled>
         <Grid
-          item
-          xs={1}
+          container
+          spacing={3}
+          sx={{
+            alignItems: 'center',
+            flexGrow: 1
+          }}
         >
-          <Skeleton/>
+          <Grid size={3}>
+            <Skeleton/>
+          </Grid>
+          <Grid size={1}>
+            <Skeleton/>
+          </Grid>
+          <Grid
+            size={1}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+            <ArrowForward/>
+          </Grid>
+          <Grid size={3}>
+            <Skeleton/>
+          </Grid>
+          <Grid size={1}>
+            <Skeleton/>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={1}
-          display='flex'
-          alignItems='center'
-          justifyContent='center'
-        >
-          <ArrowForward/>
-        </Grid>
-        <Grid item xs={3}>
-          <Skeleton/>
-        </Grid>
-        <Grid
-          item
-          xs={1}
-        >
-          <Skeleton/>
-        </Grid>
-      </Grid>
-    </AccordionSummary>
-  </Accordion>
+      </AccordionSummary>
+    </Accordion>
+  )
 }
 
 
@@ -111,101 +112,106 @@ export const ComponentDiffTabLoading = ({
 }) => {
   const theme = useTheme()
 
-  return <Stack
-    direction='column'
-    spacing={5}
-  >
-    <Typography>Compare Component Versions</Typography>
-    <Box>
-      <Grid
-        container
-        spacing={3}
-        columns={24}
-      >
-        <Grid item xs={9}>
-          <TextField
-            variant='standard'
-            label='Name'
-            disabled
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            variant='standard'
-            label='Version'
-            disabled
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <Box
-            display='flex'
-            justifyContent='center'
-            alignItems='center'
-            height='100%'
-          >
-            <TrendingFlatIcon/>
-          </Box>
-        </Grid>
-        <Grid item xs={9}>
-          <TextField
-            variant='standard'
-            label='Name'
-            disabled
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            variant='standard'
-            label='Version'
-            disabled
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <IconButton
-            disabled
-            sx={{
-              marginTop: theme.spacing(1) // align with selection textfield
-            }}
-          >
-            <AddIcon color=''/>
-          </IconButton>
-        </Grid>
-      </Grid>
-    </Box>
-    <div/>
-    <Divider orientation='horizontal'/>
-    <Box
-      display='flex'
-      flexDirection='row'
-      justifyContent='center'
-      alignItems='center'
-    >
-      <Typography
-        width='14em'
-        sx={{marginTop: 2}}
-      >
-        Upgrade Pull Requests
-      </Typography>
-      <TextField
-        variant='standard'
-        label='Recently closed Pull-Requests'
-        disabled
-        fullWidth
-      />
-    </Box>
+  return (
     <Stack
       direction='column'
-      spacing={2}
+      spacing={5}
     >
-      {
-        [...Array(loadingPullRequestsCount).keys()].map(i => <LoadingDiff key={i}/>)
-      }
+      <Typography>Compare Component Versions</Typography>
+      <Box>
+        <Grid
+          container
+          spacing={3}
+          columns={24}
+        >
+          <Grid size={9}>
+            <TextField
+              variant='standard'
+              label='Name'
+              disabled
+              fullWidth
+            />
+          </Grid>
+          <Grid size={2}>
+            <TextField
+              variant='standard'
+              label='Version'
+              disabled
+              fullWidth
+            />
+          </Grid>
+          <Grid size={1}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%'
+              }}>
+              <TrendingFlatIcon/>
+            </Box>
+          </Grid>
+          <Grid size={9}>
+            <TextField
+              variant='standard'
+              label='Name'
+              disabled
+              fullWidth
+            />
+          </Grid>
+          <Grid size={2}>
+            <TextField
+              variant='standard'
+              label='Version'
+              disabled
+              fullWidth
+            />
+          </Grid>
+          <Grid size={1}>
+            <IconButton
+              disabled
+              sx={{
+                marginTop: theme.spacing(1) // align with selection textfield
+              }}
+            >
+              <AddIcon color=''/>
+            </IconButton>
+          </Grid>
+        </Grid>
+      </Box>
+      <div/>
+      <Divider orientation='horizontal'/>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+        <Typography
+          sx={{
+            width: '14em',
+            marginTop: 2
+          }}>
+          Upgrade Pull Requests
+        </Typography>
+        <TextField
+          variant='standard'
+          label='Recently closed Pull-Requests'
+          disabled
+          fullWidth
+        />
+      </Box>
+      <Stack
+        direction='column'
+        spacing={2}
+      >
+        {
+          [...Array(loadingPullRequestsCount).keys()].map(i => <LoadingDiff key={i}/>)
+        }
+      </Stack>
     </Stack>
-  </Stack>
+  )
 }
 ComponentDiffTabLoading.diplayName = 'ComponentDiffTabLoading'
 ComponentDiffTabLoading.propTypes = {
@@ -235,16 +241,15 @@ const ComponentVersionDiff = ({
 
   const summaryContent = <Grid
     container
-    alignItems='center'
     spacing={3}
+    sx={{
+      alignItems: 'center'
+    }}
   >
-    <Grid item xs={3}>
+    <Grid size={3}>
       <Typography>{shortenComponentName(leftName)}</Typography>
     </Grid>
-    <Grid
-      item
-      xs={1}
-    >
+    <Grid size={1}>
       <CopyOnClickChip
         value={leftVersion}
         chipProps={{
@@ -253,21 +258,18 @@ const ComponentVersionDiff = ({
       />
     </Grid>
     <Grid
-      item
-      xs={1}
-      display='flex'
-      alignItems='center'
-      justifyContent='center'
-    >
+      size={1}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
       <ArrowForward/>
     </Grid>
-    <Grid item xs={3}>
+    <Grid size={3}>
       <Typography>{shortenComponentName(rightName)}</Typography>
     </Grid>
-    <Grid
-      item
-      xs={1}
-    >
+    <Grid size={1}>
       <CopyOnClickChip
         value={rightVersion}
         chipProps={{
@@ -276,12 +278,12 @@ const ComponentVersionDiff = ({
       />
     </Grid>
     <Grid
-      item
-      xs={2}
-      display='flex'
-      alignItems='center'
-      justifyContent='center'
-    >
+      size={2}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
       {
         pullRequest && <Button
           variant='contained'
@@ -294,12 +296,12 @@ const ComponentVersionDiff = ({
       }
     </Grid>
     <Grid
-      item
-      xs={1}
-      display='flex'
-      alignItems='center'
-      justifyContent='center'
-    >
+      size={1}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
       <Tooltip title={'Export Diff'}>
         <IconButton
           onClick={(event) => {
@@ -410,32 +412,40 @@ const ComponentVersionSelect = ({
     fetchLastVersions()
   }
 
-  return <Autocomplete
-    freeSolo
-    options={versions.sort().reverse()}
-    loading={isLoading}
-    // eslint-disable-next-line no-unused-vars
-    onInputChange={(event, value, reason) => {
-      setComponentVersion(value)
-    }}
-    value={componentVersion}
-    renderInput={(params) => {
-      return <TextField
-        {...params}
-        label='Version'
-        value={componentVersion}
-        variant='standard'
-        fullWidth
-        InputProps={{
-          ...params.InputProps,
-          onClick: () => {
-            if (!componentName || versions.length) return
-            fetchVersions()
-          },
-        }}
-      />
-    }}
-  />
+  return (
+    <Autocomplete
+      freeSolo
+      options={versions.sort().reverse()}
+      loading={isLoading}
+      // eslint-disable-next-line no-unused-vars
+      onInputChange={(event, value, reason) => {
+        setComponentVersion(value)
+      }}
+      value={componentVersion}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            label='Version'
+            value={componentVersion}
+            variant='standard'
+            fullWidth
+            slotProps={{
+              ...params.slotProps,
+
+              input: {
+                ...params.slotProps.input,
+                onClick: () => {
+                  if (!componentName || versions.length) return
+                  fetchVersions()
+                },
+              }
+            }}
+          />
+        )
+      }}
+    />
+  )
 }
 ComponentVersionSelect.displayName = 'ComponentVersionSelect'
 ComponentVersionSelect.propTypes = {
@@ -454,28 +464,36 @@ const ComponentNameSelect = ({
   names,
   onSelectCallback,
 }) => {
-  return <Autocomplete
-    freeSolo
-    options={names.sort()}
-    // eslint-disable-next-line no-unused-vars
-    onInputChange={(event, value, reason) => {
-      setName(value)
-      onSelectCallback()
-    }}
-    value={name}
-    renderInput={(params) => {
-      return <TextField
-        {...params}
-        label='Name'
-        value={name}
-        variant='standard'
-        fullWidth
-        InputProps={{
-          ...params.InputProps,
-        }}
-      />
-    }}
-  />
+  return (
+    <Autocomplete
+      freeSolo
+      options={names.sort()}
+      // eslint-disable-next-line no-unused-vars
+      onInputChange={(event, value, reason) => {
+        setName(value)
+        onSelectCallback()
+      }}
+      value={name}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            label='Name'
+            value={name}
+            variant='standard'
+            fullWidth
+            slotProps={{
+              ...params.slotProps,
+
+              input: {
+                ...params.slotProps.input,
+              }
+            }}
+          />
+        )
+      }}
+    />
+  )
 }
 ComponentNameSelect.displayName = 'ComponentNameSelect'
 ComponentNameSelect.propTypes = {
@@ -504,100 +522,103 @@ const ComponentSelection = ({
   const [leftVersionCandidates, setLeftVersionCandidates] = React.useState([])
   const [rightVersionCandidates, setRightVersionCandidates] = React.useState([])
 
-  return <Grid
-    container
-    spacing={3}
-    columns={24}
-  >
-    <Grid item xs={9}>
-      <ComponentNameSelect
-        names={componentNames}
-        name={leftName}
-        setName={setLeftName}
-        onSelectCallback={() => {
-          setLeftVersion('')
-          setLeftVersionCandidates([])
-        }}
-      />
-    </Grid>
-    <Grid item xs={2}>
-      <ComponentVersionSelect
-        componentName={leftName}
-        componentVersion={leftVersion}
-        ocmRepo={ocmRepo}
-        versions={leftVersionCandidates}
-        setVersions={setLeftVersionCandidates}
-        setComponentVersion={setLeftVersion}
-      />
-    </Grid>
-    <Grid item xs={1}>
-      <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        height='100%'
-      >
-        <TrendingFlatIcon/>
-      </Box>
-    </Grid>
-    <Grid item xs={9}>
-      <ComponentNameSelect
-        names={componentNames}
-        name={rightName}
-        setName={setRightName}
-        onSelectCallback={() => {
-          setRightVersion('')
-          setRightVersionCandidates([])
-        }}
-      />
-    </Grid>
-    <Grid item xs={2}>
-      <ComponentVersionSelect
-        componentName={rightName}
-        componentVersion={rightVersion}
-        ocmRepo={ocmRepo}
-        versions={rightVersionCandidates}
-        setVersions={setRightVersionCandidates}
-        setComponentVersion={setRightVersion}
-      />
-    </Grid>
+  return (
     <Grid
-      item
-      xs={1}
-      display='flex'
-      justifyContent='center'
+      container
+      spacing={3}
+      columns={24}
     >
-      <Tooltip
-        title={'Add Component Diff'}
-      >
-        <span>
-          <IconButton
-            onClick={() => {
-              addComponentDiff({
-                leftName: leftName,
-                rightName: rightName,
-                leftVersion: leftVersion,
-                rightVersion: rightVersion,
-              })
-              mountFetchClosedPrs() // fetch closed PRs to link custom diff to PR
-            }}
-            disabled={
-              !leftName
-              || !rightName
-              || !leftVersion
-              || !rightVersion
-              || (leftName === rightName && leftVersion === rightVersion)
-            }
-            sx={{
-              marginTop: theme.spacing(1) // align with selection textfield
-            }}
-          >
-            <AddIcon color=''/>
-          </IconButton>
-        </span>
-      </Tooltip>
+      <Grid size={9}>
+        <ComponentNameSelect
+          names={componentNames}
+          name={leftName}
+          setName={setLeftName}
+          onSelectCallback={() => {
+            setLeftVersion('')
+            setLeftVersionCandidates([])
+          }}
+        />
+      </Grid>
+      <Grid size={2}>
+        <ComponentVersionSelect
+          componentName={leftName}
+          componentVersion={leftVersion}
+          ocmRepo={ocmRepo}
+          versions={leftVersionCandidates}
+          setVersions={setLeftVersionCandidates}
+          setComponentVersion={setLeftVersion}
+        />
+      </Grid>
+      <Grid size={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%'
+          }}>
+          <TrendingFlatIcon/>
+        </Box>
+      </Grid>
+      <Grid size={9}>
+        <ComponentNameSelect
+          names={componentNames}
+          name={rightName}
+          setName={setRightName}
+          onSelectCallback={() => {
+            setRightVersion('')
+            setRightVersionCandidates([])
+          }}
+        />
+      </Grid>
+      <Grid size={2}>
+        <ComponentVersionSelect
+          componentName={rightName}
+          componentVersion={rightVersion}
+          ocmRepo={ocmRepo}
+          versions={rightVersionCandidates}
+          setVersions={setRightVersionCandidates}
+          setComponentVersion={setRightVersion}
+        />
+      </Grid>
+      <Grid
+        size={1}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center'
+        }}>
+        <Tooltip
+          title={'Add Component Diff'}
+        >
+          <span>
+            <IconButton
+              onClick={() => {
+                addComponentDiff({
+                  leftName: leftName,
+                  rightName: rightName,
+                  leftVersion: leftVersion,
+                  rightVersion: rightVersion,
+                })
+                mountFetchClosedPrs() // fetch closed PRs to link custom diff to PR
+              }}
+              disabled={
+                !leftName
+                || !rightName
+                || !leftVersion
+                || !rightVersion
+                || (leftName === rightName && leftVersion === rightVersion)
+              }
+              sx={{
+                marginTop: theme.spacing(1) // align with selection textfield
+              }}
+            >
+              <AddIcon color=''/>
+            </IconButton>
+          </span>
+        </Tooltip>
+      </Grid>
     </Grid>
-  </Grid>
+  )
 }
 ComponentSelection.displayName = 'ComponentSelection'
 ComponentSelection.propTypes = {
@@ -655,119 +676,117 @@ const ClosedPullRequests = ({
     Unable to fetch Closed PRs
   </Alert>
 
-  return <FormControl
-    fullWidth
-    variant='standard'
-  >
-    <InputLabel>Recently closed Pull-Requests</InputLabel>
-    <Select
-      value={selectedPr}
-      onOpen={() => mountFetchClosedPrs()}
-      onChange={(event) => {
-        setSelectedPr(event.target.value)
-        onSelectPr(pullRequests.find(pr => {
-          return diffIdentity(
-            pr.from.name,
-            pr.to.name,
-            pr.from.version,
-            pr.to.version
-          ) === event.target.value
-        }))
-      }}
-      endAdornment={
-        selectedPr != '' && <InputAdornment
-          position='end'
-          sx={{
-            marginRight: 3 // do not overlap with select-fold-icon
-          }}
-        >
-          <Tooltip
-            title='clear'
-          >
-            <IconButton
-              onClick={() => {
-                setSelectedPr('')
-                onSelectPr('')
-              }}
-              size='small'
-            >
-              <ClearIcon fontSize='small'/>
-            </IconButton>
-          </Tooltip>
-        </InputAdornment>
-      }
+  return (
+    <FormControl
+      fullWidth
+      variant='standard'
     >
-      {
-        (!pullRequests || isLoading) ? <Box
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-        >
-          <Typography>Fetching closed Upgrade Pull-Requests</Typography>
-          <div style={{ padding: '1em' }} />
-          <CircularProgress color='inherit' size='1.5em'/>
-        </Box> : pullRequests.map(pr => {
-          const prId = diffIdentity(pr.from.name, pr.to.name, pr.from.version, pr.to.version)
-          return <MenuItem
-            key={prId}
-            value={prId}
+      <InputLabel>Recently closed Pull-Requests</InputLabel>
+      <Select
+        value={selectedPr}
+        onOpen={() => mountFetchClosedPrs()}
+        onChange={(event) => {
+          setSelectedPr(event.target.value)
+          onSelectPr(pullRequests.find(pr => {
+            return diffIdentity(
+              pr.from.name,
+              pr.to.name,
+              pr.from.version,
+              pr.to.version
+            ) === event.target.value
+          }))
+        }}
+        endAdornment={
+          selectedPr != '' && <InputAdornment
+            position='end'
+            sx={{
+              marginRight: 3 // do not overlap with select-fold-icon
+            }}
           >
-            <Grid
-              container
-              spacing={1}
-              alignItems='center'
-              columns={24}
+            <Tooltip
+              title='clear'
             >
-              <Grid
-                item
-                xs={7}
+              <IconButton
+                onClick={() => {
+                  setSelectedPr('')
+                  onSelectPr('')
+                }}
+                size='small'
               >
-                <Typography>{shortenComponentName(pr.from.name)}</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={4}
-                justifyContent='center'
-                display='flex'
+                <ClearIcon fontSize='small'/>
+              </IconButton>
+            </Tooltip>
+          </InputAdornment>
+        }
+      >
+        {
+          (!pullRequests || isLoading) ? <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <Typography>Fetching closed Upgrade Pull-Requests</Typography>
+            <div style={{ padding: '1em' }} />
+            <CircularProgress color='inherit' size='1.5em'/>
+          </Box> : pullRequests.map(pr => {
+            const prId = diffIdentity(pr.from.name, pr.to.name, pr.from.version, pr.to.version)
+            return (
+              <MenuItem
+                key={prId}
+                value={prId}
               >
-                <CopyOnClickChip
-                  value={pr.from.version}
-                  chipProps={{
-                    variant: 'outlined'
+                <Grid
+                  container
+                  spacing={1}
+                  columns={24}
+                  sx={{
+                    alignItems: 'center'
                   }}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={2}
-              >
-                <TrendingFlatIcon/>
-              </Grid>
-              <Grid
-                item
-                xs={7}
-              >
-                <Typography>{shortenComponentName(pr.to.name)}</Typography>
-              </Grid>
-              <Grid
-                item
-                xs={4}
-                justifyContent='center'
-                display='flex'
-              >
-                <CopyOnClickChip
-                  value={pr.to.version}
-                  chipProps={{
-                    variant: 'outlined'
-                  }}
-                />
-              </Grid>
-            </Grid>
-          </MenuItem>
-        })
-      }
-    </Select>
-  </FormControl>
+                >
+                  <Grid size={7}>
+                    <Typography>{shortenComponentName(pr.from.name)}</Typography>
+                  </Grid>
+                  <Grid
+                    size={4}
+                    sx={{
+                      justifyContent: 'center',
+                      display: 'flex'
+                    }}>
+                    <CopyOnClickChip
+                      value={pr.from.version}
+                      chipProps={{
+                        variant: 'outlined'
+                      }}
+                    />
+                  </Grid>
+                  <Grid size={2}>
+                    <TrendingFlatIcon/>
+                  </Grid>
+                  <Grid size={7}>
+                    <Typography>{shortenComponentName(pr.to.name)}</Typography>
+                  </Grid>
+                  <Grid
+                    size={4}
+                    sx={{
+                      justifyContent: 'center',
+                      display: 'flex'
+                    }}>
+                    <CopyOnClickChip
+                      value={pr.to.version}
+                      chipProps={{
+                        variant: 'outlined'
+                      }}
+                    />
+                  </Grid>
+                </Grid>
+              </MenuItem>
+            )
+          })
+        }
+      </Select>
+    </FormControl>
+  )
 }
 ClosedPullRequests.displayName = 'ClosedPullRequests'
 ClosedPullRequests.propTypes = {
@@ -976,93 +995,97 @@ export const ComponentDiffTab = React.memo(({
     })?.pr
   }
 
-  return <Stack
-    direction='column'
-    spacing={5}
-  >
-    {
-      mountFetchClosedPrs && <FetchUpgradePullRequests
-        setPullRequests={setClosedPrs}
-        setIsLoading={setClosedPrsLoading}
-        setIsError={setClosedPrsError}
-        componentName={component.name}
-        prState={pullRequestsStates.CLOSED}
-        ocmRepo={ocmRepo}
-      />
-    }
-    <Typography>Compare Component Versions</Typography>
-    <Box>
-      <ComponentSelection
-        ocmRepo={ocmRepo}
-        componentNames={componentNames}
-        addComponentDiff={addComponentDiff}
-        inputComponentName={component.name}
-        inputComponentVersion={component.version}
-        mountFetchClosedPrs={() => setMountFetchClosedPrs(true)}
-      />
-    </Box>
+  return (
     <Stack
       direction='column'
-      spacing={2}
+      spacing={5}
     >
       {
-        customDiffs.map(customDiff => <ComponentVersionDiff
-          key={diffIdentity(customDiff.leftName, customDiff.rightName, customDiff.leftVersion, customDiff.rightVersion)}
-          leftName={customDiff.leftName}
-          rightName={customDiff.rightName}
-          leftVersion={customDiff.leftVersion}
-          rightVersion={customDiff.rightVersion}
-          pullRequest={findPullRequest({
-            leftName: customDiff.leftName,
-            rightName: customDiff.rightName,
-            leftVersion: customDiff.leftVersion,
-            rightVersion: customDiff.rightVersion,
-          })}
-          deleteDiff={deleteComponentDiff}
-        />)
-      }
-    </Stack>
-    <Divider orientation='horizontal'/>
-    <Box
-      display='flex'
-      flexDirection='row'
-      justifyContent='center'
-      alignItems='center'
-    >
-      <Typography
-        width='14em'
-        marginTop={2}
-      >
-        Upgrade Pull Requests
-      </Typography>
-      <ClosedPullRequests
-        pullRequests={closedPrs}
-        isLoading={closedPrsLoading}
-        isError={closedPrsError}
-        onSelectPr={setSelectedClosedPr}
-        mountFetchClosedPrs={() => setMountFetchClosedPrs(true)}
-      />
-    </Box>
-    <Stack
-      direction='column'
-      spacing={2}
-    >
-      {
-        selectedClosedPr && <ComponentVersionDiff
-          key={JSON.stringify(selectedClosedPr)}
-          leftName={selectedClosedPr.from.name}
-          rightName={selectedClosedPr.to.name}
-          leftVersion={selectedClosedPr.from.version}
-          rightVersion={selectedClosedPr.to.version}
-          pullRequest={selectedClosedPr.pr}
+        mountFetchClosedPrs && <FetchUpgradePullRequests
+          setPullRequests={setClosedPrs}
+          setIsLoading={setClosedPrsLoading}
+          setIsError={setClosedPrsError}
+          componentName={component.name}
+          prState={pullRequestsStates.CLOSED}
+          ocmRepo={ocmRepo}
         />
       }
-      <PullRequests
-        pullRequests={prs}
-        isError={prState.error}
-      />
+      <Typography>Compare Component Versions</Typography>
+      <Box>
+        <ComponentSelection
+          ocmRepo={ocmRepo}
+          componentNames={componentNames}
+          addComponentDiff={addComponentDiff}
+          inputComponentName={component.name}
+          inputComponentVersion={component.version}
+          mountFetchClosedPrs={() => setMountFetchClosedPrs(true)}
+        />
+      </Box>
+      <Stack
+        direction='column'
+        spacing={2}
+      >
+        {
+          customDiffs.map(customDiff => <ComponentVersionDiff
+            key={diffIdentity(customDiff.leftName, customDiff.rightName, customDiff.leftVersion, customDiff.rightVersion)}
+            leftName={customDiff.leftName}
+            rightName={customDiff.rightName}
+            leftVersion={customDiff.leftVersion}
+            rightVersion={customDiff.rightVersion}
+            pullRequest={findPullRequest({
+              leftName: customDiff.leftName,
+              rightName: customDiff.rightName,
+              leftVersion: customDiff.leftVersion,
+              rightVersion: customDiff.rightVersion,
+            })}
+            deleteDiff={deleteComponentDiff}
+          />)
+        }
+      </Stack>
+      <Divider orientation='horizontal'/>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+        <Typography
+          sx={{
+            width: '14em',
+            marginTop: 2
+          }}>
+          Upgrade Pull Requests
+        </Typography>
+        <ClosedPullRequests
+          pullRequests={closedPrs}
+          isLoading={closedPrsLoading}
+          isError={closedPrsError}
+          onSelectPr={setSelectedClosedPr}
+          mountFetchClosedPrs={() => setMountFetchClosedPrs(true)}
+        />
+      </Box>
+      <Stack
+        direction='column'
+        spacing={2}
+      >
+        {
+          selectedClosedPr && <ComponentVersionDiff
+            key={JSON.stringify(selectedClosedPr)}
+            leftName={selectedClosedPr.from.name}
+            rightName={selectedClosedPr.to.name}
+            leftVersion={selectedClosedPr.from.version}
+            rightVersion={selectedClosedPr.to.version}
+            pullRequest={selectedClosedPr.pr}
+          />
+        }
+        <PullRequests
+          pullRequests={prs}
+          isError={prState.error}
+        />
+      </Stack>
     </Stack>
-  </Stack>
+  )
 })
 ComponentDiffTab.displayName = 'ComponentDiffTab'
 ComponentDiffTab.propTypes = {
@@ -1183,8 +1206,11 @@ export const ComponentVector = ({ diff }) => {
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Grid container alignItems='center'>
-              <Grid item xs={5}>
+            <Grid container sx={{
+              alignItems: 'center',
+              flexGrow: 1
+            }}>
+              <Grid size={5}>
                 <Typography
                   sx={{
                     fontSize: 18,
@@ -1195,7 +1221,7 @@ export const ComponentVector = ({ diff }) => {
                   {name}
                 </Typography>
               </Grid>
-              <Grid item xs={7}>
+              <Grid size={7}>
                 <Typography
                   component={'span'}
                   sx={{
@@ -1230,10 +1256,10 @@ export const ComponentVector = ({ diff }) => {
           </AccordionSummary>
           <AccordionDetails key={cpair.left.name} style={{ padding: '0em' }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Divider variant='middle' />
               </Grid>
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <ComponentVectorTab rightComponent={cpair.right} />
               </Grid>
             </Grid>
@@ -1245,18 +1271,20 @@ export const ComponentVector = ({ diff }) => {
   return (
     <>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           {addedComponents}
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           {removedComponents}
         </Grid>
-        <Grid item xs={10}>
-          <Typography variant='h6' display='block'>
+        <Grid size={10}>
+          <Typography variant='h6' sx={{
+            display: 'block'
+          }}>
             Changed components:
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid size={2}>
           <Button
             variant='contained'
             size='small'
@@ -1275,7 +1303,7 @@ export const ComponentVector = ({ diff }) => {
             )}
           </Button>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           {changedComponents}
         </Grid>
       </Grid>
@@ -1288,28 +1316,30 @@ ComponentVector.propTypes = {
 }
 
 const ComponentEntry = ({ icon, name, version }) => {
-  return <Grid container direction='row'>
-    <Grid item xs={9}>
-      <div style={{ display: 'flex' }}>
-        {icon}
-        <Typography
-          sx={{
-            paddingLeft: '0.2em'
+  return (
+    <Grid container direction='row'>
+      <Grid size={9}>
+        <div style={{ display: 'flex' }}>
+          {icon}
+          <Typography
+            sx={{
+              paddingLeft: '0.2em'
+            }}
+          >
+            {name}
+          </Typography>
+        </div>
+      </Grid>
+      <Grid size={3}>
+        <CopyOnClickChip
+          value={version}
+          chipProps={{
+            variant: 'outlined'
           }}
-        >
-          {name}
-        </Typography>
-      </div>
+        />
+      </Grid>
     </Grid>
-    <Grid item xs={3}>
-      <CopyOnClickChip
-        value={version}
-        chipProps={{
-          variant: 'outlined'
-        }}
-      />
-    </Grid>
-  </Grid>
+  )
 }
 ComponentEntry.displayName = 'ComponentEntry'
 ComponentEntry.propTypes = {
@@ -1345,21 +1375,19 @@ ChangedLabelCard.propTypes = {
 const LabelDiff = ({ left, right }) => {
   return (
     <>
-      <Grid item xs={5}>
+      <Grid size={5}>
         <ChangedLabelCard label={left} />
       </Grid>
       <Grid
-        item
-        xs={2}
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
         }}
-      >
+        size={2}>
         <ForwardOutlinedIcon />
       </Grid>
-      <Grid item xs={5}>
+      <Grid size={5}>
         <ChangedLabelCard label={right} />
       </Grid>
     </>
@@ -1385,7 +1413,7 @@ const LabelResource = ({ icon, resource }) => {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12} style={{ display: 'flex' }}>
+      <Grid style={{ display: 'flex' }} size={12}>
         <Typography variant='body1'>{resource.name}</Typography>
         <div
           style={{
@@ -1404,7 +1432,7 @@ const LabelResource = ({ icon, resource }) => {
           />
         </div>
       </Grid>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Divider />
       </Grid>
       {labelItems}
@@ -1425,26 +1453,22 @@ const LabelItem = ({ icon, name, value }) => {
   return (
     <>
       <Grid
-        item
-        xs={6}
         sx={{
           display: 'flex',
           alignItems: 'center',
         }}
-      >
+        size={6}>
         {icon}
         <Typography variant='body2' style={{ paddingLeft: '0.2em' }}>
           {name}
         </Typography>
       </Grid>
       <Grid
-        item
-        xs={6}
         sx={{
           display: 'flex',
           alignItems: 'center',
         }}
-      >
+        size={6}>
         <Typography variant='body2' style={{ whiteSpace: 'pre-wrap' }}>
           {value}
         </Typography>
@@ -1462,7 +1486,7 @@ LabelItem.propTypes = {
 export const LabelVector = ({ resources }) => {
   const labelTableHeader = (
     <>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <Typography
           sx={{
             display: 'flex',
@@ -1473,8 +1497,8 @@ export const LabelVector = ({ resources }) => {
           Name
         </Typography>
       </Grid>
-      <Grid item xs={1} />
-      <Grid item xs={7}>
+      <Grid size={1} />
+      <Grid size={7}>
         <Typography
           sx={{
             display: 'flex',
@@ -1490,27 +1514,31 @@ export const LabelVector = ({ resources }) => {
 
   let addedLabels = getLabelsFromResources(resources.added)
   if (addedLabels.length === 0) {
-    addedLabels = <Box fontStyle='italic'>no labels added</Box>
+    addedLabels = <Box sx={{
+      fontStyle: 'italic'
+    }}>no labels added</Box>
   }
 
   let removedLabels = getLabelsFromResources(resources.removed)
   if (removedLabels.length === 0) {
-    removedLabels = <Box fontStyle='italic'>no labels removed</Box>
+    removedLabels = <Box sx={{
+      fontStyle: 'italic'
+    }}>no labels removed</Box>
   }
 
   let changedLabels = (
-    <Grid item xs={12}>
-      <Box fontStyle='italic'>no labels changed</Box>
+    <Grid size={12}>
+      <Box sx={{
+        fontStyle: 'italic'
+      }}>no labels changed</Box>
     </Grid>
   )
   if (resources.changed.length > 0) {
     changedLabels = resources.changed.map((resourcePair) => {
       return (
         <Grid
-          item
-          xs={12}
           key={`${resourcePair.to.name}-${resourcePair.from.version}-${resourcePair.to.version}`}
-        >
+          size={12}>
           <ChangedLabels resourcePair={resourcePair} />
         </Grid>
       )
@@ -1520,13 +1548,13 @@ export const LabelVector = ({ resources }) => {
     <>
       <Grid container spacing={4}>
         {labelTableHeader}
-        <Grid item xs={12}>
+        <Grid size={12}>
           {addedLabels}
           <br />
           {removedLabels}
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Divider />
         </Grid>
         {changedLabels}
@@ -1594,7 +1622,7 @@ const ChangedLabels = ({ resourcePair }) => {
   return (
     <>
       <Grid container spacing={1}>
-        <Grid item xs={12} style={{ display: 'flex' }}>
+        <Grid style={{ display: 'flex' }} size={12}>
           <Typography variant='body1'>{resourcePair.to.name}</Typography>
           <div
             style={{
@@ -1623,7 +1651,7 @@ const ChangedLabels = ({ resourcePair }) => {
         </Grid>
         {addedLabels}
         {removedLabels}
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Divider />
         </Grid>
         {changedLabels}
@@ -1649,7 +1677,7 @@ const getLabelsFromResources = (resources) => {
       })
       .map((resource) => {
         return (
-          <Grid item xs={12} key={`${resource.name}-${resource.version}`}>
+          <Grid key={`${resource.name}-${resource.version}`} size={12}>
             <LabelResource
               icon={<AddCircleOutlineOutlinedIcon />}
               resource={resource}
@@ -1691,7 +1719,9 @@ const sortResources = (resources) => {
 
 export const ResourceVector = ({ rightComponent }) => {
   const resources = rightComponent.resources
-  let addedResources = <Box fontStyle='italic'>no resources added</Box>
+  let addedResources = <Box sx={{
+    fontStyle: 'italic'
+  }}>no resources added</Box>
   if (resources.added.length) {
     const sortedResources = sortResources(resources.added)
 
@@ -1721,7 +1751,9 @@ export const ResourceVector = ({ rightComponent }) => {
     })
   }
 
-  let removedResources = <Box fontStyle='italic'>no resources removed</Box>
+  let removedResources = <Box sx={{
+    fontStyle: 'italic'
+  }}>no resources removed</Box>
   if (resources.removed.length) {
     const sortedResources = sortResources(resources.removed)
 
@@ -1751,7 +1783,9 @@ export const ResourceVector = ({ rightComponent }) => {
     })
   }
 
-  let changedResources = <Box fontStyle='italic'>no resources changed</Box>
+  let changedResources = <Box sx={{
+    fontStyle: 'italic'
+  }}>no resources changed</Box>
   if (resources.changed.length > 0) {
     changedResources = resources.changed.map((resourcePair) => {
       let name = resourcePair.to.name
@@ -1786,43 +1820,51 @@ ResourceVector.propTypes = {
 }
 
 const ChangedResource = ({ name, fromVersion, toVersion }) => {
-  return <Grid container justifyContent='center' alignItems='center' direction='row'>
-    <Grid item xs={8} style={{ display: 'flex' }}>
-      <SyncAltIcon />
-      <Typography
-        sx={{
-          paddingLeft: '0.2em',
-        }}
-      >
-        {name}
-      </Typography>
-    </Grid>
-    <Grid item xs={4}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <CopyOnClickChip
-          value={fromVersion}
-          chipProps={{
-            variant: 'outlined',
-            size: 'small',
+  return (
+    <Grid
+      container
+      direction='row'
+      sx={{
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+      <Grid style={{ display: 'flex' }} size={8}>
+        <SyncAltIcon />
+        <Typography
+          sx={{
+            paddingLeft: '0.2em',
           }}
-        />
-        <ArrowForwardIcon style={{ padding: ' 0 0.1em 0 0.1em' }} />
-        <CopyOnClickChip
-          value={toVersion}
-          chipProps={{
-            variant: 'outlined',
-            size: 'small',
+        >
+          {name}
+        </Typography>
+      </Grid>
+      <Grid size={4}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-        />
-      </div>
+        >
+          <CopyOnClickChip
+            value={fromVersion}
+            chipProps={{
+              variant: 'outlined',
+              size: 'small',
+            }}
+          />
+          <ArrowForwardIcon style={{ padding: ' 0 0.1em 0 0.1em' }} />
+          <CopyOnClickChip
+            value={toVersion}
+            chipProps={{
+              variant: 'outlined',
+              size: 'small',
+            }}
+          />
+        </div>
+      </Grid>
     </Grid>
-  </Grid>
+  )
 }
 ChangedResource.displayName = 'ChangedResource'
 ChangedResource.propTypes = {

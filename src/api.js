@@ -21,8 +21,7 @@ Object.freeze(API_RESPONSES)
 
 const API_PREFIX =
   window.REACT_APP_DELIVERY_SERVICE_API_URL
-  // eslint-disable-next-line no-undef
-  || process.env.REACT_APP_DELIVERY_SERVICE_API_URL
+  || import.meta.env.VITE_DELIVERY_SERVICE_API_URL
 
 const api = (path) => {
   return urljoin(API_PREFIX, path)

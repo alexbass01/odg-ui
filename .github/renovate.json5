@@ -55,6 +55,19 @@
       matchDepNames: ['gardener/cc-utils'],
       enabled: false,
     },
+    // --- Major-update holds (dependency-dashboard triage, see issue #486) ---
+    // These majors must not be merged blindly: this repo has no automated
+    // tests, so each needs a tracked migration instead of a renovate PR.
+    {
+      // HOLD eslint 10: blocked upstream — eslint-plugin-jsx-a11y (v6.10.2)
+      // caps eslint at ^9 and appears abandoned since 2024-10; additionally
+      // eslint-plugin-react (v7.37.5) caps at ^9.7. Do not force the update
+      // (--legacy-peer-deps would silently break .ci/lint); re-enable once
+      // both plugins declare eslint 10 support.
+      matchDepNames: ['eslint'],
+      matchUpdateTypes: ['major'],
+      enabled: false,
+    },
   ],
   postUpgradeTasks: {
     commands: [

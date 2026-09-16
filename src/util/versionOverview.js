@@ -17,18 +17,24 @@ import RemoveIcon from '@mui/icons-material/Remove'
 import { useTheme } from '@mui/material/styles'
 
 import PropTypes from 'prop-types'
-import { Draggable } from 'react-beautiful-dnd'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 
 const VersionTableRow = ({
   info,
+  component,
   isEditMode,
   removeDep,
-  provided,
 }) => {
   const theme = useTheme()
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: component ? `${info.name}|${component.id}|${component.browserLocalOnly}` : info.name,
+    disabled: !isEditMode,
+  })
+  const style = { transform: CSS.Transform.toString(transform), transition }
 
-  return <TableRow ref={provided?.innerRef} {...provided?.draggableProps} {...provided?.dragHandleProps}>
+  return <TableRow ref={setNodeRef} style={style} {...attributes} {...listeners}>
     <TableCell sx={{width: '50%'}}>
       <Typography variant='caption'>{info.displayName}</Typography>
     </TableCell>
@@ -79,9 +85,9 @@ const VersionTableRow = ({
 VersionTableRow.displayName = 'VersionTableRow'
 VersionTableRow.propTypes = {
   info: PropTypes.object,
+  component: PropTypes.object,
   isEditMode: PropTypes.bool,
   removeDep: PropTypes.func,
-  provided: PropTypes.object,
 }
 
 
@@ -92,7 +98,6 @@ export const VersionOverview = ({
   specialComponentsFeature,
   colorOverride,
   isEditMode,
-  provided,
   isLoading,
 }) => {
   const versionInfos = dependencies ? [...dependencies.sort((a, b) => a.position - b.position)] : []
@@ -139,28 +144,15 @@ export const VersionOverview = ({
       </TableHead>
     }
     <TableBody>
-      {versionInfos.map((info, idx) => {
-        return (
-          provided ? <Draggable
-            key={info.name}
-            draggableId={`${info.name}|${component.id}|${component.browserLocalOnly}`}
-            index={idx}
-            isDragDisabled={!isEditMode}
-          >
-            {(provided) => (<>
-              {provided.placeholder}
-              <VersionTableRow
-                key={`version-info-${info.name}-${info.localVersion}`}
-                info={info}
-                isEditMode={isEditMode}
-                removeDep={removeDep}
-                provided={provided}
-              />
-            </>)}
-          </Draggable> : <VersionTableRow key={`version-info-${info.name}-${info.localVersion}`} info={info}/>
-        )
+      {versionInfos.map((info) => {
+        return <VersionTableRow
+          key={`version-info-${info.name}`}
+          info={info}
+          component={component}
+          isEditMode={isEditMode}
+          removeDep={removeDep}
+        />
       })}
-      {provided?.placeholder}
     </TableBody>
   </Table>
 }
@@ -172,7 +164,6 @@ VersionOverview.propTypes = {
   specialComponentsFeature: PropTypes.object,
   colorOverride: PropTypes.string,
   isEditMode: PropTypes.bool,
-  provided: PropTypes.object,
   isLoading: PropTypes.bool,
 }
 

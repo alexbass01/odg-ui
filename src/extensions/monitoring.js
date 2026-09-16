@@ -367,48 +367,63 @@ const BacklogHeader = ({
     refreshBacklogItems()
   }
 
-  return <Stack direction='row' spacing={3} display='flex' alignItems='center' justifyContent='space-between'>
-    <Stack direction='row' spacing={3} display='flex' alignItems='center'>
-      <PriorityFilter
-        priority={priority}
-        setPriority={setPriority}
-      />
-      <IconButton
-        title='Refresh'
+  return (
+    <Stack
+      direction='row'
+      spacing={3}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+      <Stack
+        direction='row'
+        spacing={3}
         sx={{
-          backgroundColor: theme.palette.grey,
-          border: `1px solid ${theme.palette.text.primary}`,
-          color: theme.palette.text.primary,
-        }}
-        onClick={() => {
-          refresh.statuses()
-          refreshBacklogItems()
-        }}
-        disabled={backlogItemsFetchDetails.isLoading}
-      >
-        <RefreshIcon/>
-      </IconButton>
-      <ServiceStatus serviceStatus={aggregatedContainerStatus}/>
-    </Stack>
-    <span>
-      {
-        isAuthorised ? <Button
-          color='secondary'
-          endIcon={<DeleteIcon/>}
-          onClick={fetchDeleteBacklogItem}
-          startIcon={deletionIsLoading && <CircularProgress size='1em'/>}
-          disabled={deletionIsLoading || backlogItemsFetchDetails.isLoading || selectedBacklogItems.length === 0}
-          fullWidth
-        >
-          {`Delete Selected Backlog Items (${selectedBacklogItems.length})`}
-        </Button> : <MissingPermissionsButton
-          route={route}
-          method={method}
-          buttonText={`Delete Selected Backlog Items (${selectedBacklogItems.length})`}
+          display: 'flex',
+          alignItems: 'center'
+        }}>
+        <PriorityFilter
+          priority={priority}
+          setPriority={setPriority}
         />
-      }
-    </span>
-  </Stack>
+        <IconButton
+          title='Refresh'
+          sx={{
+            backgroundColor: theme.palette.grey,
+            border: `1px solid ${theme.palette.text.primary}`,
+            color: theme.palette.text.primary,
+          }}
+          onClick={() => {
+            refresh.statuses()
+            refreshBacklogItems()
+          }}
+          disabled={backlogItemsFetchDetails.isLoading}
+        >
+          <RefreshIcon/>
+        </IconButton>
+        <ServiceStatus serviceStatus={aggregatedContainerStatus}/>
+      </Stack>
+      <span>
+        {
+          isAuthorised ? <Button
+            color='secondary'
+            endIcon={<DeleteIcon/>}
+            onClick={fetchDeleteBacklogItem}
+            startIcon={deletionIsLoading && <CircularProgress size='1em'/>}
+            disabled={deletionIsLoading || backlogItemsFetchDetails.isLoading || selectedBacklogItems.length === 0}
+            fullWidth
+          >
+            {`Delete Selected Backlog Items (${selectedBacklogItems.length})`}
+          </Button> : <MissingPermissionsButton
+            route={route}
+            method={method}
+            buttonText={`Delete Selected Backlog Items (${selectedBacklogItems.length})`}
+          />
+        }
+      </span>
+    </Stack>
+  )
 }
 BacklogHeader.displayName = 'BacklogHeader'
 BacklogHeader.propTypes = {
@@ -730,13 +745,13 @@ const BacklogItemRow = ({
           >
             {
               Object.values(PRIORITIES).map((p) => <MenuItem key={p.name} value={p}>
-                <Typography color={`${p.color}.main`} variant='body2'>
+                <Typography color={p.color} variant='body2'>
                   {p.name}
                 </Typography>
               </MenuItem>)
             }
           </Select>
-        </FormControl> : <Typography color={`${priority.color}.main`} variant='body2'>
+        </FormControl> : <Typography color={priority.color} variant='body2'>
           {
             priority.name
           }
@@ -774,7 +789,7 @@ const PriorityFilter = ({
     >
       {
         Object.values(PRIORITIES).map((p) => <MenuItem key={p.name} value={p}>
-          <Typography color={`${p.color}.main`} variant='body2'>
+          <Typography color={p.color} variant='body2'>
             {p.name}
           </Typography>
         </MenuItem>)
@@ -811,35 +826,50 @@ const LogTab = ({
     }
   ) : []
 
-  return <>
-    <Stack direction='row' spacing={3} display='flex' alignItems='center' justifyContent='space-between'>
-      <Stack direction='row' spacing={3} display='flex' alignItems='center'>
-        <LogLevelFilter
-          logLevel={logLevel}
-          setLogLevel={setLogLevel}
-        />
-        <IconButton
-          title='Refresh'
+  return (
+    <>
+      <Stack
+        direction='row'
+        spacing={3}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
+        <Stack
+          direction='row'
+          spacing={3}
           sx={{
-            backgroundColor: theme.palette.grey,
-            border: `1px solid ${theme.palette.text.primary}`,
-            color: theme.palette.text.primary,
-          }}
-          onClick={() => {
-            refresh.statuses()
-            refresh.logs()
-          }}
-          disabled={showLoadingAnimation}
-        >
-          <RefreshIcon/>
-        </IconButton>
-        <ServiceStatus serviceStatus={aggregatedContainerStatus}/>
+            display: 'flex',
+            alignItems: 'center'
+          }}>
+          <LogLevelFilter
+            logLevel={logLevel}
+            setLogLevel={setLogLevel}
+          />
+          <IconButton
+            title='Refresh'
+            sx={{
+              backgroundColor: theme.palette.grey,
+              border: `1px solid ${theme.palette.text.primary}`,
+              color: theme.palette.text.primary,
+            }}
+            onClick={() => {
+              refresh.statuses()
+              refresh.logs()
+            }}
+            disabled={showLoadingAnimation}
+          >
+            <RefreshIcon/>
+          </IconButton>
+          <ServiceStatus serviceStatus={aggregatedContainerStatus}/>
+        </Stack>
+        <DownloadLogs logs={logs} service={service} logLevel={logLevel} disabled={showLoadingAnimation || Boolean(error)}/>
       </Stack>
-      <DownloadLogs logs={logs} service={service} logLevel={logLevel} disabled={showLoadingAnimation || Boolean(error)}/>
-    </Stack>
-    <div style={{height: '2rem'}}/>
-    <Logs logs={logs} isLoading={showLoadingAnimation} isError={Boolean(error)}/>
-  </>
+      <div style={{height: '2rem'}}/>
+      <Logs logs={logs} isLoading={showLoadingAnimation} isError={Boolean(error)}/>
+    </>
+  )
 }
 LogTab.displayName = 'LogTab'
 LogTab.propTypes = {
@@ -953,7 +983,7 @@ const LogLevelFilter = ({
     >
       {
         logLevels.map((level) => <MenuItem key={level} value={level}>
-          <Typography color={`${logLevelToThemeColor(level)}.main`} variant='body2'>
+          <Typography color={logLevelToThemeColor(level)} variant='body2'>
             {level}
           </Typography>
         </MenuItem>)

@@ -117,15 +117,19 @@ const Responsibles = ({ componentResponsibles, isResponsibleDataLoading }) => {
             }
             rowsPerPage={rowsPerPage}
             page={page}
-            SelectProps={{
-              inputProps: {
-                'aria-label': 'rows per page',
-              },
-              native: true,
-            }}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            ActionsComponent={TablePaginationActions}
+            slots={{
+              actions: TablePaginationActions
+            }}
+            slotProps={{
+              select: {
+                inputProps: {
+                  'aria-label': 'rows per page',
+                },
+                native: true,
+              }
+            }}
           />
         </TableRow>
       </TableFooter>
@@ -335,7 +339,9 @@ const GithubUsers = ({ githubUsers }) => {
                 <ListItemText
                   primary={githubUser.username}
                   secondary={githubUser.github_hostname}
-                  secondaryTypographyProps={{color: 'lightgrey'}}
+                  slotProps={{
+                    secondary: {color: 'lightgrey'}
+                  }}
                 />
               </ListItemButton>
             )
