@@ -34,6 +34,43 @@ npm run build
 
 Output goes to `dist/`. Preview the production build locally with `npm run preview`.
 
+## Running as a container locally
+
+Build the image:
+
+```
+docker build --progress=plain -t odg-ui .
+```
+
+Start it (lighttpd serves on port 8080 inside the container, expose it e.g. on port 3000):
+
+```
+docker run -d --rm --name odg-ui -p 3000:8080 odg-ui
+```
+
+The dashboard expects the `Delivery-Service` API URL to be injected at runtime via
+`/dynamic/config.js` (in deployed environments, this file is written by an init container
+from the pod's `REACT_APP_*` environment variables). For a local container, write it
+manually (adjust the URL to where your `Delivery-Service` listens):
+
+```
+docker exec odg-ui sh -c \
+  "mkdir -p /delivery-dashboard/dynamic && \
+   printf \"window.REACT_APP_DELIVERY_SERVICE_API_URL = 'http://localhost:5000';\\n\" \
+   > /delivery-dashboard/dynamic/config.js"
+```
+
+The dashboard is now available at [http://localhost:3000](http://localhost:3000).
+
+To stop the container:
+
+```
+docker stop odg-ui
+```
+
+Thanks to the `--rm` flag, the container is deleted automatically once stopped. If you
+started it without `--rm`, delete it explicitly with `docker rm odg-ui`.
+
 ## Code style
 
 Make use of [eslint](https://eslint.org/) and use our config `eslint.config.mjs`.
