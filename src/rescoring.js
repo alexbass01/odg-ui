@@ -4088,7 +4088,7 @@ const RescoringModal = ({
               }}>
               {
                 rescoringsLoading ? <Box sx={{
-                  width: '100vw'
+                  width: '100%'
                 }}>
                   <Skeleton/>
                 </Box> : <Typography

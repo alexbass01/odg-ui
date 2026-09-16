@@ -1079,7 +1079,8 @@ const LoadingComponents = ({loadingComponentsCount}) => {
                 container
                 sx={{
                   alignItems: 'center',
-                  padding: 1
+                  padding: 1,
+                  flexGrow: 1
                 }}>
                 <Grid size={6}>
                   <Typography variant='body1'>
@@ -1131,7 +1132,8 @@ const LoadingDependencies = () => {
             container
             sx={{
               alignItems: 'center',
-              padding: 1
+              padding: 1,
+              flexGrow: 1
             }}>
             <Grid size={4}>
               <Typography variant='body1'>

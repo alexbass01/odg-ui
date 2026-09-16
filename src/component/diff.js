@@ -75,7 +75,8 @@ const LoadingDiff = () => {
           container
           spacing={3}
           sx={{
-            alignItems: 'center'
+            alignItems: 'center',
+            flexGrow: 1
           }}
         >
           <Grid size={3}>
